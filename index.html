@@ -1,0 +1,825 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<title>VIIM — VDOT guidance console</title>
+<meta name="description" content="A working console for VDOT Instructional &amp; Informational Memoranda, the LAP Manual and related guidance — grounded, cited, and always linked back to the source document.">
+<link rel="canonical" href="https://viim.si/">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20fill='%230d1420'/%3E%3Cpath%20d='M12%2014h40M12%2050h40'%20stroke='%2338bdf8'%20stroke-width='4'%20stroke-linecap='round'/%3E%3Cpath%20d='M22%2014v36M42%2014v36'%20stroke='%2338bdf8'%20stroke-width='4'%20stroke-linecap='round'/%3E%3Ccircle%20cx='32'%20cy='32'%20r='5'%20fill='%23fbbf24'/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#0d1420">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="VIIM">
+<meta property="og:title" content="VIIM — VDOT guidance console">
+<meta property="og:description" content="Search, read and question VDOT Instructional &amp; Informational Memoranda. Every answer cites the memorandum and revision it came from.">
+<meta property="og:url" content="https://viim.si/">
+<meta property="og:image" content="https://viim.si/assets/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="VIIM — VDOT guidance console">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="VIIM — VDOT guidance console">
+<meta name="twitter:description" content="Search, read and question VDOT Instructional &amp; Informational Memoranda.">
+<meta name="twitter:image" content="https://viim.si/assets/og.png">
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"VIIM",
+ "description":"Reference console for VDOT Instructional & Informational Memoranda and related guidance.",
+ "url":"https://viim.si/","applicationCategory":"ReferenceApplication","operatingSystem":"Web"}
+</script>
+
+<style>
+/* ============================================================
+   VIIM — VDOT guidance console
+   Engineering instrument: dark rail, light workspace, blueprint cyan
+   ============================================================ */
+:root{
+  --u:8px; --u2:16px; --u3:24px; --u4:32px;
+  --rail-w:64px; --bar-h:56px; --side-w:clamp(280px,24vw,352px); --foot-h:26px;
+  --safe-t:env(safe-area-inset-top,0px); --safe-b:env(safe-area-inset-bottom,0px);
+  --hair:1px; --r1:6px; --r2:10px;
+
+  --bg:#f2f5f9; --panel:#fff; --panel2:#f7f9fc; --panel3:#eef2f8;
+  --ink:#0f1826; --dim:#55637a; --faint:#8c98ad;
+  --line:#e1e7f0; --line2:#cdd6e4;
+
+  --rail:#0d1420; --rail2:#152130; --rail-ink:#93a4bd;
+
+  --accent:#0f6fd6; --accent-lo:#38bdf8; --accent-hi:#0a4c96; --accent-ink:#0b5cb5;
+  --amber:#b7791f; --amber-lo:#fbbf24;
+  --ok:#0f7a52; --warn:#9a5b0a;
+  --glow:rgba(15,111,214,.16); --glow-amber:rgba(251,191,36,.22);
+  --grad:linear-gradient(135deg,#1782ea,#0a4c96);
+
+  --shadow-1:0 1px 2px rgba(15,24,38,.05);
+  --shadow-lift:0 3px 12px rgba(15,111,214,.2), 0 16px 40px rgba(15,111,214,.1);
+
+  --f-ui:"Inter","SF Pro Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --t1:clamp(13px,1.5vh,15px); --t2:clamp(15px,1.9vh,18px); --t3:clamp(19px,2.4vh,23px);
+  --ease:cubic-bezier(.22,1,.36,1); --ease-soft:cubic-bezier(.4,0,.2,1);
+}
+*{ box-sizing:border-box; margin:0; padding:0 }
+html,body{ height:100%; overflow:hidden; overscroll-behavior:none }
+body{ background:var(--bg); color:var(--ink); font-family:var(--f-ui); font-size:var(--t1);
+  line-height:1.6; -webkit-font-smoothing:antialiased; touch-action:manipulation }
+#app{ position:fixed; inset:0; height:100dvh; height:min(100dvh,100svh); display:grid;
+  grid-template-columns:var(--rail-w) var(--side-w) 1fr;
+  grid-template-rows:calc(var(--bar-h) + var(--safe-t)) 1fr calc(var(--foot-h) + var(--safe-b)) }
+#rail{ grid-column:1; grid-row:1/-1 } header.top{ grid-column:2/-1; grid-row:1 }
+#side{ grid-column:2; grid-row:2 } #chat{ grid-column:3; grid-row:2 }
+footer.bot{ grid-column:2/-1; grid-row:3 }
+::selection{ background:var(--accent); color:#fff }
+button{ font:inherit; color:inherit; background:none; border:none; cursor:pointer;
+  appearance:none; -webkit-appearance:none; -webkit-tap-highlight-color:transparent }
+:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; border-radius:4px }
+[hidden]{ display:none !important }
+#bg{ position:fixed; inset:0; z-index:0; pointer-events:none }
+
+/* rail */
+#rail{ position:relative; z-index:20; display:flex; flex-direction:column; align-items:center; gap:5px;
+  padding:calc(var(--u) + var(--safe-t)) 0 calc(var(--u) + var(--safe-b));
+  background:linear-gradient(180deg,var(--rail2),var(--rail)); color:var(--rail-ink) }
+#rail::after{ content:""; position:absolute; top:0; bottom:0; right:0; width:1px;
+  background:linear-gradient(180deg,transparent,rgba(56,189,248,.5),rgba(251,191,36,.35),transparent) }
+#sigil{ width:44px; height:44px; display:grid; place-items:center; margin-bottom:var(--u); color:#7dd3fc }
+#logo{ width:32px; height:32px; filter:drop-shadow(0 0 8px rgba(56,189,248,.5)) }
+#logo .l-beam{ animation:beam 6s var(--ease-soft) infinite }
+#logo .l-core{ animation:pulse 3s ease-in-out infinite; transform-box:fill-box; transform-origin:center }
+@keyframes beam{ 0%,100%{ opacity:.45 } 50%{ opacity:1 } }
+@keyframes pulse{ 0%,100%{ transform:scale(1); opacity:.85 } 50%{ transform:scale(1.3); opacity:1 } }
+#divs{ display:flex; flex-direction:column; gap:3px; width:100%; align-items:center }
+.div-btn{ position:relative; width:54px; padding:8px 2px 6px; border-radius:var(--r2);
+  display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--rail-ink);
+  transition:color .2s, background .2s }
+.div-btn b{ font-family:var(--f-mono); font-size:11px; font-weight:700; letter-spacing:.02em; line-height:1 }
+.div-btn em{ font-style:normal; font-family:var(--f-mono); font-size:7.5px; letter-spacing:.08em;
+  text-transform:uppercase; opacity:.7; line-height:1 }
+@media (hover:hover){ .div-btn:hover{ color:#e6f3ff; background:rgba(255,255,255,.07) } }
+.div-btn.active{ color:#fff; background:rgba(56,189,248,.18); box-shadow:inset 0 0 0 1px rgba(56,189,248,.4) }
+.div-btn.active::before{ content:""; position:absolute; left:-5px; top:50%; transform:translateY(-50%);
+  width:3px; height:24px; border-radius:0 3px 3px 0;
+  background:linear-gradient(180deg,var(--accent-lo),var(--amber-lo)); box-shadow:0 0 10px rgba(56,189,248,.9) }
+.rail-sp{ flex:1 }
+#railmark{ font-family:var(--f-mono); font-size:8px; letter-spacing:.2em; color:#3d4a5e;
+  writing-mode:vertical-rl; transform:rotate(180deg) }
+
+/* command bar */
+header.top{ position:relative; z-index:15; display:flex; align-items:center; gap:var(--u2);
+  padding:var(--safe-t) var(--u3) 0; background:rgba(255,255,255,.85); backdrop-filter:blur(16px);
+  border-bottom:var(--hair) solid var(--line) }
+header.top::after{ content:""; position:absolute; left:0; right:0; bottom:-1px; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(56,189,248,.5) 20%,rgba(251,191,36,.4) 55%,transparent) }
+.hbtn{ min-width:40px; min-height:40px; display:grid; place-items:center; color:var(--dim);
+  border:var(--hair) solid transparent; border-radius:var(--r1); transition:.2s }
+@media (hover:hover){ .hbtn:hover{ color:var(--accent); border-color:var(--line); background:var(--panel2) } }
+#menu-btn{ display:none }
+.ctitle{ min-width:0; display:flex; flex-direction:column; justify-content:center; gap:2px; overflow:hidden }
+#doc-div{ font-family:var(--f-mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--faint); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1 }
+#doc-title{ font-size:var(--t2); font-weight:650; letter-spacing:-.01em; line-height:1.15;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+header.top .sp{ flex:1 }
+#doclink{ display:flex; align-items:center; gap:6px; height:34px; padding:0 13px; flex:none;
+  border:var(--hair) solid var(--line); border-radius:var(--r1); background:var(--panel);
+  font-size:12px; font-weight:600; color:var(--accent-ink); text-decoration:none;
+  box-shadow:var(--shadow-1); white-space:nowrap; transition:.2s }
+@media (hover:hover){ #doclink:hover{ border-color:var(--accent-lo); box-shadow:0 0 0 3px var(--glow) } }
+#doclink svg{ width:14px; height:14px }
+
+/* index panel */
+#side{ position:relative; z-index:12; display:flex; flex-direction:column; min-height:0;
+  background:var(--panel); border-right:var(--hair) solid var(--line) }
+#side .tools{ height:44px; flex:none; padding:0 var(--u2); display:flex; gap:var(--u); align-items:center;
+  border-bottom:var(--hair) solid var(--line); background:var(--panel2) }
+#side .tools .mag{ color:var(--faint); display:grid; place-items:center; flex:none }
+#search{ flex:1; min-width:0; height:30px; background:transparent; border:none; color:var(--ink);
+  font:inherit; font-size:max(16px,var(--t1)); padding:0 }
+#search::placeholder{ color:var(--faint) } #search:focus{ outline:none }
+#side .tools:focus-within{ box-shadow:inset 0 -2px 0 var(--accent) }
+#count{ font-family:var(--f-mono); font-size:10px; letter-spacing:.1em; color:var(--faint);
+  padding:2px 7px; border-radius:999px; background:var(--panel3); white-space:nowrap }
+#divscope{ padding:10px var(--u2); border-bottom:var(--hair) solid var(--line); background:var(--panel2) }
+#divscope b{ display:block; font-size:12.5px; font-weight:650; margin-bottom:2px }
+#divscope span{ display:block; font-size:11.5px; color:var(--dim); line-height:1.5 }
+#docs{ flex:1; overflow-y:auto; overscroll-behavior:contain; padding-bottom:var(--u4);
+  scrollbar-width:thin; scrollbar-color:var(--line2) transparent }
+#docs::-webkit-scrollbar{ width:9px }
+#docs::-webkit-scrollbar-thumb{ background:var(--line2); border-radius:5px;
+  border:3px solid transparent; background-clip:content-box }
+.doc{ position:relative; display:block; width:100%; text-align:left; padding:9px var(--u2) 9px 26px;
+  border-bottom:var(--hair) solid var(--line); min-height:44px; transition:background .16s, padding-left .18s var(--ease) }
+.doc::before{ content:""; position:absolute; left:var(--u2); top:15px; width:4px; height:4px;
+  border-radius:50%; background:var(--line2); transition:.2s }
+.doc .id{ display:block; font-family:var(--f-mono); font-size:11px; font-weight:600; letter-spacing:.04em;
+  color:var(--accent-ink) }
+.doc .ttl{ display:block; font-size:12.5px; line-height:1.4; color:var(--ink); margin-top:1px }
+.doc .rev{ display:inline-block; font-family:var(--f-mono); font-size:9.5px; color:var(--faint);
+  margin-left:6px; letter-spacing:.06em }
+@media (hover:hover){ .doc:hover{ background:var(--panel2); padding-left:30px }
+  .doc:hover::before{ background:var(--accent-lo); box-shadow:0 0 8px var(--glow) } }
+.doc:active{ background:var(--panel3) }
+.doc.active{ background:linear-gradient(90deg,rgba(15,111,214,.09),rgba(15,111,214,.02)) }
+.doc.active::before{ left:0; top:0; bottom:0; width:3px; height:auto; border-radius:0 2px 2px 0;
+  background:linear-gradient(180deg,var(--accent),var(--amber-lo)); box-shadow:0 0 12px var(--glow) }
+.doc.active .ttl{ font-weight:600 }
+#empty{ padding:var(--u3) var(--u2); color:var(--faint); font-size:12.5px; text-align:center }
+#scrim{ position:fixed; inset:0; z-index:39; background:rgba(15,24,38,.38); backdrop-filter:blur(2px); display:none }
+
+/* workspace */
+#chat{ position:relative; display:flex; flex-direction:column; min-height:0;
+  background:linear-gradient(180deg,#fbfcfe,#f1f4f9) }
+#feed{ flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain;
+  position:relative; z-index:1; padding:var(--u3) var(--u3) var(--u4);
+  scrollbar-width:thin; scrollbar-color:var(--line2) transparent }
+#feed::-webkit-scrollbar{ width:10px }
+#feed::-webkit-scrollbar-thumb{ background:var(--line2); border-radius:5px;
+  border:3px solid transparent; background-clip:content-box }
+#feed .col{ display:flex; flex-direction:column; gap:var(--u2); position:relative; z-index:1 }
+#chat::before{ content:""; position:absolute; inset:0; z-index:0; pointer-events:none; opacity:0;
+  transition:opacity .5s var(--ease-soft);
+  background:radial-gradient(240px 240px at var(--mx,50%) var(--my,50%), rgba(56,189,248,.10), transparent 70%) }
+@media (hover:hover) and (pointer:fine){ #chat:hover::before{ opacity:1 } }
+
+/* start card */
+#start{ position:relative; z-index:1; max-width:70ch; margin:auto; padding:var(--u4) 0;
+  display:flex; flex-direction:column; gap:var(--u2); text-align:center }
+#start h2{ font-size:var(--t3); font-weight:650; letter-spacing:-.01em }
+#start p{ color:var(--dim); font-size:var(--t1); max-width:56ch; margin:0 auto }
+#start .warn{ font-size:11.5px; color:var(--warn); background:#fdf6e8; border:var(--hair) solid #f0dfb8;
+  border-radius:var(--r1); padding:9px var(--u2); text-align:left; line-height:1.55 }
+
+.msg{ padding:var(--u2) var(--u3); font-size:var(--t1); line-height:1.68; border-radius:var(--r2);
+  background:var(--panel); border:var(--hair) solid var(--line); box-shadow:var(--shadow-1);
+  overflow-wrap:break-word; min-width:0; animation:riseIn .4s var(--ease) both }
+@keyframes riseIn{ from{ opacity:0; transform:translateY(10px) } to{ opacity:1; transform:none } }
+.msg.user{ align-self:flex-end; max-width:86%; color:#fff; border-color:transparent; background:var(--grad);
+  box-shadow:var(--shadow-lift); font-weight:500 }
+.msg.ai{ position:relative; align-self:stretch; max-width:100%; padding-left:calc(var(--u3) + 4px) }
+.msg.ai::before{ content:""; position:absolute; left:0; top:10px; bottom:10px; width:3px;
+  border-radius:0 3px 3px 0; background:linear-gradient(180deg,var(--accent),var(--accent-lo) 50%,var(--amber-lo)) }
+.msg.ai .copy{ position:absolute; top:8px; right:8px; font-family:var(--f-mono); font-size:9.5px;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--faint); border:var(--hair) solid var(--line);
+  border-radius:var(--r1); padding:3px 9px; background:var(--panel); opacity:0; transition:.2s }
+.msg.ai:hover .copy, .msg.ai .copy:focus-visible{ opacity:1 }
+.msg.ai .copy:hover{ color:var(--accent); border-color:var(--accent-lo) }
+@media (hover:none){ .msg.ai .copy{ opacity:.55 } }
+.msg.err{ align-self:center; color:#8f2130; border-color:#e9c9cf; background:#fdf4f5;
+  display:flex; gap:var(--u2); align-items:center; box-shadow:none }
+.msg .fetching{ display:flex; align-items:center; gap:8px; font-family:var(--f-mono); font-size:10.5px;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--accent-ink);
+  background:var(--panel3); border-radius:var(--r1); padding:6px 10px; margin:6px 0 }
+.msg h1,.msg h2,.msg h3{ line-height:1.3; margin:var(--u3) 0 var(--u); font-weight:650; color:var(--accent-hi) }
+.msg h1:first-child,.msg h2:first-child,.msg h3:first-child{ margin-top:2px }
+.msg h1{ font-size:calc(var(--t2)*1.12) } .msg h2{ font-size:var(--t2) } .msg h3{ font-size:calc(var(--t1)*1.06) }
+.msg h2::after{ content:""; display:block; width:42px; height:1px; margin-top:6px;
+  background:linear-gradient(90deg,var(--amber-lo),transparent) }
+.msg p{ margin:var(--u) 0 } .msg ul,.msg ol{ margin:var(--u) 0 var(--u) var(--u3) }
+.msg li{ margin:5px 0 } .msg li::marker{ color:var(--accent-lo) }
+.msg code{ font-family:var(--f-mono); font-size:.87em; background:var(--panel3); padding:1px 5px;
+  border-radius:4px; border:var(--hair) solid var(--line) }
+.msg pre{ background:var(--panel3); border:var(--hair) solid var(--line); border-radius:var(--r1);
+  padding:var(--u2); overflow-x:auto; margin:var(--u) 0 }
+.msg pre code{ border:none; background:none; padding:0 }
+.msg blockquote{ border-left:3px solid var(--amber-lo); padding:var(--u) var(--u2); color:#5c4a24;
+  background:linear-gradient(90deg,rgba(251,191,36,.12),transparent); margin:var(--u2) 0;
+  border-radius:0 var(--r1) var(--r1) 0 }
+.msg table{ border-collapse:collapse; width:100%; margin:var(--u2) 0; font-size:12.5px }
+.msg th,.msg td{ border:var(--hair) solid var(--line); padding:6px 9px; text-align:left; vertical-align:top }
+.msg th{ background:var(--panel3); font-weight:650 }
+.msg.ai strong{ color:var(--accent-ink) }
+.msg a{ color:var(--accent); text-underline-offset:2px }
+.msg hr{ border:none; height:1px; margin:var(--u2) 0;
+  background:linear-gradient(90deg,transparent,var(--line2),transparent) }
+.typing{ display:inline-flex; gap:6px; align-items:center }
+.typing i{ width:6px; height:6px; border-radius:50%; background:var(--accent);
+  box-shadow:0 0 8px var(--glow); animation:tb 1.25s ease-in-out infinite }
+.typing i:nth-child(2){ animation-delay:.18s; background:var(--accent-lo) }
+.typing i:nth-child(3){ animation-delay:.36s; background:var(--amber-lo) }
+@keyframes tb{ 0%,100%{ opacity:.25; transform:scale(.75) } 50%{ opacity:1; transform:scale(1.25) } }
+
+/* query rail */
+#asks{ position:relative; z-index:2; flex:none; display:grid; grid-template-columns:repeat(4,1fr);
+  gap:1px; background:var(--line); border-top:var(--hair) solid var(--line) }
+.ask{ position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; gap:7px;
+  padding:9px 6px; min-height:38px; background:rgba(255,255,255,.9); transition:background .2s }
+.ask b{ font-size:12.5px; font-weight:650; color:var(--accent-ink) }
+.ask i{ font-style:normal; font-family:var(--f-mono); font-size:9px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--faint); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.ask::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--accent);
+  transform:scaleX(0); transition:transform .3s var(--ease) }
+@media (hover:hover){ .ask:hover{ background:#fff } .ask:hover::after{ transform:scaleX(1) } }
+.ask:active{ background:var(--panel3) }
+.ask.busy::after{ transform:scaleX(1); animation:scan 1.1s ease-in-out infinite }
+@keyframes scan{ 0%,100%{ opacity:.35 } 50%{ opacity:1 } }
+
+/* composer */
+#composer{ flex:none; position:relative; z-index:3; padding:var(--u2) var(--u3) calc(var(--u2) + var(--safe-b));
+  border-top:var(--hair) solid var(--line); background:rgba(255,255,255,.92); backdrop-filter:blur(14px) }
+#composer .row{ display:flex; gap:var(--u); align-items:flex-end; background:var(--panel);
+  border:var(--hair) solid var(--line2); border-radius:var(--r2); padding:5px; box-shadow:var(--shadow-1);
+  transition:border-color .2s, box-shadow .3s var(--ease) }
+#composer .row:focus-within{ border-color:var(--accent-lo); box-shadow:0 0 0 3px var(--glow) }
+#prompt-in{ flex:1; min-width:0; min-height:30px; max-height:152px; resize:none; background:transparent;
+  border:none; color:var(--ink); font:inherit; font-size:max(16px,var(--t1)); padding:5px 8px; line-height:1.45 }
+#prompt-in::placeholder{ color:var(--faint) } #prompt-in:focus{ outline:none }
+.btn{ border:var(--hair) solid var(--line); border-radius:var(--r1); padding:5px 15px; letter-spacing:.03em;
+  font-size:12.5px; font-weight:600; min-height:30px; flex:none; white-space:nowrap;
+  background:var(--panel2); transition:.2s }
+@media (hover:hover){ .btn:hover{ border-color:var(--accent-lo); color:var(--accent) } }
+.btn:active{ transform:scale(.97) }
+.btn.primary{ background:var(--grad); color:#fff; border-color:transparent;
+  box-shadow:0 2px 10px rgba(15,111,214,.3) }
+@media (hover:hover){ .btn.primary:hover{ color:#fff; filter:brightness(1.08) } }
+.btn.primary:disabled{ opacity:.45; cursor:default; filter:none; box-shadow:none }
+.ibtn{ width:30px; height:30px; flex:none; display:grid; place-items:center; color:var(--faint);
+  border:none; border-radius:var(--r1); background:transparent; transition:.2s }
+@media (hover:hover){ .ibtn:hover{ color:var(--accent); background:var(--panel3) } }
+.ibtn.rec{ color:#fff; background:linear-gradient(135deg,#e0443a,#b3261e);
+  animation:recpulse 1.4s ease-in-out infinite }
+@keyframes recpulse{ 0%,100%{ box-shadow:0 0 0 0 rgba(224,68,58,.45) } 50%{ box-shadow:0 0 0 7px rgba(224,68,58,0) } }
+
+footer.bot{ position:relative; z-index:12; display:flex; align-items:center; justify-content:space-between;
+  gap:var(--u2); padding:0 var(--u3) var(--safe-b); font-family:var(--f-mono); font-size:9.5px;
+  letter-spacing:.14em; color:var(--faint); border-top:var(--hair) solid var(--line);
+  background:var(--panel2); text-transform:uppercase }
+footer.bot a{ color:var(--faint) }
+
+/* breakpoints */
+@media (max-width:899px){
+  #app{ grid-template-columns:1fr; grid-template-rows:calc(var(--bar-h) + var(--safe-t)) 1fr auto }
+  header.top{ grid-column:1; grid-row:1; padding:var(--safe-t) var(--u2) 0 }
+  #chat{ grid-column:1; grid-row:2 }
+  #side{ grid-column:1; grid-row:2; position:fixed; z-index:40; top:calc(var(--bar-h) + var(--safe-t));
+    bottom:0; left:0; width:min(88vw,344px); transform:translateX(-105%);
+    transition:transform .34s var(--ease); box-shadow:16px 0 50px rgba(15,24,38,.2) }
+  #side.open{ transform:none }
+  footer.bot{ display:none }
+  #rail{ grid-column:1; grid-row:3; flex-direction:row; justify-content:space-around;
+    height:calc(58px + var(--safe-b)); padding:0 var(--u) var(--safe-b); gap:0 }
+  #rail::after{ top:0; bottom:auto; left:0; right:0; width:auto; height:1px;
+    background:linear-gradient(90deg,transparent,rgba(56,189,248,.45),rgba(251,191,36,.35),transparent) }
+  #sigil,#railmark,.rail-sp{ display:none }
+  #divs{ flex-direction:row; justify-content:space-around; gap:2px }
+  .div-btn{ width:auto; flex:1 1 0; padding:7px 2px; min-height:50px }
+  .div-btn.active::before{ left:50%; top:2px; transform:translateX(-50%); width:22px; height:3px;
+    border-radius:0 0 3px 3px }
+  #menu-btn{ display:grid }
+  #feed{ padding:var(--u2) }
+  #composer{ padding:var(--u2) var(--u2) calc(var(--u2) + var(--safe-b)) }
+}
+@media (max-width:599px){
+  .div-btn em{ display:none }
+  #doclink span{ display:none } #doclink{ padding:0 10px }
+  .ask i{ display:none } .ask{ min-height:36px }
+  .msg{ padding:var(--u2) } .msg.ai{ padding-left:calc(var(--u2) + 4px) }
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation:none !important; transition:none !important }
+  #chat::before{ display:none }
+}
+</style>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+
+<div id="app">
+  <nav id="rail" aria-label="Divisions">
+    <button id="sigil" aria-label="VIIM — all divisions">
+      <svg id="logo" viewBox="0 0 64 64" fill="none" stroke="currentColor" aria-hidden="true">
+        <g class="l-beam" stroke-width="4" stroke-linecap="round">
+          <path d="M12 14h40M12 50h40"/><path d="M22 14v36M42 14v36"/>
+        </g>
+        <circle class="l-core" cx="32" cy="32" r="5" fill="#fbbf24" stroke="none"/>
+      </svg>
+    </button>
+    <div id="divs"></div>
+    <span class="rail-sp"></span>
+    <span id="railmark" aria-hidden="true">VIIM</span>
+  </nav>
+
+  <header class="top">
+    <button class="hbtn" id="menu-btn" aria-label="Documents" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 18 18" stroke="currentColor" stroke-width="1.8" fill="none"><path d="M2 4h14M2 9h14M2 14h9"/></svg>
+    </button>
+    <span class="ctitle">
+      <span id="doc-div">All divisions</span>
+      <span id="doc-title">VDOT guidance console</span>
+    </span>
+    <span class="sp"></span>
+    <a id="doclink" href="#" target="_blank" rel="noopener noreferrer" hidden>
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6.5 3H3v10h10V9.5"/><path d="M9.5 2.5H14V7"/><path d="M7.5 8.5 13.5 2.5"/></svg>
+      <span>Open on VDOT</span>
+    </a>
+  </header>
+
+  <aside id="side" aria-label="Documents">
+    <div class="tools">
+      <span class="mag" aria-hidden="true">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5 14 14"/></svg>
+      </span>
+      <input id="search" type="search" placeholder="Search by number or subject" aria-label="Search documents">
+      <span id="count">0</span>
+    </div>
+    <div id="divscope"><b></b><span></span></div>
+    <div id="docs"></div>
+  </aside>
+
+  <section id="chat" aria-label="Assistant">
+    <div id="feed"><div class="col" id="msg-col"></div></div>
+    <div id="asks" role="group" aria-label="Common questions">
+      <button class="ask" data-ask="0"><b>Summarize</b><i>what it requires</i></button>
+      <button class="ask" data-ask="1"><b>Applies to</b><i>scope &amp; triggers</i></button>
+      <button class="ask" data-ask="2"><b>Locality</b><i>LAP implications</i></button>
+      <button class="ask" data-ask="3"><b>Related</b><i>cross-references</i></button>
+    </div>
+    <div id="composer">
+      <div class="row">
+        <button class="ibtn" id="mic-btn" aria-label="Dictate" aria-pressed="false">
+          <svg width="17" height="17" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="7.5" y="2.5" width="5" height="9" rx="2.5"/><path d="M4.5 9.5a5.5 5.5 0 0 0 11 0M10 15v3"/></svg>
+        </button>
+        <textarea id="prompt-in" rows="1" placeholder="Ask about VDOT guidance…" aria-label="Message"></textarea>
+        <button class="btn" id="stop-btn" hidden>Stop</button>
+        <button class="btn primary" id="send-btn">Ask</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bot">
+    <span>VIIM · unofficial</span>
+    <span id="foot-stat"></span>
+    <span><a href="https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/" target="_blank" rel="noopener noreferrer">Official source: VDOT</a></span>
+  </footer>
+
+  <div id="scrim"></div>
+</div>
+
+<script>
+'use strict';
+/* ============================================================
+   VIIM — runtime
+   1 manifest · 2 rail & index · 3 chat · 4 streaming · 5 markdown
+   6 asks · 7 voice · 8 chrome · 9 background
+   ============================================================ */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const BASE_SYS = `You are the VIIM assistant, a reference tool for Virginia Department of Transportation guidance: Instructional & Informational Memoranda (IIMs) issued by division — LD (Location & Design), S&B (Structure & Bridge), TE/TO (Traffic Operations), ED (Environmental), TMPD (Transportation & Mobility Planning) — plus the Locally Administered Projects (LAP) Manual, Letters to Local Governments (LLGs) and Department Memoranda for localities.
+
+Ground rules, in order of importance:
+
+1. GROUND EVERY ANSWER IN THE ACTUAL DOCUMENT. When a specific memorandum is in play, use web_fetch on its vdot.virginia.gov URL and answer from the retrieved text. Do not answer substantive requirements from memory. If a fetch fails or the document cannot be found, say so plainly rather than reconstructing it.
+2. CITE PRECISELY. Name the document ID, its revision number where visible (e.g. IIM-S&B-27.14), and the section or page. Link the source URL.
+3. FLAG STALENESS. IIMs are revised frequently and superseded without warning. State the revision and effective date you actually saw, and remind the user to confirm against the live VDOT page for anything design-critical or submittal-critical.
+4. NEVER INVENT. Do not invent IIM numbers, revision numbers, section numbers, dates, dimensions, or requirements. If you are unsure whether a memorandum exists, search rather than guess. An honest "I could not verify that" is correct; a plausible fabrication is a serious failure in this domain.
+5. BE USEFUL TO A PRACTITIONER. Users are engineers, locality staff and consultants. Lead with the operative requirement, then conditions and exceptions, then process. Use tables for thresholds and criteria. Keep it tight.
+6. SCOPE HONESTLY. This is an unofficial reference tool. It does not constitute VDOT approval, a design decision, or engineering judgment, and it is no substitute for the District office or the project's VDOT point of contact. Say so when the question turns on approval, deviation, or acceptance.`;
+
+const S = { proxy:false, busy:false, ctrl:null, doc:null, div:null, manifest:null, history:[] };
+
+/* ---------- 1. Manifest ---------- */
+async function loadManifest(){
+  try{
+    const r = await fetch('/data/manifest.json', { cache:'no-cache' });
+    if(!r.ok) throw new Error('manifest '+r.status);
+    S.manifest = await r.json();
+  }catch(e){
+    S.manifest = { divisions:[], documents:[], generated:'unavailable' };
+    console.error('manifest load failed', e);
+  }
+  buildRail(); setDivision(null); startCard();
+  const g = S.manifest.generated;
+  $('#foot-stat').textContent = S.manifest.documents.length + ' documents · index ' + (g||'unknown');
+}
+
+/* ---------- 2. Rail & index ---------- */
+const divsNav = $('#divs');
+function buildRail(){
+  divsNav.innerHTML='';
+  const all=document.createElement('button');
+  all.className='div-btn'; all.dataset.div='';
+  all.innerHTML='<b>ALL</b><em>index</em>';
+  all.title='All divisions';
+  all.addEventListener('click', ()=>setDivision(null));
+  divsNav.appendChild(all);
+  (S.manifest.divisions||[]).forEach(d=>{
+    const b=document.createElement('button');
+    b.className='div-btn'; b.dataset.div=d.id; b.title=d.label;
+    b.setAttribute('aria-label', d.label);
+    b.innerHTML='<b>'+esc(d.code)+'</b><em>'+esc(d.label.split(/[ &]/)[0])+'</em>';
+    b.addEventListener('click', ()=>setDivision(d.id));
+    divsNav.appendChild(b);
+  });
+}
+function setDivision(id){
+  S.div=id;
+  $$('.div-btn').forEach(b=>{
+    const on = (b.dataset.div||'') === (id||'');
+    b.classList.toggle('active', on); b.setAttribute('aria-pressed', on);
+  });
+  const d = id ? (S.manifest.divisions||[]).find(x=>x.id===id) : null;
+  const sc = $('#divscope');
+  if(d){ sc.hidden=false; sc.querySelector('b').textContent=d.label+' ('+d.code+')';
+         sc.querySelector('span').textContent=d.scope||''; }
+  else { sc.hidden=false; sc.querySelector('b').textContent='All divisions';
+         sc.querySelector('span').textContent='Every indexed memorandum and manual. Pick a division to narrow, or search by number.'; }
+  renderDocs();
+  if(innerWidth<900) closeSide();
+}
+function docList(){
+  const q=($('#search').value||'').trim().toLowerCase();
+  return (S.manifest.documents||[]).filter(doc=>{
+    if(S.div && doc.div!==S.div) return false;
+    if(!q) return true;
+    return (doc.id+' '+doc.title+' '+(doc.note||'')).toLowerCase().includes(q);
+  });
+}
+function renderDocs(){
+  const list=docList(), wrap=$('#docs');
+  wrap.innerHTML='';
+  $('#count').textContent=list.length;
+  if(!list.length){
+    wrap.innerHTML='<div id="empty">No documents match.<br>The seed index is partial — run <code>tools/build-manifest.py</code> to load the full VDOT index.</div>';
+    return;
+  }
+  list.forEach(doc=>{
+    const b=document.createElement('button');
+    b.className='doc'+(S.doc && S.doc.id===doc.id ? ' active':'');
+    b.dataset.id=doc.id;
+    b.innerHTML='<span class="id">'+esc(doc.id)+
+      (doc.revision?'<span class="rev">rev '+esc(doc.revision)+'</span>':'')+
+      (doc.effective?'<span class="rev">'+esc(doc.effective)+'</span>':'')+
+      '</span><span class="ttl">'+esc(doc.title)+'</span>';
+    wrap.appendChild(b);
+  });
+}
+$('#docs').addEventListener('click', e=>{
+  const b=e.target.closest('.doc'); if(!b) return;
+  const doc=(S.manifest.documents||[]).find(d=>d.id===b.dataset.id);
+  selectDoc(S.doc && S.doc.id===b.dataset.id ? null : doc);
+});
+$('#search').addEventListener('input', renderDocs);
+addEventListener('keydown', e=>{
+  if(e.key==='/' && !/input|textarea/i.test(e.target.tagName)){ e.preventDefault(); $('#search').focus(); }
+});
+
+function selectDoc(doc){
+  S.doc=doc; S.history=[];
+  renderDocs();
+  const dv = doc ? (S.manifest.divisions||[]).find(x=>x.id===doc.div) : null;
+  $('#doc-title').textContent = doc ? doc.title : 'VDOT guidance console';
+  $('#doc-div').textContent = doc
+    ? (dv? dv.label+'  ›  ' : '') + doc.id + (doc.revision? '  ›  rev '+doc.revision : '')
+    : (S.div ? ((S.manifest.divisions||[]).find(x=>x.id===S.div)||{}).label : 'All divisions');
+  const link=$('#doclink');
+  if(doc && doc.url){ link.hidden=false; link.href=doc.url; } else link.hidden=true;
+  $('#prompt-in').placeholder = doc ? 'Ask about '+doc.id+'…' : 'Ask about VDOT guidance…';
+  startCard();
+  if(innerWidth<900) closeSide();
+}
+
+/* ---------- 3. Chat ---------- */
+const feed=$('#feed'), msgCol=$('#msg-col'), promptIn=$('#prompt-in');
+function startCard(){
+  msgCol.innerHTML='';
+  if(S.history.length) return;
+  const d=document.createElement('div'); d.id='start';
+  const doc=S.doc;
+  d.innerHTML = doc
+    ? '<h2>'+esc(doc.id)+'</h2><p>'+esc(doc.title)+'</p>'+
+      '<div class="warn">Answers are read from the live VDOT document at question time and cite what was retrieved. '+
+      'IIMs are revised often — confirm the revision on the official page before relying on it for design or submittal.</div>'
+    : '<h2>VDOT guidance console</h2>'+
+      '<p>Pick a division on the left rail, choose a document, or just ask. Answers are grounded by fetching the '+
+      'memorandum from vdot.virginia.gov and cite the document, revision and section.</p>'+
+      '<div class="warn">Unofficial reference tool. Not VDOT approval, not engineering judgment, and no substitute '+
+      'for your District office or project point of contact.</div>';
+  msgCol.appendChild(d);
+}
+function addMsg(cls, text){
+  const s=$('#start'); s&&s.remove();
+  const el=document.createElement('div'); el.className='msg '+cls;
+  if(cls==='ai'){ el.innerHTML=md(text); if(text) addCopy(el,text); }
+  else el.textContent=text;
+  msgCol.appendChild(el); feed.scrollTop=feed.scrollHeight;
+  return el;
+}
+function addCopy(el, text){
+  const b=document.createElement('button'); b.className='copy'; b.textContent='Copy';
+  b.addEventListener('click',()=>navigator.clipboard&&navigator.clipboard.writeText(text)
+    .then(()=>{ b.textContent='Copied'; setTimeout(()=>b.textContent='Copy',1200); }));
+  el.appendChild(b);
+}
+
+/* ---------- 4. Streaming ---------- */
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const RETRYABLE=m=>/529|overload|rate.?limit|too many|429/i.test(m||'');
+function callAPI(system, messages, signal){
+  if(!S.proxy) return Promise.reject(new Error('Backend offline — deploy with ANTHROPIC_API_KEY set (see README).'));
+  return fetch('/api/chat',{ method:'POST', headers:{'content-type':'application/json'},
+    body:JSON.stringify({ messages, system, max_tokens:3072 }), signal })
+    .then(r=>{ if(!r.ok) throw new Error('API error '+r.status+(r.status===529?' — overloaded':'')); return r; });
+}
+async function streamOnce(system, messages, signal, onDelta, onTool){
+  const res=await callAPI(system, messages, signal);
+  const reader=res.body.getReader(), dec=new TextDecoder();
+  let buf='', acc='';
+  while(true){
+    const {done,value}=await reader.read(); if(done) break;
+    buf+=dec.decode(value,{stream:true});
+    let nl;
+    while((nl=buf.indexOf('\n'))>=0){
+      const line=buf.slice(0,nl).trim(); buf=buf.slice(nl+1);
+      if(!line.startsWith('data:')) continue;
+      const data=line.slice(5).trim();
+      if(!data||data==='[DONE]') continue;
+      let j; try{ j=JSON.parse(data); }catch(e){ continue; }
+      if(j.type==='content_block_start' && j.content_block){
+        const t=j.content_block.type;
+        if(t==='server_tool_use'||t==='web_fetch_tool_result'||t==='web_search_tool_result') onTool&&onTool(t);
+      }
+      if(j.type==='content_block_delta' && j.delta && j.delta.text){ acc+=j.delta.text; onDelta(acc); }
+      if(j.type==='error') throw new Error((j.error&&j.error.message)||'stream error');
+    }
+  }
+  if(!acc) throw new Error('Empty response');
+  return acc;
+}
+async function streamWithRetry(system, messages, signal, onDelta, onWait, onTool){
+  for(let a=0;;a++){
+    try{ return await streamOnce(system, messages, signal, onDelta, onTool); }
+    catch(err){
+      if(err.name==='AbortError' || a>=3 || !RETRYABLE(err.message)) throw err;
+      onWait&&onWait(a+1);
+      await sleep(900*Math.pow(2,a)+Math.random()*500);
+      if(signal.aborted){ const e=new Error('aborted'); e.name='AbortError'; throw e; }
+    }
+  }
+}
+function docContext(){
+  if(!S.doc) return S.div
+    ? '\n\nScope: the user is browsing the '+((S.manifest.divisions||[]).find(d=>d.id===S.div)||{}).label+' division.'
+    : '';
+  const d=S.doc;
+  return '\n\nThe user has selected this document from the index:\n'+
+    '- ID: '+d.id+'\n- Title: '+d.title+'\n'+
+    (d.revision?'- Revision recorded in the index: '+d.revision+'\n':'')+
+    (d.effective?'- Effective date recorded in the index: '+d.effective+'\n':'')+
+    (d.note?'- Note: '+d.note+'\n':'')+
+    (d.url?'- URL: '+d.url+'\n':'')+
+    'Fetch this URL before answering. If it resolves to a landing page rather than the memorandum itself, '+
+    'search vdot.virginia.gov for the document and follow through to the current PDF. '+
+    'The index metadata above may be out of date — trust the fetched document over it, and say so if they disagree.';
+}
+async function run(){
+  if(S.busy) return;
+  const ai=addMsg('ai',''); ai.innerHTML='<span class="typing"><i></i><i></i><i></i></span>';
+  feed.scrollTop=Math.max(0, ai.offsetTop-8);
+  S.busy=true; S.ctrl=new AbortController();
+  $('#stop-btn').hidden=false; $('#send-btn').disabled=true;
+  let last='';
+  try{
+    const acc=await streamWithRetry(
+      BASE_SYS+docContext(), S.history.map(m=>({role:m.role, content:m.content})), S.ctrl.signal,
+      a=>{ last=a; ai.innerHTML=md(a); },
+      n=>{ ai.innerHTML='<p><em>Anthropic is busy — retrying ('+n+'/3)…</em></p>'; },
+      t=>{ if(!last) ai.innerHTML='<div class="fetching"><span class="typing"><i></i><i></i><i></i></span>'+
+             (t==='web_search_tool_result'?'searching vdot.virginia.gov':'reading the source document')+'</div>'; }
+    );
+    S.history.push({role:'assistant', content:acc});
+    ai.innerHTML=md(acc); addCopy(ai, acc);
+  }catch(err){
+    ai.remove();
+    if(err.name==='AbortError'){
+      if(last){ S.history.push({role:'assistant',content:last}); addMsg('ai',last); }
+    }else{
+      const el=document.createElement('div'); el.className='msg err';
+      el.textContent=(RETRYABLE(err.message)?'Still overloaded after several tries — wait a moment, then retry. ':err.message+' ');
+      const b=document.createElement('button'); b.className='btn'; b.textContent='Retry';
+      b.addEventListener('click',()=>{ el.remove(); run(); });
+      el.appendChild(b); msgCol.appendChild(el); feed.scrollTop=feed.scrollHeight;
+    }
+  }finally{
+    S.busy=false; S.ctrl=null;
+    $('#stop-btn').hidden=true; $('#send-btn').disabled=false;
+  }
+}
+function send(text){
+  if(S.busy) return;
+  text=(text||'').trim(); if(!text) return;
+  S.history.push({role:'user', content:text});
+  addMsg('user', text);
+  promptIn.value=''; promptIn.style.height='auto';
+  run();
+}
+$('#send-btn').addEventListener('click', ()=>send(promptIn.value));
+$('#stop-btn').addEventListener('click', ()=>S.ctrl&&S.ctrl.abort());
+promptIn.addEventListener('keydown', e=>{
+  if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); send(promptIn.value); }
+});
+promptIn.addEventListener('input', ()=>{ promptIn.style.height='auto';
+  promptIn.style.height=Math.min(promptIn.scrollHeight,152)+'px'; });
+if(window.visualViewport){
+  visualViewport.addEventListener('resize', ()=>{
+    $('#app').style.bottom=Math.max(0, innerHeight-visualViewport.height-visualViewport.offsetTop)+'px';
+  });
+}
+
+/* ---------- 5. Markdown ---------- */
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function inline(s){
+  return s.replace(/`([^`]+)`/g,(_,c)=>'<code>'+c+'</code>')
+    .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+    .replace(/(^|[^*])\*([^*\n]+)\*/g,'$1<em>$2</em>')
+    .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+    .replace(/(^|[\s(])(https?:\/\/[^\s)<]+)/g,'$1<a href="$2" target="_blank" rel="noopener noreferrer">$2</a>');
+}
+function md(src){
+  const lines=esc(src).split('\n');
+  let out='', inCode=false, inUl=false, inOl=false, para=[], tbl=null;
+  const flushP=()=>{ if(para.length){ out+='<p>'+inline(para.join(' '))+'</p>'; para=[]; } };
+  const flushL=()=>{ if(inUl){out+='</ul>';inUl=false;} if(inOl){out+='</ol>';inOl=false;} };
+  const flushT=()=>{ if(tbl){ out+='<table>'+tbl+'</table>'; tbl=null; } };
+  const row=(l,cell)=>'<tr>'+l.split('|').slice(1,-1).map(c=>'<'+cell+'>'+inline(c.trim())+'</'+cell+'>').join('')+'</tr>';
+  for(let i=0;i<lines.length;i++){
+    const raw=lines[i], l=raw.trim();
+    if(l.startsWith('```')){ flushP(); flushL(); flushT();
+      out+= inCode?'</code></pre>':'<pre><code>'; inCode=!inCode; continue; }
+    if(inCode){ out+=raw+'\n'; continue; }
+    if(/^\|.*\|$/.test(l)){
+      const next=(lines[i+1]||'').trim();
+      if(!tbl && /^\|[\s:|-]+\|$/.test(next)){ tbl=row(l,'th'); i++; continue; }
+      if(tbl){ tbl+=row(l,'td'); continue; }
+    } else flushT();
+    let m;
+    if(!l){ flushP(); flushL(); continue; }
+    if(m=l.match(/^(#{1,3})\s+(.*)/)){ flushP(); flushL(); const n=m[1].length;
+      out+='<h'+n+'>'+inline(m[2])+'</h'+n+'>'; continue; }
+    if(m=l.match(/^[-*•]\s+(.*)/)){ flushP(); if(inOl){out+='</ol>';inOl=false;}
+      if(!inUl){out+='<ul>';inUl=true;} out+='<li>'+inline(m[1])+'</li>'; continue; }
+    if(m=l.match(/^\d+[.)]\s+(.*)/)){ flushP(); if(inUl){out+='</ul>';inUl=false;}
+      if(!inOl){out+='<ol>';inOl=true;} out+='<li>'+inline(m[1])+'</li>'; continue; }
+    if(m=l.match(/^&gt;\s?(.*)/)){ flushP(); flushL(); out+='<blockquote>'+inline(m[1])+'</blockquote>'; continue; }
+    if(l==='---'||l==='***'){ flushP(); flushL(); out+='<hr>'; continue; }
+    para.push(l);
+  }
+  flushP(); flushL(); flushT(); if(inCode) out+='</code></pre>';
+  return out;
+}
+
+/* ---------- 6. Common questions ---------- */
+const ASKS = [
+  d => d ? 'Summarize '+d.id+'. What does it actually require? Lead with the operative requirements, then the conditions and exceptions. Cite the revision and the sections you used.'
+         : 'What guidance applies here, and where should I start? Point me to the governing documents by number.',
+  d => d ? 'What is the scope of '+d.id+' — which projects, facilities and conditions does it apply to, and what triggers it? Note anything expressly excluded.'
+         : 'How do I determine which VDOT guidance documents apply to a given project?',
+  d => d ? 'How does '+d.id+' apply to a locally administered project? Cover the locality’s responsibilities, VDOT review or approval points, and how the LAP Manual interacts with it.'
+         : 'For a locally administered project, which VDOT documents govern — and how do the LAP Manual, LLGs and DM 8-7 fit together?',
+  d => d ? 'What other VDOT documents does '+d.id+' reference or depend on — related IIMs, manual chapters, standards or specifications? Note anything it supersedes or that supersedes it.'
+         : 'Map the main VDOT guidance documents and how they relate to each other.',
+];
+let askBusy=false;
+$$('.ask').forEach(b=>b.addEventListener('click', ()=>{
+  if(S.busy||askBusy) return;
+  askBusy=true; b.classList.add('busy');
+  send(ASKS[+b.dataset.ask](S.doc));
+  setTimeout(()=>{ askBusy=false; b.classList.remove('busy'); }, 600);
+}));
+
+/* ---------- 7. Voice ---------- */
+const SRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+const micBtn=$('#mic-btn');
+if(!SRec) micBtn.hidden=true;
+let rec=null, recOn=false;
+micBtn && micBtn.addEventListener('click', ()=>{
+  if(recOn){ rec.stop(); return; }
+  rec=new SRec(); rec.continuous=true; rec.interimResults=true; rec.lang=navigator.language||'en-US';
+  rec.onresult=e=>{
+    let fin='';
+    for(let i=e.resultIndex;i<e.results.length;i++) if(e.results[i].isFinal) fin+=e.results[i][0].transcript;
+    if(fin){ promptIn.value=(promptIn.value?promptIn.value.replace(/\s*$/,' '):'')+fin.trim();
+             promptIn.dispatchEvent(new Event('input')); }
+  };
+  const off=()=>{ recOn=false; micBtn.classList.remove('rec'); micBtn.setAttribute('aria-pressed','false'); };
+  rec.onend=off; rec.onerror=off;
+  try{ rec.start(); recOn=true; micBtn.classList.add('rec'); micBtn.setAttribute('aria-pressed','true'); }catch(e){}
+});
+
+/* ---------- 8. Chrome ---------- */
+const side=$('#side'), scrim=$('#scrim');
+function openSide(){ side.classList.add('open'); scrim.style.display='block'; $('#menu-btn').setAttribute('aria-expanded','true'); }
+function closeSide(){ side.classList.remove('open'); scrim.style.display='none'; $('#menu-btn').setAttribute('aria-expanded','false'); }
+$('#menu-btn').addEventListener('click', ()=> side.classList.contains('open') ? closeSide() : openSide());
+scrim.addEventListener('click', closeSide);
+$('#sigil').addEventListener('click', ()=>{ selectDoc(null); setDivision(null); });
+addEventListener('keydown', e=>{
+  if(e.key==='Escape'){
+    if(recOn && rec) rec.stop();
+    else if(side.classList.contains('open')) closeSide();
+    else if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
+  }
+});
+(async function probe(){
+  if(location.protocol==='file:') return;
+  try{ const r=await fetch('/api/chat',{method:'GET'}); S.proxy=(r.status===405); }
+  catch(e){ S.proxy=false; }
+})();
+
+/* cursor light */
+if(matchMedia('(hover: hover) and (pointer: fine)').matches && !RM){
+  const c=$('#chat'); let lx=0,ly=0,tx=0,ty=0,raf=0;
+  c.addEventListener('pointermove', e=>{
+    const r=c.getBoundingClientRect(); tx=e.clientX-r.left; ty=e.clientY-r.top;
+    if(!raf) raf=requestAnimationFrame(function g(){
+      lx+=(tx-lx)*.12; ly+=(ty-ly)*.12;
+      c.style.setProperty('--mx', lx.toFixed(1)+'px'); c.style.setProperty('--my', ly.toFixed(1)+'px');
+      raf=(Math.abs(tx-lx)>.5||Math.abs(ty-ly)>.5)?requestAnimationFrame(g):0;
+    });
+  });
+}
+
+/* ---------- 9. Background — survey grid ---------- */
+const bg=$('#bg'), bctx=bg.getContext('2d');
+let layer=null;
+function sizeBg(){
+  const d=Math.min(devicePixelRatio||1,2);
+  bg.width=innerWidth*d; bg.height=innerHeight*d; bctx.setTransform(d,0,0,d,0,0);
+}
+function buildLayer(){
+  const d=Math.min(devicePixelRatio||1,2), w=innerWidth, h=innerHeight;
+  layer=document.createElement('canvas'); layer.width=w*d; layer.height=h*d;
+  const c=layer.getContext('2d'); c.setTransform(d,0,0,d,0,0);
+  c.strokeStyle='rgba(15,111,214,.05)'; c.lineWidth=1;
+  for(let x=0;x<w;x+=28){ c.beginPath(); c.moveTo(x+.5,0); c.lineTo(x+.5,h); c.stroke(); }
+  for(let y=0;y<h;y+=28){ c.beginPath(); c.moveTo(0,y+.5); c.lineTo(w,y+.5); c.stroke(); }
+  c.strokeStyle='rgba(15,111,214,.08)';
+  for(let x=0;x<w;x+=140){ c.beginPath(); c.moveTo(x+.5,0); c.lineTo(x+.5,h); c.stroke(); }
+  for(let y=0;y<h;y+=140){ c.beginPath(); c.moveTo(0,y+.5); c.lineTo(w,y+.5); c.stroke(); }
+  c.fillStyle='rgba(251,191,36,.10)';
+  for(let x=140;x<w;x+=140) for(let y=140;y<h;y+=140){ c.fillRect(x-1.5,y-1.5,3,3); }
+}
+function drawBg(){
+  bctx.clearRect(0,0,innerWidth,innerHeight);
+  const g=bctx.createRadialGradient(innerWidth*.7, innerHeight*.2, 0, innerWidth*.7, innerHeight*.2, Math.max(innerWidth,innerHeight)*.7);
+  g.addColorStop(0,'rgba(56,189,248,.07)'); g.addColorStop(1,'rgba(255,255,255,0)');
+  bctx.fillStyle=g; bctx.fillRect(0,0,innerWidth,innerHeight);
+  if(layer) bctx.drawImage(layer,0,0,innerWidth,innerHeight);
+}
+sizeBg(); buildLayer(); drawBg();
+addEventListener('resize', ()=>{ sizeBg(); buildLayer(); drawBg(); });
+addEventListener('orientationchange', ()=>setTimeout(()=>{ sizeBg(); buildLayer(); drawBg(); },120));
+
+loadManifest();
+
+</script>
+</body>
+</html>
