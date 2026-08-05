@@ -1,172 +1,100 @@
-# VIIM — VDOT guidance console
+# VIIM — VDOT guidance, answered
 
-A working reference console for Virginia DOT guidance: **Instructional & Informational Memoranda** (IIM-LD, IIM-S&B, IIM-TE/TO, IIM-ED, IIM-TMPD), the **manuals and standards** (Road Design Manual, Drainage Manual, Road & Bridge Standards and Specifications, Structure & Bridge Manual), the **regulations** (Access Management, SSAR, Land Use Permits), and the **local program** (LAP Manual, LLGs, DM 8-7).
+A working reference console for Virginia DOT guidance: **Instructional & Informational Memoranda** (IIM-LD, IIM-S&B, IIM-TE/TO, IIM-ED, IIM-TMPD), the **manuals, standards and specifications**, the **regulations** (Access Management, SSAR, Land Use Permits), and the **local program** (LAP Manual, LLGs, DM 8-7).
 
-Filter by division, topic, project phase, delivery type or document type. Search full text. Ask. Every answer cites the document, revision, section and page, and links back to VDOT.
+Pick a role, filter the index, ask. Every answer cites the document, revision and section, and links back to VDOT.
 
 > **Unofficial.** Not a VDOT product, not an approval, not engineering judgment. All sources are public record published by VDOT. Confirm the current revision on the official page before relying on anything for design or submittal.
 
 ---
 
+## Built for the people who actually deal with this
+
+Pick a role in the top bar and the console retunes — default filters, the four quick questions, and how answers are framed:
+
+| Role | Answers lead with |
+|---|---|
+| **Locality staff** | Your obligations, VDOT review and approval points, agreements and invoicing, LAP Manual |
+| **Consultant** | Design criteria and thresholds, plan-sheet and submittal expectations, the deviation path |
+| **Contractor / Inspector** | Field steps and hold points, spec sections, sampling and testing, documentation, change orders |
+| **Developer / Permits** | What triggers a requirement, the submittal path, entrance and subdivision-street standards |
+| **VDOT staff** | Delegation and approval authority, internal process, which division owns the decision |
+| **New to VDOT** | Plain language, acronyms defined on first use, where a document fits and what to read next |
+
+## What it does
+
+- **Search** — ranked full-text across the corpus with highlighted snippets, plus `⌘K` for documents, divisions and acronyms in one box
+- **Filter** — topic · phase · delivery · district · type, multi-select with live counts
+- **Read** — a context panel with actions, record, clickable classification, section map, cross-reference graph, related guidance, lineage and authority citations
+- **Upload** — drag a PDF, image or text file in; it becomes an indexed document you can question and compare against the guidance
+- **Compare** — any two documents, requirement by requirement
+- **Glossary** — 50 VDOT acronyms, underlined in every answer, hover to define
+- **Keep** — threads, pins, recents, role and filters persist across reloads
+- **Share** — `viim.si/#doc=IIM-LD-242` deep links; copy-link button
+- **Export** — Markdown export and a real print stylesheet with citation, revision, timestamp and disclaimer
+- **Keyboard** — `⌘K` search · `/` filter · `J`/`K` move · `↵` open · `esc` back
+
 ## Deploy
 
-1. Unzip, then create the repo (don't upload the zip — GitHub's uploader won't unpack it):
-   ```
-   git init && git add -A && git commit -m "initial"
-   git remote add origin <your-repo-url> && git push -u origin main
-   ```
-2. Vercel → **Add New → Project → import**. Preset **Other**, no build command, no output directory.
-3. **Settings → Environment Variables → `ANTHROPIC_API_KEY`**, then redeploy.
-4. The head block already points at `viim.si` — change it if the hostname differs.
+```
+git init && git add -A && git commit -m "initial"
+git remote add origin <your-repo-url> && git push -u origin main
+```
 
-Netlify works identically; `netlify.toml` is included.
+Vercel → **Add New → Project → import**. Preset **Other**, no build command. Then **Settings → Environment Variables**:
 
----
+| Variable | Required | Purpose |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | **yes** | The API key. Never reaches the browser. |
+| `ALLOWED_ORIGINS` | strongly recommended | `https://viim.si,https://www.viim.si` — blocks other sites from using your endpoint |
+| `VIIM_PASSWORD` | optional | Shared key for a private pilot; the client sends it as `x-viim-key` |
+| `RATE_MAX` / `RATE_WINDOW_MS` | optional | Default 20 requests per minute per IP |
+| `MAX_CHARS` / `MAX_TURNS` | optional | Request size and history caps |
 
-## Getting the *complete* library
+**Set `ALLOWED_ORIGINS` before you make the URL public.** A live endpoint with your key behind it is a spending risk, and a monthly spend alert in the Anthropic console is worth five minutes.
 
-`data/manifest.json` ships as a **curated seed — 97 documents across 19 divisions**, every entry hand-checked against VDOT. VDOT publishes several hundred more.
+## Fill the catalog
 
-The full set is one command away, but note *why* it needs to run on your machine rather than being baked in: VDOT's guidance listing renders client-side, so a plain HTTP fetch returns an empty shell. `tools/build-manifest.py` therefore tries three public paths in order:
-
-1. **Sitemap XML** — static, immune to client rendering, and usually complete. This is the path that normally wins.
-2. **CMS search API** — some builds expose the listing as JSON.
-3. **Paginated HTML** — `?page=1…N`, for builds that server-render.
-
-If all three come up short it tells you so and suggests rendering the listing with Playwright. It never silently produces a thin catalog, and it **preserves every curated facet** already in the manifest when it merges.
+`data/manifest.json` ships as a curated seed — **97 documents across 15 divisions**, every entry checked. VDOT publishes several hundred more.
 
 ```bash
 pip install requests pymupdf
-python3 tools/build-manifest.py      # merge the full published library
-python3 tools/build-corpus.py        # attach full text, sections, cross-references
+python3 tools/build-manifest.py     # merge VDOT's full published library
+python3 tools/build-corpus.py       # download, extract text, sections, cross-references
 ```
 
-## Build the corpus (this is what makes it fast)
+`build-manifest.py` tries three public paths in order — **sitemap XML**, **CMS search API**, **paginated HTML** — because VDOT's listing renders client-side. It preserves every curated facet when merging, and tells you plainly if it comes up short.
 
-```bash
-pip install requests pymupdf
-python3 tools/build-manifest.py     # parse VDOT's index PDFs → full document list
-python3 tools/build-corpus.py       # download, extract text, tag, cross-reference
-```
+`build-corpus.py` is what makes it fast: text ships with the app, so questions skip the network, and `api/chat.js` marks the document block `cache_control: ephemeral` so follow-ups on the same document are dramatically cheaper and quicker.
 
-`build-corpus.py` does the heavy lifting:
+`.github/workflows/refresh.yml` runs `--check` weekly and opens an issue when a revision moves.
 
-- downloads each PDF and records **sha256, page count, ETag**
-- extracts text **per page**, splits into **sections with page numbers**
-- harvests **cross-references** (`IIM-LD-242` → every memo it cites) and builds **back-links**
-- harvests **authority citations** (`24VAC30-92`, `23 CFR 650`, `§33.2-241`)
-- **auto-tags topics** from term frequency against a controlled vocabulary
-- writes a compact **inverted search index** for instant client-side full-text search
-- flags scanned documents that **need OCR**
+## Server tools
 
-Weekly change detection:
+`api/chat.js` enables two Anthropic server tools, domain-locked to VDOT:
 
-```bash
-python3 tools/build-manifest.py --check   # exits 1 when a revision moved — wire to an alert
-```
+| Tool | Type string | Header |
+|---|---|---|
+| Web fetch | `web_fetch_20250910` | `anthropic-beta: web-fetch-2025-09-10` (beta) |
+| Web search | `web_search_20250305` | none (GA) |
 
-### Why this is the speed fix
+These strings must match the API exactly — a wrong value returns **400 for the entire request**. The proxy therefore retries once **without tools** on a 400 and logs the upstream message, so a tool-definition problem degrades to a plain answer instead of a dead end. Real error messages are passed through to the UI rather than a bare status code.
 
-Before: every question fetched a 24-page PDF over the network, then the model read it cold. After: the text ships with the app, the browser hands it to the assistant directly, and `api/chat.js` marks it `cache_control: ephemeral` so repeat questions on the same document skip re-processing those tokens entirely — much faster first token, roughly 90% cheaper on the cached portion. Answers are also cached per document + question for the session. Live `web_fetch` remains as the fallback for anything not yet in the corpus, and for "is there a newer revision?"
+## Speed
 
----
-
-## Does VDOT have an API?
-
-**For spatial data, yes. For the memoranda, no.**
-
-- **[Virginia Roads](https://www.virginiaroads.org/)** is VDOT's ArcGIS Hub open data portal — every dataset exposes an ArcGIS REST endpoint returning JSON/GeoJSON, no key, no registration. Districts, road inventory, traffic volumes, crashes, Six-Year Improvement Program.
-- **[data.virginia.gov](https://data.virginia.gov/)** is CKAN, with its own API over much of the same.
-- **IIMs, manuals, LLGs** — no API, no feed, no index endpoint. Just PDFs on a CMS. Hence the scraper.
-
-`tools/virginia-roads.py` is a thin ArcGIS REST client for the spatial side. Service URLs are left blank on purpose — copy them from a dataset page rather than trusting a hardcoded path that may have been republished.
-
----
-
-## The data model
-
-```json
-{
-  "id": "IIM-S&B-27",
-  "div": "sb",
-  "title": "Inventory and Inspection Requirements for Bridges and Large Culverts",
-  "kind": "IIM",
-  "revision": "27.14",
-  "effective": "2025-03-14",
-  "status": "current",
-  "topic": ["structures & bridges", "maintenance"],
-  "phase": ["maintenance"],
-  "delivery": ["VDOT-administered"],
-  "authority": ["23 CFR 650 Subpart C"],
-  "supersedes": [], "superseded_by": [],
-  "xrefs": ["IIM-S&B-86"], "referenced_by": ["IIM-S&B-104"],
-  "sections": [{ "heading": "3.2 Inspection Intervals", "page": 7 }],
-  "pages": 24, "sha256": "…", "text": true,
-  "url": "https://www.vdot.virginia.gov/…"
-}
-```
-
-Facet vocabularies live in `manifest.facets` — **topic** (14 values), **phase** (7), **delivery** (3), **kind** (7). Edit them there and the filter UI follows.
-
-`status` matters: a `voided` or `superseded` document stays in the index so the assistant can tell you a memo was rescinded instead of silently losing it.
-
----
-
-## Using it
-
-| | |
-|---|---|
-| `⌘K` / `Ctrl-K` | command palette — jump to any document or division |
-| `/` | focus search |
-| `esc` | close palette, detail panel, or drawer |
-| Topic / Phase / Delivery / Type tabs | multi-select facets, counts update live |
-| Document detail (▤ in the header) | sections, cross-reference graph, lineage, authority |
-| Section rows | click to ask about that section specifically |
+Fixed in this build: tool use is capped (2 fetches, 1 search, 60k content tokens) so the model can't chain PDF fetches until the function times out; short questions route to Haiku while document analysis stays on Sonnet; streaming paints once per frame; there's a 100-second client timeout with an honest message; empty responses retry automatically.
 
 ## Editing
 
-- **Catalog & facets** — `data/manifest.json`
-- **Assistant behavior** — `BASE_SYS` in `index.html`
-- **Quick questions** — the `ASKS` array in `index.html`
-- **Brand** — `brand/*.svg`, then `python3 build-icons.py`, then copy `assets/favicon.ico` to root
-
-## Local development
-
-`vercel dev` (or `netlify dev`) with `ANTHROPIC_API_KEY` set. Opening `index.html` from disk renders the UI but the assistant reports the backend offline by design — the key never touches the browser.
+- **Catalog, facets, divisions** — `data/manifest.json`
+- **Glossary** — `data/glossary.json`
+- **Roles, prompts, quick questions** — the `ROLES` object at the top of the script in `index.html`
+- **Assistant rules** — `SYS_BASE` in `index.html`
+- **Brand** — `brand/*.svg`, then `python3 build-icons.py`
 
 ## Sources
 
 - [VDOT technical guidance documents](https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/)
-- [Road Design Manual](https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/road-design-manual/) · [Road & Bridge Standards](https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/road-and-bridge-standards/) · [Road & Bridge Specifications](https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/road-and-bridge-specifications/)
 - [VDOT Local Assistance](https://www.vdot.virginia.gov/doing-business/for-localities/local-assistance/)
+- [Road Design Manual](https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/road-design-manual/) · [Road & Bridge Standards](https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/road-and-bridge-standards/) · [Specifications](https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/road-and-bridge-specifications/)
 - [Virginia Roads open data](https://www.virginiaroads.org/) · [Virginia Open Data Portal](https://data.virginia.gov/)
-
----
-
-## Uploading your own documents
-
-Attach with the paperclip, **drag anything onto the workspace**, or paste a screenshot straight into the composer.
-
-- **PDFs and images go to the model natively** — Claude reads the actual pages, so plan sheets, stamped details and scanned permits work without OCR on your side. Text files are inlined.
-- **Uploads become real index entries** under a **Your documents** division in the rail: selectable, searchable, and carried into every follow-up question in that thread (cached after the first turn, so follow-ups stay fast).
-- **Upload-aware actions** replace the standard ones in the detail panel: summarize · which VDOT guidance applies · compliance review · extract commitments · remove from session.
-- Limits: 4 MB per file, 12 MB per turn. Unsupported types are rejected in the chip list rather than silently dropped.
-
-The system prompt treats your files as **evidence, never authority** — the assistant compares them against the governing VDOT documents, cites both sides, and will not tell you a submittal is approvable, because that is VDOT's call.
-
-Nothing is stored server-side. Files live in browser memory for the session and travel only through your own `/api/chat` proxy.
-
-## The detail panel
-
-Docked as a real column on wide screens (it never covers the conversation) and slides over as a sheet below 1200px. Toggle it with the ▤ button in the command bar; `esc` closes it.
-
-It is not just metadata. Every document gets:
-
-- **Actions** — summarize requirements · turn it into a project checklist · check whether it has been revised since the value on file · common mistakes · open on VDOT · copy a formatted citation
-- **Record** — division, type, revision, effective date, status, page count, and whether full text is cached or will be fetched live
-- **Classification** — topics, phase and delivery as **clickable filters** that drive the index
-- **Sections** — click any heading to ask about that section specifically (populates after `build-corpus.py`)
-- **Cross-references** — outbound and inbound, clickable; unknown IDs get looked up instead of dead-ending
-- **Related guidance** — computed from shared topic, phase, delivery and division, so it works even before the corpus is built
-- **Lineage** — supersedes / superseded by
-- **Authority cited** — CFR, VAC and Code of Virginia references

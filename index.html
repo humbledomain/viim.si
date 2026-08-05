@@ -3,833 +3,1060 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
-<title>VIIM — VDOT guidance console</title>
-<meta name="description" content="A working console for VDOT Instructional &amp; Informational Memoranda, the LAP Manual and related guidance — grounded, cited, and always linked back to the source document.">
+<title>VIIM — VDOT guidance, answered</title>
+<meta name="description" content="Search, read and question VDOT Instructional &amp; Informational Memoranda, manuals, standards and the LAP Manual. Grounded answers that cite the document, revision and section.">
 <link rel="preconnect" href="https://www.vdot.virginia.gov">
 <link rel="dns-prefetch" href="https://www.vdot.virginia.gov">
 <link rel="canonical" href="https://viim.si/">
-
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20fill='%230d1420'/%3E%3Cpath%20d='M12%2014h40M12%2050h40'%20stroke='%2338bdf8'%20stroke-width='4'%20stroke-linecap='round'/%3E%3Cpath%20d='M22%2014v36M42%2014v36'%20stroke='%2338bdf8'%20stroke-width='4'%20stroke-linecap='round'/%3E%3Ccircle%20cx='32'%20cy='32'%20r='5'%20fill='%23fbbf24'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='14'%20fill='%230b2545'/%3E%3Cpath%20d='M12%2014h40M12%2050h40'%20stroke='%2338bdf8'%20stroke-width='5'%20stroke-linecap='round'/%3E%3Cpath%20d='M22%2014v36M42%2014v36'%20stroke='%2338bdf8'%20stroke-width='5'%20stroke-linecap='round'/%3E%3Ccircle%20cx='32'%20cy='32'%20r='6'%20fill='%23fbbf24'/%3E%3C/svg%3E">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/icon-32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
 <link rel="shortcut icon" href="/favicon.ico">
 <link rel="manifest" href="/manifest.webmanifest">
-<meta name="theme-color" content="#0d1420">
-
+<meta name="theme-color" content="#0b2545">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="VIIM">
-<meta property="og:title" content="VIIM — VDOT guidance console">
-<meta property="og:description" content="Search, read and question VDOT Instructional &amp; Informational Memoranda. Every answer cites the memorandum and revision it came from.">
+<meta property="og:title" content="VIIM — VDOT guidance, answered">
+<meta property="og:description" content="Every answer cites the memorandum, revision and section — and links back to VDOT.">
 <meta property="og:url" content="https://viim.si/">
 <meta property="og:image" content="https://viim.si/assets/og.png">
-<meta property="og:image:type" content="image/png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="VIIM — VDOT guidance console">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="VIIM — VDOT guidance console">
-<meta name="twitter:description" content="Search, read and question VDOT Instructional &amp; Informational Memoranda.">
 <meta name="twitter:image" content="https://viim.si/assets/og.png">
-
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"VIIM",
  "description":"Reference console for VDOT Instructional & Informational Memoranda and related guidance.",
  "url":"https://viim.si/","applicationCategory":"ReferenceApplication","operatingSystem":"Web"}
 </script>
-
 <style>
 /* ============================================================
-   VIIM — VDOT guidance console
-   Engineering instrument: dark rail, light workspace, blueprint cyan
+   VIIM v4 — light workbench
+   Top bar · index · workspace · context
    ============================================================ */
 :root{
   --u:8px; --u2:16px; --u3:24px; --u4:32px;
-  --rail-w:64px; --bar-h:56px; --side-w:clamp(280px,24vw,352px);
-  --detail-w:clamp(300px,23vw,368px); --foot-h:26px;
+  --top-h:52px; --sub-h:44px;
+  --idx-w:clamp(290px,25vw,376px); --ctx-w:clamp(300px,24vw,384px);
   --safe-t:env(safe-area-inset-top,0px); --safe-b:env(safe-area-inset-bottom,0px);
-  --hair:1px; --r1:6px; --r2:10px;
+  --hair:1px; --r1:7px; --r2:11px; --r3:16px;
 
-  --bg:#f2f5f9; --panel:#fff; --panel2:#f7f9fc; --panel3:#eef2f8;
-  --ink:#0f1826; --dim:#55637a; --faint:#8c98ad;
-  --line:#e1e7f0; --line2:#cdd6e4;
+  --bg:#eef1f6; --paper:#fff; --paper2:#f6f8fb; --paper3:#eaeef5;
+  --ink:#0e1a2b; --ink2:#33445c; --dim:#5d6b81; --faint:#93a0b4;
+  --line:#e2e8f1; --line2:#cfd8e6;
 
-  --rail:#0d1420; --rail2:#152130; --rail-ink:#93a4bd;
+  --navy:#0b2545; --navy2:#14335c;
+  --blue:#1266d4; --blue-lo:#3fa0f5; --blue-hi:#0a4b9e; --blue-wash:#e8f1fd;
+  --amber:#b8801a; --amber-lo:#fbbf24; --amber-wash:#fdf6e6;
+  --green:#0d7a52; --green-wash:#e7f5ef;
+  --red:#b3261e; --red-wash:#fdf1f0;
 
-  --accent:#0f6fd6; --accent-lo:#38bdf8; --accent-hi:#0a4c96; --accent-ink:#0b5cb5;
-  --amber:#b7791f; --amber-lo:#fbbf24;
-  --ok:#0f7a52; --warn:#9a5b0a;
-  --glow:rgba(15,111,214,.16); --glow-amber:rgba(251,191,36,.22);
-  --grad:linear-gradient(135deg,#1782ea,#0a4c96);
+  --glow:rgba(18,102,212,.18);
+  --sh1:0 1px 2px rgba(14,26,43,.06);
+  --sh2:0 2px 8px rgba(14,26,43,.08), 0 12px 28px rgba(14,26,43,.07);
+  --sh3:0 20px 60px rgba(14,26,43,.20);
 
-  --shadow-1:0 1px 2px rgba(15,24,38,.05);
-  --shadow-2:0 2px 6px rgba(15,24,38,.07), 0 14px 34px rgba(15,24,38,.10);
-  --shadow-lift:0 3px 12px rgba(15,111,214,.2), 0 16px 40px rgba(15,111,214,.1);
-
-  --f-ui:"Inter","SF Pro Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  --f-mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
-  --t1:clamp(13px,1.5vh,15px); --t2:clamp(15px,1.9vh,18px); --t3:clamp(19px,2.4vh,23px);
-  --ease:cubic-bezier(.22,1,.36,1); --ease-soft:cubic-bezier(.4,0,.2,1);
+  --f:"Inter","SF Pro Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --fm:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --t0:12px; --t1:clamp(13px,1.5vh,14.5px); --t2:clamp(15px,1.85vh,17px); --t3:clamp(18px,2.3vh,21px);
+  --ease:cubic-bezier(.22,1,.36,1); --ease2:cubic-bezier(.4,0,.2,1);
 }
 *{ box-sizing:border-box; margin:0; padding:0 }
 html,body{ height:100%; overflow:hidden; overscroll-behavior:none }
-body{ background:var(--bg); color:var(--ink); font-family:var(--f-ui); font-size:var(--t1);
+body{ background:var(--bg); color:var(--ink); font-family:var(--f); font-size:var(--t1);
   line-height:1.6; -webkit-font-smoothing:antialiased; touch-action:manipulation }
-#app{ position:fixed; inset:0; height:100dvh; height:min(100dvh,100svh); display:grid;
-  grid-template-columns:var(--rail-w,64px) var(--side-w,320px) minmax(0,1fr);
-  grid-template-rows:calc(var(--bar-h) + var(--safe-t)) 1fr calc(var(--foot-h) + var(--safe-b)) }
-#rail{ grid-column:1; grid-row:1 / span 3 } header.top{ grid-column:2 / -1; grid-row:1 }
-#side{ grid-column:2; grid-row:2 } #chat{ grid-column:3; grid-row:2 }
-footer.bot{ grid-column:2 / -1; grid-row:3 }
-::selection{ background:var(--accent); color:#fff }
 button{ font:inherit; color:inherit; background:none; border:none; cursor:pointer;
   appearance:none; -webkit-appearance:none; -webkit-tap-highlight-color:transparent }
-:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; border-radius:4px }
+input,textarea,select{ font:inherit; color:inherit }
+:focus-visible{ outline:2px solid var(--blue); outline-offset:2px; border-radius:5px }
 [hidden]{ display:none !important }
-#bg{ position:fixed; inset:0; z-index:0; pointer-events:none }
+::selection{ background:var(--blue); color:#fff }
+.sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0) }
 
-/* rail */
-#rail{ position:relative; z-index:20; display:flex; flex-direction:column; align-items:center; gap:5px; min-height:0;
-  padding:calc(var(--u) + var(--safe-t)) 0 calc(var(--u) + var(--safe-b));
-  background:linear-gradient(180deg,var(--rail2),var(--rail)); color:var(--rail-ink) }
-#rail::after{ content:""; position:absolute; top:0; bottom:0; right:0; width:1px;
-  background:linear-gradient(180deg,transparent,rgba(56,189,248,.5),rgba(251,191,36,.35),transparent) }
-#sigil{ width:40px; height:40px; flex:none; display:grid; place-items:center; margin-bottom:4px; color:#7dd3fc }
-#logo{ width:28px; height:28px; filter:drop-shadow(0 0 8px rgba(56,189,248,.5)) }
-#logo .l-beam{ animation:beam 6s var(--ease-soft) infinite }
-#logo .l-core{ animation:pulse 3s ease-in-out infinite; transform-box:fill-box; transform-origin:center }
-@keyframes beam{ 0%,100%{ opacity:.45 } 50%{ opacity:1 } }
-@keyframes pulse{ 0%,100%{ transform:scale(1); opacity:.85 } 50%{ transform:scale(1.3); opacity:1 } }
-#divs{ display:flex; flex-direction:column; gap:2px; width:100%; align-items:center;
-  flex:1; min-height:0; justify-content:flex-start; overflow:hidden }
-.div-btn{ position:relative; width:56px; flex:0 1 auto;
-  height:clamp(30px, calc((100dvh - 130px) / 16), 48px);
-  padding:2px; border-radius:var(--r2);
-  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px;
-  color:var(--rail-ink); transition:color .2s, background .2s; overflow:hidden }
-.div-btn b{ font-family:var(--f-mono); font-size:clamp(9px,1.05vh,11px); font-weight:700;
-  letter-spacing:.01em; line-height:1.05 }
-.div-btn em{ font-style:normal; font-family:var(--f-mono); font-size:6.5px; letter-spacing:.01em;
-  text-transform:uppercase; opacity:.68; line-height:1; max-width:100%; overflow:hidden;
-  text-overflow:ellipsis; white-space:nowrap }
-/* short viewports: codes only, they stay unambiguous */
-@media (max-height:820px){ .div-btn em{ display:none } }
-@media (max-height:640px){ #sigil{ display:none } }
-@media (hover:hover){ .div-btn:hover{ color:#e6f3ff; background:rgba(255,255,255,.07) } }
-.div-btn.active{ color:#fff; background:rgba(56,189,248,.18); box-shadow:inset 0 0 0 1px rgba(56,189,248,.4) }
-.div-btn.active::before{ content:""; position:absolute; left:-5px; top:50%; transform:translateY(-50%);
-  width:3px; height:24px; border-radius:0 3px 3px 0;
-  background:linear-gradient(180deg,var(--accent-lo),var(--amber-lo)); box-shadow:0 0 10px rgba(56,189,248,.9) }
-.rail-sp{ flex:none; height:2px }
-#railmark{ font-family:var(--f-mono); font-size:7.5px; letter-spacing:.18em; color:#3d4a5e;
-  writing-mode:vertical-rl; transform:rotate(180deg); flex:none }
-@media (max-height:760px){ #railmark{ display:none } }
+#app{ position:fixed; inset:0; height:100dvh; height:min(100dvh,100svh); display:grid;
+  grid-template-columns:var(--idx-w) minmax(0,1fr);
+  grid-template-rows:calc(var(--top-h) + var(--safe-t)) var(--sub-h) minmax(0,1fr) }
+body.ctx #app{ grid-template-columns:var(--idx-w) minmax(0,1fr) var(--ctx-w) }
+#topbar{ grid-column:1/-1; grid-row:1 }
+#subbar{ grid-column:1/-1; grid-row:2 }
+#index{ grid-column:1; grid-row:3 }
+#work{ grid-column:2; grid-row:3 }
+#ctx{ grid-column:3; grid-row:3 }
 
-/* command bar */
-header.top{ position:relative; z-index:15; display:flex; align-items:center; gap:var(--u2);
-  padding:var(--safe-t) var(--u3) 0; background:rgba(255,255,255,.85); backdrop-filter:blur(16px);
+/* ---------- top bar ---------- */
+#topbar{ display:flex; align-items:center; gap:var(--u2); padding:var(--safe-t) var(--u3) 0;
+  background:var(--navy); color:#dbe6f5; position:relative; z-index:30 }
+#topbar::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:2px;
+  background:linear-gradient(90deg,var(--blue-lo),var(--amber-lo) 55%,transparent) }
+#brand{ display:flex; align-items:center; gap:10px; flex:none }
+#brand svg{ width:26px; height:26px }
+#brand b{ font-size:17px; font-weight:750; letter-spacing:-.02em; color:#fff }
+#brand em{ font-style:normal; font-family:var(--fm); font-size:9px; letter-spacing:.18em;
+  color:#7d95b8; text-transform:uppercase; padding-left:9px; border-left:1px solid #23446f }
+#gsearch{ flex:1; max-width:560px; display:flex; align-items:center; gap:9px; height:34px;
+  background:#12304f; border:1px solid #1d4470; border-radius:9px; padding:0 12px; color:#cddcf0;
+  transition:.18s }
+#gsearch:hover{ background:#163760 }
+#gsearch svg{ width:14px; height:14px; color:#7d95b8; flex:none }
+#gsearch span{ flex:1; text-align:left; font-size:13px; color:#8ea6c6 }
+#gsearch kbd{ font-family:var(--fm); font-size:10px; background:#0b2440; border:1px solid #1d4470;
+  border-radius:5px; padding:2px 6px; color:#7d95b8 }
+#topbar .sp{ flex:1 }
+.tbtn{ display:flex; align-items:center; gap:7px; height:32px; padding:0 11px; border-radius:8px;
+  font-size:12.5px; font-weight:600; color:#c3d4ea; transition:.18s; white-space:nowrap }
+.tbtn svg{ width:15px; height:15px }
+.tbtn:hover{ background:#173a63; color:#fff }
+#role-btn{ background:#173a63; border:1px solid #23507f }
+#role-btn b{ color:#fff; font-weight:650 }
+
+/* ---------- sub bar: divisions ---------- */
+#subbar{ display:flex; align-items:center; gap:4px; padding:0 var(--u3); background:var(--paper);
+  border-bottom:var(--hair) solid var(--line); overflow-x:auto; scrollbar-width:none; z-index:20 }
+#subbar::-webkit-scrollbar{ display:none }
+.dv{ position:relative; flex:none; padding:0 13px; height:30px; border-radius:8px; font-size:12.5px;
+  font-weight:600; color:var(--dim); display:flex; align-items:center; gap:6px; transition:.16s }
+.dv:hover{ background:var(--paper3); color:var(--ink) }
+.dv.on{ background:var(--blue-wash); color:var(--blue-hi) }
+.dv .c{ font-family:var(--fm); font-size:9.5px; color:var(--faint) }
+.dv.on .c{ color:var(--blue) }
+.dv.mine{ color:var(--green) } .dv.mine.on{ background:var(--green-wash) }
+
+/* ---------- index ---------- */
+#index{ display:flex; flex-direction:column; min-height:0; background:var(--paper);
+  border-right:var(--hair) solid var(--line) }
+.ihead{ flex:none; display:flex; align-items:center; gap:var(--u); padding:9px var(--u2);
   border-bottom:var(--hair) solid var(--line) }
-header.top::after{ content:""; position:absolute; left:0; right:0; bottom:-1px; height:1px;
-  background:linear-gradient(90deg,transparent,rgba(56,189,248,.5) 20%,rgba(251,191,36,.4) 55%,transparent) }
-.hbtn{ min-width:40px; min-height:40px; display:grid; place-items:center; color:var(--dim);
-  border:var(--hair) solid transparent; border-radius:var(--r1); transition:.2s }
-@media (hover:hover){ .hbtn:hover{ color:var(--accent); border-color:var(--line); background:var(--panel2) } }
-#menu-btn{ display:none }
-.ctitle{ min-width:0; display:flex; flex-direction:column; justify-content:center; gap:2px; overflow:hidden }
-#doc-div{ font-family:var(--f-mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase;
-  color:var(--faint); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1 }
-#doc-title{ font-size:var(--t2); font-weight:650; letter-spacing:-.01em; line-height:1.15;
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
-header.top .sp{ flex:1 }
-#doclink{ display:flex; align-items:center; gap:6px; height:34px; padding:0 13px; flex:none;
-  border:var(--hair) solid var(--line); border-radius:var(--r1); background:var(--panel);
-  font-size:12px; font-weight:600; color:var(--accent-ink); text-decoration:none;
-  box-shadow:var(--shadow-1); white-space:nowrap; transition:.2s }
-@media (hover:hover){ #doclink:hover{ border-color:var(--accent-lo); box-shadow:0 0 0 3px var(--glow) } }
-#doclink svg{ width:14px; height:14px }
-
-/* index panel */
-#side{ position:relative; z-index:12; display:flex; flex-direction:column; min-height:0; min-width:0;
-  background:var(--panel); border-right:var(--hair) solid var(--line) }
-#side .tools{ height:44px; flex:none; padding:0 var(--u2); display:flex; gap:var(--u); align-items:center;
-  border-bottom:var(--hair) solid var(--line); background:var(--panel2) }
-#side .tools .mag{ color:var(--faint); display:grid; place-items:center; flex:none }
-#search{ flex:1; min-width:0; height:30px; background:transparent; border:none; color:var(--ink);
-  font:inherit; font-size:max(16px,var(--t1)); padding:0 }
-#search::placeholder{ color:var(--faint) } #search:focus{ outline:none }
-#side .tools:focus-within{ box-shadow:inset 0 -2px 0 var(--accent) }
-#count{ font-family:var(--f-mono); font-size:10px; letter-spacing:.1em; color:var(--faint);
-  padding:2px 7px; border-radius:999px; background:var(--panel3); white-space:nowrap }
-#divscope{ padding:10px var(--u2); border-bottom:var(--hair) solid var(--line); background:var(--panel2) }
-#divscope b{ display:block; font-size:12.5px; font-weight:650; margin-bottom:2px }
-#divscope span{ display:block; font-size:11.5px; color:var(--dim); line-height:1.5 }
-#docs{ flex:1; overflow-y:auto; overscroll-behavior:contain; padding-bottom:var(--u4);
-  scrollbar-width:thin; scrollbar-color:var(--line2) transparent }
-#docs::-webkit-scrollbar{ width:9px }
-#docs::-webkit-scrollbar-thumb{ background:var(--line2); border-radius:5px;
-  border:3px solid transparent; background-clip:content-box }
-.doc{ position:relative; display:block; width:100%; text-align:left; padding:9px var(--u2) 9px 26px;
+.ihead svg{ width:14px; height:14px; color:var(--faint); flex:none }
+#q{ flex:1; min-width:0; height:28px; background:transparent; border:none; font-size:max(16px,13.5px) }
+#q:focus{ outline:none } #q::placeholder{ color:var(--faint) }
+.ihead:focus-within{ box-shadow:inset 0 -2px 0 var(--blue) }
+#n{ font-family:var(--fm); font-size:10px; color:var(--faint); background:var(--paper3);
+  border-radius:999px; padding:2px 7px; flex:none }
+.ftabs{ flex:none; display:flex; gap:2px; padding:6px var(--u2); border-bottom:var(--hair) solid var(--line);
+  background:var(--paper2) }
+.ftab{ flex:1; height:26px; border-radius:7px; font-size:11px; font-weight:600; color:var(--dim); transition:.16s }
+.ftab:hover{ background:var(--paper3) } .ftab.on{ background:var(--paper); color:var(--blue-hi); box-shadow:var(--sh1) }
+#fpanel{ flex:none; max-height:32vh; overflow-y:auto; padding:7px var(--u2) 9px;
+  border-bottom:var(--hair) solid var(--line) }
+.frow{ display:flex; align-items:center; gap:8px; width:100%; padding:5px 6px; border-radius:7px;
+  font-size:12px; text-align:left; transition:background .16s }
+.frow:hover{ background:var(--paper2) }
+.frow .bx{ width:13px; height:13px; flex:none; border-radius:4px; border:1.5px solid var(--line2);
+  display:grid; place-items:center; transition:.16s }
+.frow.on .bx{ background:var(--blue); border-color:var(--blue) }
+.frow.on .bx::after{ content:""; width:6px; height:3px; border-left:1.7px solid #fff;
+  border-bottom:1.7px solid #fff; transform:rotate(-45deg) translateY(-1px) }
+.frow .k{ margin-left:auto; font-family:var(--fm); font-size:9.5px; color:var(--faint) }
+.frow.nil{ opacity:.35 }
+#chips{ display:flex; flex-wrap:wrap; gap:5px; padding:8px var(--u2); background:var(--paper2);
+  border-bottom:var(--hair) solid var(--line) }
+.chip{ display:inline-flex; align-items:center; gap:5px; font-size:11px; padding:3px 9px;
+  border-radius:999px; background:var(--blue); color:#fff; font-weight:600 }
+.chip b{ opacity:.7; font-size:12px; line-height:1 }
+#chips .zap{ font-size:11px; color:var(--dim); padding:3px 9px; border-radius:999px;
+  border:var(--hair) solid var(--line2) }
+#list{ flex:1; overflow-y:auto; overscroll-behavior:contain; padding-bottom:var(--u4) }
+#list::-webkit-scrollbar{ width:9px }
+#list::-webkit-scrollbar-thumb{ background:var(--line2); border-radius:5px; border:3px solid transparent;
+  background-clip:content-box }
+.sect{ position:sticky; top:0; z-index:2; display:flex; align-items:center; gap:7px; padding:7px var(--u2);
+  font-family:var(--fm); font-size:9.5px; letter-spacing:.15em; text-transform:uppercase; color:var(--dim);
+  background:rgba(246,248,251,.96); backdrop-filter:blur(6px); border-bottom:var(--hair) solid var(--line) }
+.sect .k{ margin-left:auto; color:var(--faint) }
+.it{ position:relative; display:block; width:100%; text-align:left; padding:9px var(--u2) 9px 25px;
   border-bottom:var(--hair) solid var(--line); min-height:44px; transition:background .16s, padding-left .18s var(--ease) }
-.doc::before{ content:""; position:absolute; left:var(--u2); top:15px; width:4px; height:4px;
-  border-radius:50%; background:var(--line2); transition:.2s }
-.doc .id{ display:block; font-family:var(--f-mono); font-size:11px; font-weight:600; letter-spacing:.04em;
-  color:var(--accent-ink) }
-.doc .ttl{ display:block; font-size:12.5px; line-height:1.4; color:var(--ink); margin-top:1px }
-.doc .rev{ display:inline-block; font-family:var(--f-mono); font-size:9.5px; color:var(--faint);
-  margin-left:6px; letter-spacing:.06em }
-@media (hover:hover){ .doc:hover{ background:var(--panel2); padding-left:30px }
-  .doc:hover::before{ background:var(--accent-lo); box-shadow:0 0 8px var(--glow) } }
-.doc:active{ background:var(--panel3) }
-.doc.active{ background:linear-gradient(90deg,rgba(15,111,214,.09),rgba(15,111,214,.02)) }
-.doc.active::before{ left:0; top:0; bottom:0; width:3px; height:auto; border-radius:0 2px 2px 0;
-  background:linear-gradient(180deg,var(--accent),var(--amber-lo)); box-shadow:0 0 12px var(--glow) }
-.doc.active .ttl{ font-weight:600 }
-#empty{ padding:var(--u3) var(--u2); color:var(--faint); font-size:12.5px; text-align:center }
-#scrim{ position:fixed; inset:0; z-index:39; background:rgba(15,24,38,.38); backdrop-filter:blur(2px); display:none }
+.it::before{ content:""; position:absolute; left:var(--u2); top:15px; width:4px; height:4px; border-radius:50%;
+  background:var(--line2); transition:.18s }
+.it:hover{ background:var(--paper2); padding-left:29px } .it:hover::before{ background:var(--blue-lo) }
+.it.on{ background:linear-gradient(90deg,var(--blue-wash),transparent) }
+.it.on::before{ left:0; top:0; bottom:0; width:3px; height:auto; border-radius:0 2px 2px 0;
+  background:linear-gradient(180deg,var(--blue),var(--amber-lo)) }
+.it.cur{ box-shadow:inset 0 0 0 2px var(--blue-lo) }
+.it .id{ display:block; font-family:var(--fm); font-size:10.5px; font-weight:650; color:var(--blue-hi) }
+.it .rv{ font-family:var(--fm); font-size:9px; color:var(--faint); margin-left:6px; font-weight:400 }
+.it .tt{ display:block; font-size:12.5px; line-height:1.4; margin-top:1px }
+.it.on .tt{ font-weight:600 }
+.it .snip{ display:block; font-size:11px; color:var(--dim); line-height:1.45; margin-top:4px;
+  border-left:2px solid var(--line2); padding-left:7px }
+.it .snip mark{ background:#fdf0c8; border-radius:2px; padding:0 1px }
+.it .bg{ display:flex; flex-wrap:wrap; gap:4px; margin-top:5px }
+.bd{ font-family:var(--fm); font-size:8.5px; letter-spacing:.05em; text-transform:uppercase;
+  padding:2px 6px; border-radius:4px; background:var(--paper3); color:var(--dim) }
+.bd.k{ background:var(--blue-wash); color:var(--blue-hi) }
+.bd.w{ background:var(--amber-wash); color:var(--amber) }
+.bd.t{ background:var(--green-wash); color:var(--green) }
+.it .pin{ position:absolute; right:8px; top:9px; width:24px; height:24px; display:grid; place-items:center;
+  color:var(--line2); opacity:0; transition:.16s }
+.it:hover .pin,.it .pin.on{ opacity:1 } .it .pin.on{ color:var(--amber-lo) }
+.it .pin svg{ width:13px; height:13px }
+#none{ padding:var(--u3) var(--u2); text-align:center; color:var(--faint); font-size:12.5px; line-height:1.6 }
 
-/* workspace */
-#chat{ position:relative; display:flex; flex-direction:column; min-height:0; min-width:0;
-  background:linear-gradient(180deg,#fbfcfe,#f1f4f9) }
-#feed{ flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain;
-  position:relative; z-index:1; padding:var(--u3) var(--u3) var(--u4);
-  scrollbar-width:thin; scrollbar-color:var(--line2) transparent }
+/* ---------- workspace ---------- */
+#work{ position:relative; display:flex; flex-direction:column; min-height:0; background:var(--bg) }
+#whead{ flex:none; display:flex; align-items:center; gap:var(--u2); padding:10px var(--u3);
+  background:var(--paper); border-bottom:var(--hair) solid var(--line) }
+#wcrumb{ min-width:0; flex:1 }
+#wcrumb .cr{ font-family:var(--fm); font-size:9.5px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--faint); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block }
+#wcrumb .ti{ font-size:var(--t2); font-weight:680; letter-spacing:-.01em; white-space:nowrap;
+  overflow:hidden; text-overflow:ellipsis; display:block; line-height:1.25 }
+.wbtn{ display:flex; align-items:center; gap:6px; height:32px; padding:0 12px; flex:none;
+  border:var(--hair) solid var(--line); border-radius:var(--r1); background:var(--paper);
+  font-size:12px; font-weight:600; color:var(--ink2); box-shadow:var(--sh1); transition:.18s; white-space:nowrap }
+.wbtn:hover{ border-color:var(--blue-lo); color:var(--blue-hi); box-shadow:0 0 0 3px var(--glow) }
+.wbtn svg{ width:14px; height:14px }
+.wbtn.p{ background:var(--blue); color:#fff; border-color:var(--blue) }
+.wbtn.p:hover{ filter:brightness(1.07); color:#fff }
+#feed{ flex:1; overflow-y:auto; overscroll-behavior:contain; padding:var(--u3) var(--u3) var(--u4);
+  -webkit-overflow-scrolling:touch }
 #feed::-webkit-scrollbar{ width:10px }
-#feed::-webkit-scrollbar-thumb{ background:var(--line2); border-radius:5px;
-  border:3px solid transparent; background-clip:content-box }
-#feed .col{ display:flex; flex-direction:column; gap:var(--u2); position:relative; z-index:1 }
-#chat::before{ content:""; position:absolute; inset:0; z-index:0; pointer-events:none; opacity:0;
-  transition:opacity .5s var(--ease-soft);
-  background:radial-gradient(240px 240px at var(--mx,50%) var(--my,50%), rgba(56,189,248,.10), transparent 70%) }
-@media (hover:hover) and (pointer:fine){ #chat:hover::before{ opacity:1 } }
+#feed::-webkit-scrollbar-thumb{ background:var(--line2); border-radius:5px; border:3px solid transparent;
+  background-clip:content-box }
+#col{ max-width:none; display:flex; flex-direction:column; gap:var(--u2) }
 
-/* start card */
-#start{ position:relative; z-index:1; max-width:70ch; margin:auto; padding:var(--u4) 0;
-  display:flex; flex-direction:column; gap:var(--u2); text-align:center }
-#start h2{ font-size:var(--t3); font-weight:650; letter-spacing:-.01em }
-#start p{ color:var(--dim); font-size:var(--t1); max-width:56ch; margin:0 auto }
-#start .warn{ font-size:11.5px; color:var(--warn); background:#fdf6e8; border:var(--hair) solid #f0dfb8;
-  border-radius:var(--r1); padding:9px var(--u2); text-align:left; line-height:1.55 }
+/* welcome */
+#hello{ max-width:74ch; margin:0 auto; padding:var(--u4) 0; display:flex; flex-direction:column; gap:var(--u3) }
+#hello h1{ font-size:var(--t3); font-weight:700; letter-spacing:-.02em; text-align:center }
+#hello .sub{ text-align:center; color:var(--dim); font-size:var(--t1); max-width:58ch; margin:0 auto }
+.cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:10px }
+.card{ text-align:left; padding:13px 15px; border-radius:var(--r2); background:var(--paper);
+  border:var(--hair) solid var(--line); box-shadow:var(--sh1); transition:.18s }
+.card:hover{ border-color:var(--blue-lo); box-shadow:0 0 0 3px var(--glow); transform:translateY(-1px) }
+.card b{ display:block; font-size:13px; font-weight:650; margin-bottom:3px }
+.card span{ display:block; font-size:11.5px; color:var(--dim); line-height:1.5 }
+.tips{ display:flex; flex-wrap:wrap; gap:6px; justify-content:center }
+.tip{ font-size:11px; color:var(--dim); background:var(--paper); border:var(--hair) solid var(--line);
+  border-radius:999px; padding:4px 11px }
+.tip kbd{ font-family:var(--fm); font-size:10px; background:var(--paper3); border-radius:4px;
+  padding:1px 5px; margin-right:4px }
+.notice{ font-size:11.5px; color:var(--amber); background:var(--amber-wash);
+  border:var(--hair) solid #f0e0b6; border-radius:var(--r1); padding:10px 13px; line-height:1.55 }
 
-.msg{ padding:var(--u2) var(--u3); font-size:var(--t1); line-height:1.68; border-radius:var(--r2);
-  background:var(--panel); border:var(--hair) solid var(--line); box-shadow:var(--shadow-1);
-  overflow-wrap:break-word; min-width:0; animation:riseIn .4s var(--ease) both }
-@keyframes riseIn{ from{ opacity:0; transform:translateY(10px) } to{ opacity:1; transform:none } }
-.msg.user{ align-self:flex-end; max-width:86%; color:#fff; border-color:transparent; background:var(--grad);
-  box-shadow:var(--shadow-lift); font-weight:500 }
-.msg.ai{ position:relative; align-self:stretch; max-width:100%; padding-left:calc(var(--u3) + 4px) }
-.msg.ai::before{ content:""; position:absolute; left:0; top:10px; bottom:10px; width:3px;
-  border-radius:0 3px 3px 0; background:linear-gradient(180deg,var(--accent),var(--accent-lo) 50%,var(--amber-lo)) }
-.msg.ai .copy{ position:absolute; top:8px; right:8px; font-family:var(--f-mono); font-size:9.5px;
-  letter-spacing:.14em; text-transform:uppercase; color:var(--faint); border:var(--hair) solid var(--line);
-  border-radius:var(--r1); padding:3px 9px; background:var(--panel); opacity:0; transition:.2s }
-.msg.ai:hover .copy, .msg.ai .copy:focus-visible{ opacity:1 }
-.msg.ai .copy:hover{ color:var(--accent); border-color:var(--accent-lo) }
-@media (hover:none){ .msg.ai .copy{ opacity:.55 } }
-.msg.err{ align-self:center; color:#8f2130; border-color:#e9c9cf; background:#fdf4f5;
+/* messages */
+.m{ padding:var(--u2) var(--u3); font-size:var(--t1); line-height:1.7; border-radius:var(--r2);
+  background:var(--paper); border:var(--hair) solid var(--line); box-shadow:var(--sh1);
+  overflow-wrap:break-word; min-width:0; animation:rise .38s var(--ease) both }
+@keyframes rise{ from{ opacity:0; transform:translateY(8px) } to{ opacity:1; transform:none } }
+.m.u{ align-self:flex-end; max-width:84%; background:var(--blue); color:#fff; border-color:transparent;
+  box-shadow:0 2px 10px rgba(18,102,212,.28); font-weight:500 }
+.m.a{ position:relative; padding-left:calc(var(--u3) + 4px) }
+.m.a::before{ content:""; position:absolute; left:0; top:12px; bottom:12px; width:3px;
+  border-radius:0 3px 3px 0; background:linear-gradient(180deg,var(--blue),var(--blue-lo) 50%,var(--amber-lo)) }
+.m.e{ align-self:center; background:var(--red-wash); border-color:#eccdca; color:var(--red);
   display:flex; gap:var(--u2); align-items:center; box-shadow:none }
-.msg .fetching{ display:flex; align-items:center; gap:8px; font-family:var(--f-mono); font-size:10.5px;
-  letter-spacing:.1em; text-transform:uppercase; color:var(--accent-ink);
-  background:var(--panel3); border-radius:var(--r1); padding:6px 10px; margin:6px 0 }
-.msg h1,.msg h2,.msg h3{ line-height:1.3; margin:var(--u3) 0 var(--u); font-weight:650; color:var(--accent-hi) }
-.msg h1:first-child,.msg h2:first-child,.msg h3:first-child{ margin-top:2px }
-.msg h1{ font-size:calc(var(--t2)*1.12) } .msg h2{ font-size:var(--t2) } .msg h3{ font-size:calc(var(--t1)*1.06) }
-.msg h2::after{ content:""; display:block; width:42px; height:1px; margin-top:6px;
+.m h1,.m h2,.m h3{ line-height:1.3; margin:var(--u3) 0 var(--u); font-weight:680; color:var(--blue-hi) }
+.m h1:first-child,.m h2:first-child,.m h3:first-child{ margin-top:2px }
+.m h1{ font-size:calc(var(--t2)*1.1) } .m h2{ font-size:var(--t2) } .m h3{ font-size:calc(var(--t1)*1.06) }
+.m h2::after{ content:""; display:block; width:40px; height:1px; margin-top:6px;
   background:linear-gradient(90deg,var(--amber-lo),transparent) }
-.msg p{ margin:var(--u) 0 } .msg ul,.msg ol{ margin:var(--u) 0 var(--u) var(--u3) }
-.msg li{ margin:5px 0 } .msg li::marker{ color:var(--accent-lo) }
-.msg code{ font-family:var(--f-mono); font-size:.87em; background:var(--panel3); padding:1px 5px;
+.m p{ margin:var(--u) 0 } .m ul,.m ol{ margin:var(--u) 0 var(--u) var(--u3) }
+.m li{ margin:5px 0 } .m li::marker{ color:var(--blue-lo) }
+.m code{ font-family:var(--fm); font-size:.87em; background:var(--paper3); padding:1px 5px;
   border-radius:4px; border:var(--hair) solid var(--line) }
-.msg pre{ background:var(--panel3); border:var(--hair) solid var(--line); border-radius:var(--r1);
+.m pre{ background:var(--paper3); border:var(--hair) solid var(--line); border-radius:var(--r1);
   padding:var(--u2); overflow-x:auto; margin:var(--u) 0 }
-.msg pre code{ border:none; background:none; padding:0 }
-.msg blockquote{ border-left:3px solid var(--amber-lo); padding:var(--u) var(--u2); color:#5c4a24;
-  background:linear-gradient(90deg,rgba(251,191,36,.12),transparent); margin:var(--u2) 0;
+.m pre code{ border:none; background:none; padding:0 }
+.m blockquote{ border-left:3px solid var(--amber-lo); padding:var(--u) var(--u2); color:#6a5723;
+  background:linear-gradient(90deg,var(--amber-wash),transparent); margin:var(--u2) 0;
   border-radius:0 var(--r1) var(--r1) 0 }
-.msg table{ border-collapse:collapse; width:100%; margin:var(--u2) 0; font-size:12.5px }
-.msg th,.msg td{ border:var(--hair) solid var(--line); padding:6px 9px; text-align:left; vertical-align:top }
-.msg th{ background:var(--panel3); font-weight:650 }
-.msg.ai strong{ color:var(--accent-ink) }
-.msg a{ color:var(--accent); text-underline-offset:2px }
-.msg hr{ border:none; height:1px; margin:var(--u2) 0;
+.m table{ border-collapse:collapse; width:100%; margin:var(--u2) 0; font-size:12.5px }
+.m th,.m td{ border:var(--hair) solid var(--line); padding:7px 10px; text-align:left; vertical-align:top }
+.m th{ background:var(--paper3); font-weight:650 }
+.m a{ color:var(--blue); text-underline-offset:2px }
+.m strong{ color:var(--blue-hi) }
+.m hr{ border:none; height:1px; margin:var(--u2) 0;
   background:linear-gradient(90deg,transparent,var(--line2),transparent) }
-.typing{ display:inline-flex; gap:6px; align-items:center }
-.typing i{ width:6px; height:6px; border-radius:50%; background:var(--accent);
-  box-shadow:0 0 8px var(--glow); animation:tb 1.25s ease-in-out infinite }
-.typing i:nth-child(2){ animation-delay:.18s; background:var(--accent-lo) }
-.typing i:nth-child(3){ animation-delay:.36s; background:var(--amber-lo) }
-@keyframes tb{ 0%,100%{ opacity:.25; transform:scale(.75) } 50%{ opacity:1; transform:scale(1.25) } }
+.m .gl{ border-bottom:1px dotted var(--blue-lo); cursor:help }
+.tool{ display:inline-flex; align-items:center; gap:8px; font-family:var(--fm); font-size:10.5px;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--blue-hi); background:var(--blue-wash);
+  border-radius:var(--r1); padding:6px 11px; margin:5px 0 }
+.dots{ display:inline-flex; gap:5px; align-items:center }
+.dots i{ width:5px; height:5px; border-radius:50%; background:var(--blue); animation:bl 1.2s ease-in-out infinite }
+.dots i:nth-child(2){ animation-delay:.16s; background:var(--blue-lo) }
+.dots i:nth-child(3){ animation-delay:.32s; background:var(--amber-lo) }
+@keyframes bl{ 0%,100%{ opacity:.25; transform:scale(.75) } 50%{ opacity:1; transform:scale(1.2) } }
+.mfoot{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-top:11px; padding-top:10px;
+  border-top:var(--hair) solid var(--line) }
+.mfoot a,.mfoot button{ font-family:var(--fm); font-size:9.5px; letter-spacing:.08em; text-transform:uppercase;
+  padding:4px 9px; border-radius:var(--r1); background:var(--paper2); color:var(--dim);
+  text-decoration:none; border:var(--hair) solid var(--line); transition:.16s }
+.mfoot a:hover,.mfoot button:hover{ color:var(--blue-hi); border-color:var(--blue-lo) }
+.mfoot .ok{ background:var(--green-wash); color:var(--green); border-color:#bfe3d3 }
+.mfoot .fb.on{ background:var(--blue-wash); color:var(--blue-hi); border-color:var(--blue-lo) }
+.cites{ margin-top:9px; font-size:11.5px; color:var(--dim) }
+.cites b{ font-family:var(--fm); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--faint); display:block; margin-bottom:5px }
+.cites a{ display:block; padding:3px 0; color:var(--blue) }
 
-/* query rail */
-#asks{ position:relative; z-index:2; flex:none; display:grid; grid-template-columns:repeat(4,1fr);
-  gap:1px; background:var(--line); border-top:var(--hair) solid var(--line) }
+/* prompts row */
+#asks{ flex:none; display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line);
+  border-top:var(--hair) solid var(--line) }
 .ask{ position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; gap:7px;
-  padding:9px 6px; min-height:38px; background:rgba(255,255,255,.9); transition:background .2s }
-.ask{ white-space:nowrap }
-.ask b{ font-size:12.5px; font-weight:650; color:var(--accent-ink) }
-.ask i{ font-style:normal; font-family:var(--f-mono); font-size:9px; letter-spacing:.1em;
-  text-transform:uppercase; color:var(--faint); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
-.ask::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--accent);
+  padding:9px 6px; min-height:38px; background:var(--paper); transition:background .18s; white-space:nowrap }
+.ask b{ font-size:12.5px; font-weight:650; color:var(--blue-hi) }
+.ask i{ font-style:normal; font-family:var(--fm); font-size:9px; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--faint); overflow:hidden; text-overflow:ellipsis }
+.ask::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--blue);
   transform:scaleX(0); transition:transform .3s var(--ease) }
-@media (hover:hover){ .ask:hover{ background:#fff } .ask:hover::after{ transform:scaleX(1) } }
-.ask:active{ background:var(--panel3) }
-.ask.busy::after{ transform:scaleX(1); animation:scan 1.1s ease-in-out infinite }
-@keyframes scan{ 0%,100%{ opacity:.35 } 50%{ opacity:1 } }
+.ask:hover{ background:var(--paper2) } .ask:hover::after{ transform:scaleX(1) }
+.ask.on::after{ transform:scaleX(1); animation:sc 1.1s ease-in-out infinite }
+@keyframes sc{ 0%,100%{ opacity:.35 } 50%{ opacity:1 } }
+@media (max-width:1440px){ .ask i{ display:none } }
 
 /* composer */
-#composer{ flex:none; position:relative; z-index:3; padding:var(--u2) var(--u3) calc(var(--u2) + var(--safe-b));
-  border-top:var(--hair) solid var(--line); background:rgba(255,255,255,.92); backdrop-filter:blur(14px) }
-#composer .row{ display:flex; gap:var(--u); align-items:flex-end; background:var(--panel);
-  border:var(--hair) solid var(--line2); border-radius:var(--r2); padding:5px; box-shadow:var(--shadow-1);
-  transition:border-color .2s, box-shadow .3s var(--ease) }
-#composer .row:focus-within{ border-color:var(--accent-lo); box-shadow:0 0 0 3px var(--glow) }
-#prompt-in{ flex:1; min-width:0; min-height:30px; max-height:152px; resize:none; background:transparent;
-  border:none; color:var(--ink); font:inherit; font-size:max(16px,var(--t1)); padding:5px 8px; line-height:1.45 }
-#prompt-in::placeholder{ color:var(--faint) } #prompt-in:focus{ outline:none }
-.btn{ border:var(--hair) solid var(--line); border-radius:var(--r1); padding:5px 15px; letter-spacing:.03em;
-  font-size:12.5px; font-weight:600; min-height:30px; flex:none; white-space:nowrap;
-  background:var(--panel2); transition:.2s }
-@media (hover:hover){ .btn:hover{ border-color:var(--accent-lo); color:var(--accent) } }
-.btn:active{ transform:scale(.97) }
-.btn.primary{ background:var(--grad); color:#fff; border-color:transparent;
-  box-shadow:0 2px 10px rgba(15,111,214,.3) }
-@media (hover:hover){ .btn.primary:hover{ color:#fff; filter:brightness(1.08) } }
-.btn.primary:disabled{ opacity:.45; cursor:default; filter:none; box-shadow:none }
-.ibtn{ width:30px; height:30px; flex:none; display:grid; place-items:center; color:var(--faint);
-  border:none; border-radius:var(--r1); background:transparent; transition:.2s }
-@media (hover:hover){ .ibtn:hover{ color:var(--accent); background:var(--panel3) } }
-.ibtn.rec{ color:#fff; background:linear-gradient(135deg,#e0443a,#b3261e);
-  animation:recpulse 1.4s ease-in-out infinite }
-@keyframes recpulse{ 0%,100%{ box-shadow:0 0 0 0 rgba(224,68,58,.45) } 50%{ box-shadow:0 0 0 7px rgba(224,68,58,0) } }
-
-footer.bot{ position:relative; z-index:12; display:flex; align-items:center; justify-content:space-between;
-  gap:var(--u2); padding:0 var(--u3) var(--safe-b); font-family:var(--f-mono); font-size:9.5px;
-  letter-spacing:.14em; color:var(--faint); border-top:var(--hair) solid var(--line);
-  background:var(--panel2); text-transform:uppercase }
-footer.bot a{ color:var(--faint) }
-
-/* breakpoints */
-@media (max-width:899px){
-  #app{ grid-template-columns:1fr; grid-template-rows:calc(var(--bar-h) + var(--safe-t)) 1fr auto }
-  header.top{ grid-column:1; grid-row:1; padding:var(--safe-t) var(--u2) 0 }
-  #chat{ grid-column:1; grid-row:2 }
-  #side{ grid-column:1; grid-row:2; position:fixed; z-index:40; top:calc(var(--bar-h) + var(--safe-t));
-    bottom:0; left:0; width:min(88vw,344px); transform:translateX(-105%);
-    transition:transform .34s var(--ease); box-shadow:16px 0 50px rgba(15,24,38,.2) }
-  #side.open{ transform:none }
-  footer.bot{ display:none }
-  #rail{ grid-column:1; grid-row:3; flex-direction:row; justify-content:space-around;
-    height:calc(58px + var(--safe-b)); padding:0 var(--u) var(--safe-b); gap:0 }
-  #rail::after{ top:0; bottom:auto; left:0; right:0; width:auto; height:1px;
-    background:linear-gradient(90deg,transparent,rgba(56,189,248,.45),rgba(251,191,36,.35),transparent) }
-  #sigil,#railmark,.rail-sp{ display:none }
-  #divs{ flex-direction:row; justify-content:space-around; gap:2px }
-  .div-btn{ width:auto; flex:1 1 0; padding:7px 2px; min-height:50px }
-  .div-btn.active::before{ left:50%; top:2px; transform:translateX(-50%); width:22px; height:3px;
-    border-radius:0 0 3px 3px }
-  #menu-btn{ display:grid }
-  #feed{ padding:var(--u2) }
-  #composer{ padding:var(--u2) var(--u2) calc(var(--u2) + var(--safe-b)) }
-}
-@media (max-width:1400px){ .ask i{ display:none } }
-@media (max-width:599px){
-  .div-btn em{ display:none }
-  #doclink span{ display:none } #doclink{ padding:0 10px }
-  .ask i{ display:none } .ask{ min-height:36px }
-  .msg{ padding:var(--u2) } .msg.ai{ padding-left:calc(var(--u2) + 4px) }
-}
-
-
-/* ---------- uploads ---------- */
-#atts{ display:flex; flex-wrap:wrap; gap:5px; margin-bottom:6px }
-.att{ display:inline-flex; align-items:center; gap:6px; border:var(--hair) solid var(--line);
-  background:var(--panel2); border-radius:var(--r1); padding:4px 8px; font-size:11.5px; max-width:100% }
-.att svg{ width:13px; height:13px; flex:none; color:var(--accent) }
-.att b{ font-weight:600; max-width:190px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
-.att i{ font-style:normal; font-family:var(--f-mono); font-size:9.5px; color:var(--faint) }
-.att .x{ color:var(--faint); font-weight:700; padding:0 2px; min-width:18px; min-height:18px; line-height:1 }
-.att .x:hover{ color:#b3261e }
-.att.bad{ border-color:#e9c9cf; background:#fdf4f5; color:#8f2130 }
-
-#dropzone{ position:absolute; inset:0; z-index:30; display:grid; place-items:center;
-  background:rgba(15,111,214,.07); backdrop-filter:blur(2px);
-  border:2px dashed var(--accent-lo); border-radius:var(--r2); margin:var(--u);
-  animation:dzIn .16s var(--ease-soft) both }
-@keyframes dzIn{ from{ opacity:0 } to{ opacity:1 } }
-.dz-inner{ display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center;
-  padding:var(--u3) var(--u4); border-radius:var(--r2); background:rgba(255,255,255,.92);
-  box-shadow:var(--shadow-2) }
-.dz-inner svg{ width:30px; height:30px; color:var(--accent) }
-.dz-inner b{ font-size:var(--t2); font-weight:650 }
-.dz-inner span{ font-size:12px; color:var(--dim) }
-
-/* uploaded documents in the index */
-.doc.mine .id{ color:var(--ok) }
-.badge.mine{ background:rgba(15,122,82,.12); color:var(--ok) }
-
-/* ---------- v2: facets ---------- */
-#facetbar{ display:flex; gap:2px; padding:6px var(--u2); background:var(--panel2);
-  border-bottom:var(--hair) solid var(--line); flex:none }
-.facet-tab{ flex:1; padding:5px 4px; border-radius:var(--r1); font-size:11px; font-weight:600;
-  color:var(--dim); transition:.18s }
-@media (hover:hover){ .facet-tab:hover{ background:var(--panel3); color:var(--accent-ink) } }
-.facet-tab.active{ background:var(--panel); color:var(--accent-ink); box-shadow:var(--shadow-1) }
-#facets{ flex:none; max-height:34vh; overflow-y:auto; padding:8px var(--u2) 10px;
-  border-bottom:var(--hair) solid var(--line); background:var(--panel) }
-.facet-row{ display:flex; align-items:center; gap:8px; width:100%; padding:5px 6px; border-radius:var(--r1);
-  font-size:12px; text-align:left; color:var(--ink); transition:background .16s }
-@media (hover:hover){ .facet-row:hover{ background:var(--panel2) } }
-.facet-row .box{ width:13px; height:13px; flex:none; border-radius:3px; border:1.5px solid var(--line2);
-  display:grid; place-items:center; transition:.16s }
-.facet-row.on .box{ background:var(--accent); border-color:var(--accent) }
-.facet-row.on .box::after{ content:""; width:6px; height:3px; border-left:1.6px solid #fff;
-  border-bottom:1.6px solid #fff; transform:rotate(-45deg) translate(0,-1px) }
-.facet-row .n{ margin-left:auto; font-family:var(--f-mono); font-size:9.5px; color:var(--faint) }
-.facet-row.zero{ opacity:.38 }
-#chips{ display:flex; flex-wrap:wrap; gap:5px; padding:8px var(--u2); background:var(--panel2);
-  border-bottom:var(--hair) solid var(--line) }
-.chip{ display:inline-flex; align-items:center; gap:5px; font-size:11px; padding:3px 8px; border-radius:999px;
-  background:var(--accent); color:#fff; font-weight:600 }
-.chip b{ font-weight:700; opacity:.75; font-size:12px; line-height:1 }
-#chips .clear{ font-size:11px; color:var(--dim); padding:3px 8px; border-radius:999px;
-  border:var(--hair) solid var(--line2) }
-
-/* search hit context */
-.doc .hit{ display:block; font-size:11px; color:var(--dim); line-height:1.45; margin-top:3px;
-  border-left:2px solid var(--line2); padding-left:7px }
-.doc .hit mark{ background:rgba(251,191,36,.35); color:inherit; border-radius:2px; padding:0 1px }
-.doc .badges{ display:flex; flex-wrap:wrap; gap:4px; margin-top:5px }
-.badge{ font-family:var(--f-mono); font-size:8.5px; letter-spacing:.06em; text-transform:uppercase;
-  padding:2px 6px; border-radius:3px; background:var(--panel3); color:var(--dim) }
-.badge.kind{ background:rgba(15,111,214,.10); color:var(--accent-ink) }
-.badge.warn{ background:rgba(251,191,36,.20); color:#7a5308 }
-.badge.text{ background:rgba(15,122,82,.12); color:var(--ok) }
-
-/* ---------- v2: detail panel ---------- */
-/* docked as a real column on wide screens — never covers the conversation */
-#detail{ grid-column:4; grid-row:2; min-width:0; overflow:hidden; background:var(--panel);
-  border-left:var(--hair) solid var(--line); display:flex; flex-direction:column;
-  min-height:0; animation:slideIn .3s var(--ease) both }
-body.has-detail #app{ grid-template-columns:var(--rail-w,64px) var(--side-w,320px)
-  minmax(0,1fr) var(--detail-w,340px) }
-@media (max-width:1200px){
-  body.has-detail #app{ grid-template-columns:var(--rail-w,64px) var(--side-w,320px) minmax(0,1fr) }
-  #detail{ position:fixed; top:calc(var(--bar-h) + var(--safe-t)); right:0; bottom:0;
-    width:min(94vw,380px); z-index:45; box-shadow:-16px 0 50px rgba(15,24,38,.14) }
-}
-@keyframes slideIn{ from{ transform:translateX(20px); opacity:0 } to{ transform:none; opacity:1 } }
-#detail header{ display:flex; align-items:center; gap:var(--u); height:44px; flex:none;
-  padding:0 var(--u2); border-bottom:var(--hair) solid var(--line); background:var(--panel2) }
-#detail .dtitle{ font-family:var(--f-mono); font-size:11px; font-weight:700; letter-spacing:.06em;
-  color:var(--accent-ink); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
-#detail-body{ flex:1; overflow-y:auto; padding:var(--u2) }
-#detail-body h4{ font-family:var(--f-mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase;
-  color:var(--faint); margin:var(--u2) 0 6px; padding-top:var(--u2); border-top:var(--hair) solid var(--line) }
-#detail-body h4:first-child{ margin-top:0; padding-top:0; border-top:none }
-#detail-body .kv{ display:flex; gap:8px; font-size:12px; padding:3px 0 }
-#detail-body .kv span:first-child{ color:var(--faint); min-width:74px; flex:none }
-#detail-body .sec{ display:block; width:100%; text-align:left; font-size:11.5px; padding:4px 6px;
-  border-radius:var(--r1); color:var(--ink); line-height:1.4 }
-@media (hover:hover){ #detail-body .sec:hover{ background:var(--panel2); color:var(--accent-ink) } }
-#detail-body .sec i{ font-style:normal; font-family:var(--f-mono); font-size:9.5px; color:var(--faint); float:right }
-#detail-body .ref{ display:inline-block; font-family:var(--f-mono); font-size:10.5px; padding:3px 8px;
-  margin:0 4px 4px 0; border-radius:var(--r1); background:var(--panel3); color:var(--accent-ink); font-weight:600 }
-@media (hover:hover){ #detail-body .ref:hover{ background:rgba(15,111,214,.14) } }
-#detail-body .auth{ font-family:var(--f-mono); font-size:10.5px; color:var(--dim); line-height:1.9 }
-#detail-body .empty{ font-size:11.5px; color:var(--faint) }
-#detail-body .act{ display:flex; align-items:center; gap:8px; width:100%; text-align:left;
-  font-size:12px; padding:7px 9px; border-radius:var(--r1); border:var(--hair) solid var(--line);
-  background:var(--panel2); margin-bottom:5px; color:var(--ink); transition:.16s }
-@media (hover:hover){ #detail-body .act:hover{ border-color:var(--accent-lo); background:#fff;
-  color:var(--accent-ink); box-shadow:0 0 0 3px var(--glow) } }
-#detail-body .act svg{ width:14px; height:14px; flex:none; color:var(--accent) }
-#detail-body .act .k{ margin-left:auto; font-family:var(--f-mono); font-size:9px; color:var(--faint) }
-#detail-body .tag{ display:inline-block; font-size:10.5px; padding:3px 8px; margin:0 4px 4px 0;
-  border-radius:999px; background:var(--panel3); color:var(--dim); transition:.16s }
-@media (hover:hover){ #detail-body .tag:hover{ background:rgba(15,111,214,.12); color:var(--accent-ink) } }
-#detail-body .rel{ display:block; width:100%; text-align:left; padding:6px 8px; border-radius:var(--r1);
-  font-size:11.5px; line-height:1.35; color:var(--ink); transition:.16s }
-#detail-body .rel b{ display:block; font-family:var(--f-mono); font-size:10px; color:var(--accent-ink) }
-@media (hover:hover){ #detail-body .rel:hover{ background:var(--panel2) } }
-
-/* ---------- v2: command palette ---------- */
-#palette{ position:fixed; inset:0; z-index:70; background:rgba(15,24,38,.42); backdrop-filter:blur(3px);
-  display:flex; align-items:flex-start; justify-content:center; padding:12vh var(--u2) 0;
-  animation:palIn .18s var(--ease-soft) both }
-@keyframes palIn{ from{ opacity:0 } to{ opacity:1 } }
-.pbox{ width:min(640px,100%); background:var(--panel); border-radius:14px; overflow:hidden;
-  box-shadow:0 30px 80px rgba(15,24,38,.34); animation:palRise .24s var(--ease) both }
-@keyframes palRise{ from{ transform:translateY(-10px); opacity:0 } to{ transform:none; opacity:1 } }
-#pal-in{ width:100%; border:none; padding:16px 18px; font:inherit; font-size:16px; color:var(--ink);
-  border-bottom:var(--hair) solid var(--line) }
-#pal-in:focus{ outline:none }
-#pal-list{ max-height:46vh; overflow-y:auto; padding:6px }
-.pal-item{ display:flex; align-items:center; gap:10px; width:100%; text-align:left; padding:9px 12px;
-  border-radius:var(--r1); font-size:13px; color:var(--ink) }
-.pal-item .pid{ font-family:var(--f-mono); font-size:11px; font-weight:700; color:var(--accent-ink);
-  min-width:104px; flex:none }
-.pal-item .ptxt{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
-.pal-item .pk{ margin-left:auto; font-family:var(--f-mono); font-size:9px; letter-spacing:.1em;
-  text-transform:uppercase; color:var(--faint); flex:none }
-.pal-item.sel{ background:rgba(15,111,214,.10) }
-.phint{ display:flex; gap:14px; padding:8px 16px; border-top:var(--hair) solid var(--line);
-  background:var(--panel2); font-size:10.5px; color:var(--faint) }
-.phint kbd{ font-family:var(--f-mono); font-size:9.5px; background:var(--panel3);
-  border:var(--hair) solid var(--line2); border-radius:4px; padding:1px 5px; margin-right:3px }
-
-/* cached-answer + source badges in chat */
-.msg .srcline{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; padding-top:9px;
+#comp{ flex:none; padding:var(--u2) var(--u3) calc(var(--u2) + var(--safe-b)); background:var(--paper);
   border-top:var(--hair) solid var(--line) }
-.msg .srcline a{ font-family:var(--f-mono); font-size:10px; letter-spacing:.04em; padding:3px 8px;
-  border-radius:var(--r1); background:var(--panel3); color:var(--accent-ink); text-decoration:none }
-.corpus-note{ display:inline-flex; align-items:center; gap:6px; font-family:var(--f-mono); font-size:9.5px;
-  letter-spacing:.1em; text-transform:uppercase; color:var(--ok); background:rgba(15,122,82,.10);
-  border-radius:var(--r1); padding:3px 8px }
+#files{ display:flex; flex-wrap:wrap; gap:5px; margin-bottom:7px }
+.fchip{ display:inline-flex; align-items:center; gap:6px; border:var(--hair) solid var(--line);
+  background:var(--paper2); border-radius:var(--r1); padding:4px 9px; font-size:11.5px; max-width:100% }
+.fchip svg{ width:13px; height:13px; color:var(--blue); flex:none }
+.fchip b{ font-weight:600; max-width:190px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.fchip i{ font-style:normal; font-family:var(--fm); font-size:9.5px; color:var(--faint) }
+.fchip .x{ color:var(--faint); font-weight:700; padding:0 2px; min-width:18px; line-height:1 }
+.fchip .x:hover{ color:var(--red) }
+.fchip.bad{ border-color:#eccdca; background:var(--red-wash); color:var(--red) }
+#crow{ display:flex; gap:7px; align-items:flex-end; background:var(--paper2);
+  border:var(--hair) solid var(--line2); border-radius:var(--r2); padding:6px; transition:.18s }
+#crow:focus-within{ border-color:var(--blue-lo); box-shadow:0 0 0 3px var(--glow); background:var(--paper) }
+#in{ flex:1; min-width:0; min-height:30px; max-height:180px; resize:none; background:transparent;
+  border:none; font-size:max(16px,var(--t1)); padding:5px 8px; line-height:1.5 }
+#in:focus{ outline:none } #in::placeholder{ color:var(--faint) }
+.ib{ width:31px; height:31px; flex:none; display:grid; place-items:center; color:var(--faint);
+  border-radius:var(--r1); transition:.16s }
+.ib:hover{ color:var(--blue); background:var(--paper3) }
+.ib.rec{ color:#fff; background:linear-gradient(135deg,#e0443a,#b3261e); animation:rp 1.4s ease-in-out infinite }
+@keyframes rp{ 0%,100%{ box-shadow:0 0 0 0 rgba(224,68,58,.45) } 50%{ box-shadow:0 0 0 7px rgba(224,68,58,0) } }
+#drop{ position:absolute; inset:var(--u); z-index:40; display:grid; place-items:center;
+  background:rgba(18,102,212,.07); backdrop-filter:blur(2px); border:2px dashed var(--blue-lo);
+  border-radius:var(--r2) }
+#drop div{ display:flex; flex-direction:column; align-items:center; gap:6px; padding:var(--u3) var(--u4);
+  background:rgba(255,255,255,.95); border-radius:var(--r2); box-shadow:var(--sh2); text-align:center }
+#drop svg{ width:30px; height:30px; color:var(--blue) }
+#drop b{ font-size:var(--t2) } #drop span{ font-size:12px; color:var(--dim) }
 
-@media (max-width:899px){
-  #detail{ top:auto; bottom:0; left:0; right:0; width:auto; max-height:70dvh; border-left:none;
-    border-top:var(--hair) solid var(--line); border-radius:14px 14px 0 0 }
-  #facets{ max-height:40vh }
-}
+/* ---------- context panel ---------- */
+#ctx{ display:flex; flex-direction:column; min-height:0; background:var(--paper);
+  border-left:var(--hair) solid var(--line) }
+#ctx header{ flex:none; display:flex; align-items:center; gap:var(--u); height:42px; padding:0 var(--u2);
+  border-bottom:var(--hair) solid var(--line); background:var(--paper2) }
+#ctx header b{ font-family:var(--fm); font-size:10.5px; font-weight:700; letter-spacing:.06em;
+  color:var(--blue-hi); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+#ctxb{ flex:1; overflow-y:auto; padding:var(--u2) }
+#ctxb h4{ font-family:var(--fm); font-size:9.5px; letter-spacing:.15em; text-transform:uppercase;
+  color:var(--faint); margin:var(--u2) 0 7px; padding-top:var(--u2); border-top:var(--hair) solid var(--line) }
+#ctxb h4:first-child{ margin-top:0; padding-top:0; border-top:none }
+.kv{ display:flex; gap:9px; font-size:12px; padding:3px 0 }
+.kv span:first-child{ color:var(--faint); min-width:76px; flex:none }
+.ax{ display:flex; align-items:center; gap:8px; width:100%; text-align:left; font-size:12px;
+  padding:7px 9px; border-radius:var(--r1); border:var(--hair) solid var(--line); background:var(--paper2);
+  margin-bottom:5px; transition:.16s }
+.ax:hover{ border-color:var(--blue-lo); background:var(--paper); color:var(--blue-hi); box-shadow:0 0 0 3px var(--glow) }
+.ax svg{ width:14px; height:14px; flex:none; color:var(--blue) }
+.tg{ display:inline-block; font-size:10.5px; padding:3px 9px; margin:0 4px 4px 0; border-radius:999px;
+  background:var(--paper3); color:var(--dim); transition:.16s }
+.tg:hover{ background:var(--blue-wash); color:var(--blue-hi) }
+.sc{ display:block; width:100%; text-align:left; font-size:11.5px; padding:4px 6px; border-radius:var(--r1);
+  line-height:1.4; transition:.16s }
+.sc:hover{ background:var(--paper2); color:var(--blue-hi) }
+.sc i{ font-style:normal; font-family:var(--fm); font-size:9.5px; color:var(--faint); float:right }
+.rf{ display:inline-block; font-family:var(--fm); font-size:10.5px; padding:3px 8px; margin:0 4px 4px 0;
+  border-radius:var(--r1); background:var(--paper3); color:var(--blue-hi); font-weight:600; transition:.16s }
+.rf:hover{ background:var(--blue-wash) }
+.rl{ display:block; width:100%; text-align:left; padding:6px 8px; border-radius:var(--r1); font-size:11.5px;
+  line-height:1.35; transition:.16s }
+.rl b{ display:block; font-family:var(--fm); font-size:10px; color:var(--blue-hi) }
+.rl:hover{ background:var(--paper2) }
+.auth{ font-family:var(--fm); font-size:10.5px; color:var(--dim); line-height:1.9 }
+.mute{ font-size:11.5px; color:var(--faint); line-height:1.55 }
 
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{ animation:none !important; transition:none !important }
-  #chat::before{ display:none }
+/* ---------- modal (palette / role / glossary / compare) ---------- */
+.ov{ position:fixed; inset:0; z-index:80; background:rgba(11,37,69,.42); backdrop-filter:blur(3px);
+  display:flex; align-items:flex-start; justify-content:center; padding:10vh var(--u2) 0;
+  animation:fade .16s var(--ease2) both }
+@keyframes fade{ from{ opacity:0 } to{ opacity:1 } }
+.box{ width:min(660px,100%); background:var(--paper); border-radius:var(--r3); overflow:hidden;
+  box-shadow:var(--sh3); animation:pop .22s var(--ease) both; max-height:78vh; display:flex; flex-direction:column }
+@keyframes pop{ from{ transform:translateY(-10px); opacity:0 } to{ transform:none; opacity:1 } }
+.box input.q{ width:100%; border:none; padding:16px 18px; font-size:16px; border-bottom:var(--hair) solid var(--line) }
+.box input.q:focus{ outline:none }
+.box .body{ overflow-y:auto; padding:7px }
+.box .hint{ display:flex; gap:14px; padding:8px 16px; border-top:var(--hair) solid var(--line);
+  background:var(--paper2); font-size:10.5px; color:var(--faint) }
+.box .hint kbd{ font-family:var(--fm); font-size:9.5px; background:var(--paper3);
+  border:var(--hair) solid var(--line2); border-radius:4px; padding:1px 5px; margin-right:3px }
+.row{ display:flex; align-items:center; gap:10px; width:100%; text-align:left; padding:9px 12px;
+  border-radius:var(--r1); font-size:13px }
+.row .rid{ font-family:var(--fm); font-size:11px; font-weight:700; color:var(--blue-hi);
+  min-width:112px; flex:none }
+.row .rtx{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1 }
+.row .rk{ margin-left:auto; font-family:var(--fm); font-size:9px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--faint); flex:none }
+.row.sel{ background:var(--blue-wash) }
+.box h3{ padding:14px 18px 4px; font-size:15px; font-weight:700 }
+.box p.lead{ padding:0 18px 12px; font-size:12.5px; color:var(--dim); line-height:1.6 }
+.roles{ display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:0 14px 14px }
+.role{ text-align:left; padding:12px 14px; border-radius:var(--r2); border:var(--hair) solid var(--line);
+  background:var(--paper2); transition:.16s }
+.role:hover{ border-color:var(--blue-lo); background:var(--paper); box-shadow:0 0 0 3px var(--glow) }
+.role.on{ border-color:var(--blue); background:var(--blue-wash) }
+.role b{ display:block; font-size:13px; font-weight:650; margin-bottom:3px }
+.role span{ display:block; font-size:11.5px; color:var(--dim); line-height:1.5 }
+.gl-list dt{ font-family:var(--fm); font-size:12px; font-weight:700; color:var(--blue-hi); margin-top:11px }
+.gl-list dd{ font-size:12.5px; color:var(--ink2); line-height:1.55; margin-left:0 }
+#tip{ position:fixed; z-index:90; max-width:280px; background:var(--navy); color:#e6eefb;
+  font-size:11.5px; line-height:1.5; padding:8px 11px; border-radius:8px; box-shadow:var(--sh2);
+  pointer-events:none }
+#tip b{ display:block; font-family:var(--fm); font-size:10px; color:var(--blue-lo); margin-bottom:2px }
+#toast{ position:fixed; left:50%; bottom:26px; transform:translateX(-50%); z-index:95;
+  background:var(--navy); color:#fff; font-size:12.5px; padding:9px 16px; border-radius:999px;
+  box-shadow:var(--sh2); animation:tin .25s var(--ease) both }
+@keyframes tin{ from{ opacity:0; transform:translate(-50%,10px) } to{ opacity:1; transform:translateX(-50%) } }
+
+/* ---------- responsive ---------- */
+@media (max-width:1100px){
+  #app{ grid-template-columns:minmax(0,1fr) }
+  body.ctx #app{ grid-template-columns:minmax(0,1fr) }
+  #index{ position:fixed; z-index:50; top:calc(var(--top-h) + var(--sub-h) + var(--safe-t)); bottom:0; left:0;
+    width:min(88vw,360px); transform:translateX(-102%); transition:transform .3s var(--ease);
+    box-shadow:var(--sh3) }
+  body.idx #index{ transform:none }
+  #work{ grid-column:1 }
+  #ctx{ position:fixed; z-index:50; top:calc(var(--top-h) + var(--sub-h) + var(--safe-t)); bottom:0; right:0;
+    width:min(92vw,380px); box-shadow:var(--sh3) }
+  #menu{ display:flex !important }
+  #scrim{ position:fixed; inset:0; z-index:45; background:rgba(11,37,69,.36) }
 }
+@media (min-width:1101px){ #menu{ display:none } #scrim{ display:none } }
+@media (max-width:720px){
+  :root{ --top-h:48px }
+  #brand em{ display:none }
+  #gsearch span{ display:none } #gsearch{ flex:none; width:40px; padding:0; justify-content:center }
+  #gsearch kbd{ display:none }
+  .tbtn span{ display:none } .tbtn{ padding:0 9px }
+  #feed{ padding:var(--u2) }
+  #comp{ padding:var(--u2) var(--u2) calc(var(--u2) + var(--safe-b)) }
+  .m{ padding:var(--u2) } .m.a{ padding-left:calc(var(--u2) + 4px) }
+  .roles{ grid-template-columns:1fr }
+  #whead{ padding:9px var(--u2) }
+}
+@media (prefers-reduced-motion:reduce){ *,*::before,*::after{ animation:none !important; transition:none !important } }
+
+/* ---------- print ---------- */
+@media print{
+  @page{ margin:18mm }
+  html,body{ height:auto; overflow:visible; background:#fff }
+  #app{ position:static; display:block; height:auto }
+  #topbar,#subbar,#index,#ctx,#asks,#comp,#scrim,.mfoot button,.ib,#drop{ display:none !important }
+  #work{ display:block } #feed{ overflow:visible; padding:0 }
+  #whead{ border:none; padding:0 0 8mm }
+  #wcrumb .ti{ font-size:17pt; white-space:normal }
+  .m{ break-inside:avoid; box-shadow:none; border:none; border-left:2pt solid #999; border-radius:0;
+    padding:0 0 0 8pt; margin:0 0 6mm; font-size:10.5pt; line-height:1.5; max-width:none !important;
+    background:none !important; color:#000 !important }
+  .m.u{ font-weight:700; border-left-color:#1266d4 }
+  .m h1,.m h2,.m h3{ color:#000 }
+  .m a{ color:#000; text-decoration:underline }
+  .m a::after{ content:" (" attr(href) ")"; font-size:8pt; color:#555 }
+  #printfoot{ display:block !important; margin-top:10mm; padding-top:4mm; border-top:1pt solid #999;
+    font-size:8.5pt; color:#333; line-height:1.5 }
+}
+#printfoot{ display:none }
 </style>
 </head>
 <body>
-<canvas id="bg" aria-hidden="true"></canvas>
-
 <div id="app">
-  <nav id="rail" aria-label="Divisions">
-    <button id="sigil" aria-label="VIIM — all divisions">
-      <svg id="logo" viewBox="0 0 64 64" fill="none" stroke="currentColor" aria-hidden="true">
-        <g class="l-beam" stroke-width="4" stroke-linecap="round">
-          <path d="M12 14h40M12 50h40"/><path d="M22 14v36M42 14v36"/>
-        </g>
-        <circle class="l-core" cx="32" cy="32" r="5" fill="#fbbf24" stroke="none"/>
-      </svg>
-    </button>
-    <div id="divs"></div>
-    <span class="rail-sp"></span>
-    <span id="railmark" aria-hidden="true">VIIM</span>
-  </nav>
 
-  <header class="top">
-    <button class="hbtn" id="menu-btn" aria-label="Documents" aria-expanded="false">
-      <svg width="18" height="18" viewBox="0 0 18 18" stroke="currentColor" stroke-width="1.8" fill="none"><path d="M2 4h14M2 9h14M2 14h9"/></svg>
+  <header id="topbar">
+    <button id="menu" class="tbtn" aria-label="Index" style="display:none">
+      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 4h14M2 9h14M2 14h9"/></svg>
     </button>
-    <span class="ctitle">
-      <span id="doc-div">All divisions</span>
-      <span id="doc-title">VDOT guidance console</span>
-    </span>
-    <span class="sp"></span>
-    <button class="hbtn" id="detail-btn" aria-label="Document detail" hidden title="Document detail">
-      <svg width="17" height="17" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3h12v12H3z"/><path d="M6 6.5h6M6 9h6M6 11.5h4"/></svg>
-    </button>
-    <a id="doclink" href="#" target="_blank" rel="noopener noreferrer" hidden>
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6.5 3H3v10h10V9.5"/><path d="M9.5 2.5H14V7"/><path d="M7.5 8.5 13.5 2.5"/></svg>
-      <span>Open on VDOT</span>
+    <a id="brand" href="#" aria-label="VIIM home">
+      <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <rect width="64" height="64" rx="14" fill="#12304f"/>
+        <path d="M12 14h40M12 50h40" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
+        <path d="M22 14v36M42 14v36" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="32" cy="32" r="6" fill="#fbbf24"/>
+      </svg>
+      <b>VIIM</b><em>VDOT guidance</em>
     </a>
+    <button id="gsearch" aria-label="Search everything">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5 14 14"/></svg>
+      <span>Search documents, sections, acronyms…</span><kbd>⌘K</kbd>
+    </button>
+    <span class="sp"></span>
+    <button class="tbtn" id="role-btn" aria-label="Change role">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="5.5" r="2.6"/><path d="M2.8 13.6c.7-2.9 2.8-4.3 5.2-4.3s4.5 1.4 5.2 4.3"/></svg>
+      <b id="role-name">Consultant</b>
+    </button>
+    <button class="tbtn" id="gloss-btn" title="VDOT acronyms">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 2.5h7.5L13 5v8.5H3z"/><path d="M5.5 6.5h5M5.5 9h5"/></svg><span>Glossary</span>
+    </button>
+    <button class="tbtn" id="cmp-btn" title="Compare two documents">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="3" width="5" height="10" rx="1"/><rect x="9" y="3" width="5" height="10" rx="1"/></svg><span>Compare</span>
+    </button>
   </header>
 
-  <aside id="side" aria-label="Documents">
-    <div class="tools">
-      <span class="mag" aria-hidden="true">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5 14 14"/></svg>
-      </span>
-      <input id="search" type="search" placeholder="Search text, number, topic" aria-label="Search documents">
-      <span id="count">0</span>
+  <nav id="subbar" aria-label="Divisions"></nav>
+
+  <aside id="index" aria-label="Document index">
+    <div class="ihead">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5 14 14"/></svg>
+      <input id="q" type="search" placeholder="Filter by number, title or text" aria-label="Filter documents">
+      <span id="n">0</span>
     </div>
-    <div id="facetbar">
-      <button class="facet-tab active" data-facet="all">All</button>
-      <button class="facet-tab" data-facet="topic">Topic</button>
-      <button class="facet-tab" data-facet="phase">Phase</button>
-      <button class="facet-tab" data-facet="delivery">Delivery</button>
-      <button class="facet-tab" data-facet="district">District</button>
-      <button class="facet-tab" data-facet="kind">Type</button>
+    <div class="ftabs">
+      <button class="ftab on" data-f="all">All</button>
+      <button class="ftab" data-f="topic">Topic</button>
+      <button class="ftab" data-f="phase">Phase</button>
+      <button class="ftab" data-f="delivery">Delivery</button>
+      <button class="ftab" data-f="district">District</button>
+      <button class="ftab" data-f="kind">Type</button>
     </div>
-    <div id="facets" hidden></div>
+    <div id="fpanel" hidden></div>
     <div id="chips" hidden></div>
-    <div id="divscope"><b></b><span></span></div>
-    <div id="docs"></div>
+    <div id="list"></div>
   </aside>
 
-  <section id="chat" aria-label="Assistant">
-    <div id="dropzone" hidden aria-hidden="true">
-      <div class="dz-inner">
+  <main id="work">
+    <div id="drop" hidden aria-hidden="true">
+      <div>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4M12 4 7.5 8.5M12 4l4.5 4.5"/><path d="M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15"/></svg>
         <b>Drop documents to analyze</b>
         <span>PDF · images · text — plans, specs, permits, correspondence</span>
       </div>
     </div>
-    <div id="feed"><div class="col" id="msg-col"></div></div>
-    <div id="asks" role="group" aria-label="Common questions">
-      <button class="ask" data-ask="0"><b>Summarize</b><i>what it requires</i></button>
-      <button class="ask" data-ask="1"><b>Applies to</b><i>scope &amp; triggers</i></button>
-      <button class="ask" data-ask="2"><b>Locality</b><i>LAP implications</i></button>
-      <button class="ask" data-ask="3"><b>Related</b><i>cross-references</i></button>
+
+    <div id="whead">
+      <div id="wcrumb">
+        <span class="cr" id="crumb">All divisions</span>
+        <span class="ti" id="title">VDOT guidance, answered</span>
+      </div>
+      <a class="wbtn" id="open-vdot" href="#" target="_blank" rel="noopener noreferrer" hidden>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6.5 3H3v10h10V9.5"/><path d="M9.5 2.5H14V7"/><path d="M7.5 8.5 13.5 2.5"/></svg><span>Open on VDOT</span>
+      </a>
+      <button class="wbtn" id="share-btn" title="Copy link to this document">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6.8 9.2a2.5 2.5 0 0 0 3.5 0l2-2a2.5 2.5 0 0 0-3.5-3.5l-.9.9"/><path d="M9.2 6.8a2.5 2.5 0 0 0-3.5 0l-2 2a2.5 2.5 0 0 0 3.5 3.5l.9-.9"/></svg>
+      </button>
+      <button class="wbtn" id="export-btn" title="Export this thread">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 2v8M8 10 5 7M8 10l3-3"/><path d="M2.5 11v2.5h11V11"/></svg>
+      </button>
+      <button class="wbtn" id="print-btn" title="Print">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4.5 6V2.5h7V6"/><rect x="2.5" y="6" width="11" height="5" rx="1"/><path d="M4.5 9.5h7v4h-7z"/></svg>
+      </button>
+      <button class="wbtn" id="new-btn" title="New thread">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 3.5v9M3.5 8h9"/></svg>
+      </button>
+      <button class="wbtn" id="ctx-btn" title="Document detail">
+        <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3h12v12H3z"/><path d="M6 6.5h6M6 9h6M6 11.5h4"/></svg>
+      </button>
     </div>
-    <div id="composer">
-      <div id="atts" hidden></div>
-      <div class="row">
-        <button class="ibtn" id="att-btn" aria-label="Attach documents" title="Attach documents">
+
+    <div id="feed"><div id="col"></div><div id="printfoot"></div></div>
+
+    <div id="asks" role="group" aria-label="Quick questions"></div>
+
+    <div id="comp">
+      <div id="files" hidden></div>
+      <div id="crow">
+        <button class="ib" id="attach" aria-label="Attach documents" title="Attach documents">
           <svg width="17" height="17" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14.5 8.5l-5.3 5.3a3 3 0 0 1-4.2-4.2l6.4-6.4a2 2 0 0 1 2.8 2.8l-6.3 6.3a1 1 0 0 1-1.4-1.4l5.2-5.2"/></svg>
         </button>
         <input type="file" id="file-in" multiple hidden
           accept=".pdf,.txt,.md,.csv,.tsv,.json,.xml,.html,.log,image/png,image/jpeg,image/gif,image/webp">
-        <button class="ibtn" id="mic-btn" aria-label="Dictate" aria-pressed="false">
+        <textarea id="in" rows="1" placeholder="Ask about VDOT guidance…" aria-label="Message"></textarea>
+        <button class="ib" id="mic" aria-label="Dictate" aria-pressed="false">
           <svg width="17" height="17" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="7.5" y="2.5" width="5" height="9" rx="2.5"/><path d="M4.5 9.5a5.5 5.5 0 0 0 11 0M10 15v3"/></svg>
         </button>
-        <textarea id="prompt-in" rows="1" placeholder="Ask about VDOT guidance…" aria-label="Message"></textarea>
-        <button class="btn" id="stop-btn" hidden>Stop</button>
-        <button class="btn primary" id="send-btn">Ask</button>
+        <button class="wbtn" id="stop" hidden>Stop</button>
+        <button class="wbtn p" id="send">Ask</button>
       </div>
     </div>
-  </section>
+  </main>
 
-  <footer class="bot">
-    <span>VIIM · unofficial</span>
-    <span id="foot-stat"></span>
-    <span><a href="https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/" target="_blank" rel="noopener noreferrer">Official source: VDOT</a></span>
-  </footer>
-
-  <aside id="detail" hidden aria-label="Document detail">
-    <header>
-      <span class="dtitle" id="detail-title"></span>
-      <button class="hbtn" id="detail-close" aria-label="Close detail">✕</button>
+  <aside id="ctx" hidden aria-label="Document detail">
+    <header><b id="ctx-title"></b>
+      <button class="ib" id="ctx-close" aria-label="Close">✕</button>
     </header>
-    <div id="detail-body"></div>
+    <div id="ctxb"></div>
   </aside>
 
-  <div id="palette" hidden role="dialog" aria-modal="true" aria-label="Command palette">
-    <div class="pbox">
-      <input id="pal-in" type="text" placeholder="Jump to a document, division or topic…" aria-label="Command palette">
-      <div id="pal-list"></div>
-      <div class="phint"><kbd>↑↓</kbd> navigate <kbd>↵</kbd> open <kbd>esc</kbd> close</div>
-    </div>
-  </div>
-
-  <div id="scrim"></div>
+  <div id="scrim" hidden></div>
 </div>
 
+<div id="tip" hidden></div>
 <script>
 'use strict';
 /* ============================================================
-   VIIM — runtime
-   1 manifest · 2 rail & index · 3 chat · 4 streaming · 5 markdown
-   6 asks · 7 voice · 8 chrome · 9 background
+   VIIM v4
+   1 roles · 2 state & storage · 3 manifest · 4 index & facets
+   5 workspace · 6 streaming · 7 markdown · 8 uploads
+   9 palette · 10 glossary · 11 compare · 12 export/print · 13 keys
    ============================================================ */
-const $ = s => document.querySelector(s);
-const $$ = s => [...document.querySelectorAll(s)];
-const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const slugOf=id=>String(id).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const BASE_SYS = `You are the VIIM assistant, a reference tool for Virginia Department of Transportation guidance: Instructional & Informational Memoranda (IIMs) issued by division — LD (Location & Design), S&B (Structure & Bridge), TE/TO (Traffic Operations), ED (Environmental), TMPD (Transportation & Mobility Planning) — plus the Locally Administered Projects (LAP) Manual, Letters to Local Governments (LLGs) and Department Memoranda for localities.
+/* ---------- 1. Roles ---------- */
+const ROLES={
+  locality:{ name:'Locality staff', blurb:'City, town or county staff delivering a locally administered project.',
+    div:'lad', facets:{delivery:['locally administered']},
+    sys:'The user is LOCALITY STAFF administering a project with VDOT oversight. Lead with the locality’s obligations, VDOT review and approval points, agreement and invoicing mechanics, and where the LAP Manual governs. Name the District contact point when approval is involved.',
+    asks:[['Summarize','what it requires'],['My obligations','locality duties'],['VDOT approvals','who signs off'],['Related','cross-references']] },
+  consultant:{ name:'Consultant', blurb:'Designer or engineer preparing plans and submittals for VDOT.',
+    div:null, facets:{},
+    sys:'The user is a CONSULTANT ENGINEER preparing plans or submittals. Lead with the design requirement itself — criteria, dimensions, thresholds, plan-sheet and submittal expectations — then exceptions and the deviation path. Be precise about which manual or standard controls.',
+    asks:[['Summarize','what it requires'],['Design criteria','thresholds'],['Plan requirements','submittal'],['Related','cross-references']] },
+  contractor:{ name:'Contractor / Inspector', blurb:'Building it, inspecting it, documenting it.',
+    div:'con', facets:{phase:['construction']},
+    sys:'The user is a CONTRACTOR or CONSTRUCTION INSPECTOR. Lead with what must happen in the field: specification references, materials sampling and testing, documentation and pay items, work-zone requirements, and change-order or claim mechanics. Cite the specification section number wherever one applies.',
+    asks:[['Summarize','what it requires'],['Field steps','what to do'],['Documentation','what to record'],['Related','cross-references']] },
+  developer:{ name:'Developer / Permits', blurb:'Land development, entrances, subdivision streets, permits.',
+    div:'tmpd', facets:{delivery:['permit / private development']},
+    sys:'The user is a DEVELOPER or PERMIT APPLICANT. Lead with the permit or acceptance pathway: what triggers a requirement, what must be submitted, who reviews it, and what the standards are for entrances, subdivision streets and work in the right of way. Be concrete about the Land Use Permit and SSAR processes.',
+    asks:[['Summarize','what it requires'],['What triggers it','applicability'],['Submittal path','how to apply'],['Related','cross-references']] },
+  vdot:{ name:'VDOT staff', blurb:'Internal delivery, review and approval authority.',
+    div:null, facets:{delivery:['VDOT-administered']},
+    sys:'The user is VDOT STAFF. Be precise about delegation and approval authority, internal process, and which division owns a decision. Reference Department Memoranda and governance documents where they control.',
+    asks:[['Summarize','what it requires'],['Approval authority','who decides'],['Process','internal steps'],['Related','cross-references']] },
+  newcomer:{ name:'New to VDOT', blurb:'Learning the landscape and the acronyms.',
+    div:null, facets:{},
+    sys:'The user is NEW to VDOT processes. Define acronyms on first use, explain how the document fits into the larger system of manuals, standards and specifications, and keep the language plain without losing precision. Offer the natural next document to read.',
+    asks:[['Explain simply','plain language'],['Why it exists','purpose'],['Where it fits','the big picture'],['Related','cross-references']] },
+};
 
-Ground rules, in order of importance:
+/* ---------- 2. State & storage ---------- */
+const LS='viim.v4';
+const S={ man:null, idx:null, doc:null, div:null, role:'consultant', busy:false, ctrl:null,
+  proxy:false, fast:false, threads:{}, pins:[], recents:[], cur:-1 };
+const F={ topic:new Set(), phase:new Set(), delivery:new Set(), district:new Set(), kind:new Set() };
+let FTAB='all';
+const CORPUS=new Map(), UPLOADS=new Map(), ANSWERS=new Map();
 
-1. GROUND EVERY ANSWER IN THE ACTUAL DOCUMENT. When a specific memorandum is in play, use web_fetch on its vdot.virginia.gov URL and answer from the retrieved text. Do not answer substantive requirements from memory. If a fetch fails or the document cannot be found, say so plainly rather than reconstructing it.
-2. CITE PRECISELY. Name the document ID, its revision number where visible (e.g. IIM-S&B-27.14), and the section or page. Link the source URL.
-3. FLAG STALENESS. IIMs are revised frequently and superseded without warning. State the revision and effective date you actually saw, and remind the user to confirm against the live VDOT page for anything design-critical or submittal-critical.
-4. NEVER INVENT. Do not invent IIM numbers, revision numbers, section numbers, dates, dimensions, or requirements. If you are unsure whether a memorandum exists, search rather than guess. An honest "I could not verify that" is correct; a plausible fabrication is a serious failure in this domain.
-5. BE USEFUL TO A PRACTITIONER. Users are engineers, locality staff and consultants. Lead with the operative requirement, then conditions and exceptions, then process. Use tables for thresholds and criteria. Keep it tight.
-6. USER DOCUMENTS ARE EVIDENCE, NOT AUTHORITY. When the user attaches a plan set, spec, permit, agreement or correspondence, read it as the artifact under review — never as guidance. Compare it against the governing VDOT documents, quote the specific sheet, section or clause you are reacting to, and separate "this conflicts with [document, section]" from "this is unclear" from "this is outside what I can tell from the file." Never claim a submittal is approvable; that is VDOT's call.
-7. SCOPE HONESTLY. This is an unofficial reference tool. It does not constitute VDOT approval, a design decision, or engineering judgment, and it is no substitute for the District office or the project's VDOT point of contact. Say so when the question turns on approval, deviation, or acceptance.`;
-
-const S = { proxy:false, busy:false, ctrl:null, doc:null, div:null, manifest:null, history:[] };
-
-/* ---------- 1. Manifest ---------- */
-async function loadManifest(){
+function save(){
+  try{ localStorage.setItem(LS, JSON.stringify({
+    role:S.role, div:S.div, docId:S.doc?S.doc.id:null, pins:S.pins, recents:S.recents.slice(0,20),
+    facets:Object.fromEntries(Object.entries(F).map(([k,v])=>[k,[...v]])),
+    threads:Object.fromEntries(Object.entries(S.threads).map(([k,v])=>[k,v.slice(-24)])),
+  })); }catch(e){}
+}
+function load(){
   try{
-    const r = await fetch('/data/manifest.json', { cache:'no-cache' });
-    if(!r.ok) throw new Error('manifest '+r.status);
-    S.manifest = await r.json();
-  }catch(e){
-    S.manifest = { divisions:[], documents:[], generated:'unavailable' };
-    console.error('manifest load failed', e);
-  }
-  buildRail(); setDivision(null); startCard();
-  loadIndex();
-  const g = S.manifest.generated;
-  const withText=(S.manifest.documents||[]).filter(d=>d.text).length;
-  $('#foot-stat').textContent = (S.manifest.divisions||[]).length+' divisions · '+
-    S.manifest.documents.length+' documents · '+withText+' full text · '+(g||'unknown')+' · ⌘K';
+    const d=JSON.parse(localStorage.getItem(LS)||'{}');
+    if(d.role && ROLES[d.role]) S.role=d.role;
+    S.pins=d.pins||[]; S.recents=d.recents||[]; S.threads=d.threads||{};
+    if(d.facets) Object.entries(d.facets).forEach(([k,v])=>{ if(F[k]) v.forEach(x=>F[k].add(x)); });
+    return d;
+  }catch(e){ return {}; }
+}
+const threadKey=()=>S.doc?S.doc.id:(S.div?('div:'+S.div):'all');
+function thread(){ const k=threadKey(); if(!S.threads[k]) S.threads[k]=[]; return S.threads[k]; }
+
+function toast(msg){
+  const t=document.createElement('div'); t.id='toast'; t.textContent=msg;
+  document.body.appendChild(t); setTimeout(()=>t.remove(), 2200);
 }
 
-/* ---------- 2. Rail & index ---------- */
-const divsNav = $('#divs');
-function buildRail(){
-  divsNav.innerHTML='';
+/* ---------- 3. Manifest ---------- */
+async function boot(){
+  const saved=load();
+  try{
+    const r=await fetch('data/manifest.json',{cache:'no-cache'});
+    S.man=await r.json();
+  }catch(e){ S.man={divisions:[],documents:[],facets:{}}; }
+  S.man.documents.forEach(d=>{ d.district=d.district||['Statewide']; });
+  fetch('data/search-index.json',{cache:'force-cache'}).then(r=>r.ok?r.json():null)
+    .then(j=>{ S.idx=j; }).catch(()=>{});
+  fetch('data/glossary.json',{cache:'force-cache'}).then(r=>r.ok?r.json():null)
+    .then(j=>{ GLOSSARY=j||{}; }).catch(()=>{});
+
+  setRole(S.role, true);
+  buildDivs();
+  const fromHash=readHash();
+  if(!fromHash){
+    if(saved.div) S.div=saved.div;
+    const d=saved.docId ? S.man.documents.find(x=>x.id===saved.docId) : null;
+    setDiv(S.div, true); if(d) selectDoc(d, true);
+  }
+  renderFacets(); renderChips(); renderList(); paintWork();
+  probe();
+}
+async function probe(){
+  if(location.protocol==='file:') return;
+  try{ const r=await fetch('api/chat',{method:'GET'}); S.proxy=(r.status===405); }catch(e){ S.proxy=false; }
+}
+
+/* ---------- 4. Divisions, facets, index ---------- */
+function divCounts(){
+  const c={}; (S.man.documents||[]).forEach(d=>{ c[d.div]=(c[d.div]||0)+1; }); return c;
+}
+function buildDivs(){
+  const bar=$('#subbar'), c=divCounts(); bar.innerHTML='';
   const all=document.createElement('button');
-  all.className='div-btn'; all.dataset.div='';
-  all.innerHTML='<b>ALL</b><em>index</em>';
-  all.title='All divisions';
-  all.addEventListener('click', ()=>setDivision(null));
-  divsNav.appendChild(all);
-  const counts={};
-  (S.manifest.documents||[]).forEach(x=>{ counts[x.div]=(counts[x.div]||0)+1; });
-  (S.manifest.divisions||[]).filter(d=>counts[d.id]>0).forEach(d=>{
+  all.className='dv'+(S.div?'':' on'); all.dataset.div='';
+  all.innerHTML='All <span class="c">'+(S.man.documents||[]).length+'</span>';
+  all.addEventListener('click',()=>setDiv(null));
+  bar.appendChild(all);
+  (S.man.divisions||[]).filter(d=>c[d.id]).forEach(d=>{
     const b=document.createElement('button');
-    b.className='div-btn'; b.dataset.div=d.id; b.title=d.label;
-    b.setAttribute('aria-label', d.label);
-    const SHORT={ld:'design',sb:'bridge',te:'traffic',ed:'environ',tmpd:'planning',lad:'local',
-                 mat:'materials',con:'constr',rw:'row',mnt:'maint',prog:'program',amd:'assets',
-                 cr:'civil',sc:'contract',itd:'systems',bisd:'process',asd:'admin',ptd:'perform',gov:'policy'};
-    b.innerHTML='<b>'+esc(d.code)+'</b><em>'+esc(SHORT[d.id]||d.label.split(/[ &]/)[0].slice(0,8))+'</em>';
-    b.addEventListener('click', ()=>setDivision(d.id));
-    divsNav.appendChild(b);
+    b.className='dv'+(S.div===d.id?' on':'')+(d.id==='mine'?' mine':'');
+    b.dataset.div=d.id; b.title=d.label;
+    b.innerHTML=esc(d.code)+' <span class="c">'+c[d.id]+'</span>';
+    b.addEventListener('click',()=>setDiv(d.id));
+    bar.appendChild(b);
   });
 }
-function setDivision(id){
-  S.div=id;
-  $$('.div-btn').forEach(b=>{
-    const on = (b.dataset.div||'') === (id||'');
-    b.classList.toggle('active', on); b.setAttribute('aria-pressed', on);
-  });
-  const d = id ? (S.manifest.divisions||[]).find(x=>x.id===id) : null;
-  const sc = $('#divscope');
-  if(d){ sc.hidden=false; sc.querySelector('b').textContent=d.label+' ('+d.code+')';
-         sc.querySelector('span').textContent=d.scope||''; }
-  else { sc.hidden=false; sc.querySelector('b').textContent='All divisions';
-         sc.querySelector('span').textContent='Every indexed memorandum and manual. Pick a division to narrow, or search by number.'; }
-  renderFacets(); renderChips(); renderDocs();
-  if(innerWidth<900) closeSide();
+function setDiv(id, quiet){
+  S.div=id||null;
+  $$('.dv').forEach(b=>b.classList.toggle('on',(b.dataset.div||'')===(S.div||'')));
+  if(!quiet){ S.doc=null; renderFacets(); renderChips(); renderList(); paintWork(); save(); writeHash(); }
 }
-function docList(){
-  const q=($('#search').value||'').trim();
-  const scores = q ? searchScore(q) : null;
-  let pool=(S.manifest.documents||[]).filter(d=>{
-    if(S.div && d.div!==S.div) return false;
-    if(!passesFacets(d)) return false;
+function pool(){ return (S.man.documents||[]).filter(d=>!S.div||d.div===S.div); }
+function passes(d){
+  for(const f of Object.keys(F)){
+    if(!F[f].size) continue;
+    const v=d[f]?(Array.isArray(d[f])?d[f]:[d[f]]):[];
+    if(![...F[f]].some(x=>v.includes(x))) return false;
+  }
+  return true;
+}
+function renderFacets(){
+  const box=$('#fpanel');
+  if(FTAB==='all'){ box.hidden=true; return; }
+  box.hidden=false;
+  const counts=new Map();
+  pool().forEach(d=>(d[FTAB]||[]).forEach(v=>counts.set(v,(counts.get(v)||0)+1)));
+  const opts=(S.man.facets&&S.man.facets[FTAB])||[...counts.keys()].sort();
+  box.innerHTML='';
+  opts.forEach(v=>{
+    const n=counts.get(v)||0;
+    const b=document.createElement('button');
+    b.className='frow'+(F[FTAB].has(v)?' on':'')+(n?'':' nil');
+    b.innerHTML='<span class="bx"></span><span>'+esc(v)+'</span><span class="k">'+n+'</span>';
+    b.addEventListener('click',()=>{ F[FTAB].has(v)?F[FTAB].delete(v):F[FTAB].add(v);
+      renderFacets(); renderChips(); renderList(); save(); });
+    box.appendChild(b);
+  });
+}
+function renderChips(){
+  const box=$('#chips'), on=[];
+  Object.keys(F).forEach(f=>F[f].forEach(v=>on.push([f,v])));
+  if(!on.length){ box.hidden=true; return; }
+  box.hidden=false; box.innerHTML='';
+  on.forEach(([f,v])=>{
+    const c=document.createElement('button'); c.className='chip';
+    c.innerHTML=esc(v)+' <b>×</b>';
+    c.addEventListener('click',()=>{ F[f].delete(v); renderFacets(); renderChips(); renderList(); save(); });
+    box.appendChild(c);
+  });
+  const z=document.createElement('button'); z.className='zap'; z.textContent='Clear';
+  z.addEventListener('click',()=>{ Object.keys(F).forEach(f=>F[f].clear());
+    renderFacets(); renderChips(); renderList(); save(); });
+  box.appendChild(z);
+}
+function score(q){
+  if(!S.idx||!q) return null;
+  const terms=q.toLowerCase().split(/\s+/).filter(t=>t.length>1);
+  if(!terms.length) return null;
+  const N=S.idx.docs.length, sc=new Map();
+  terms.forEach(t=>{
+    const keys=S.idx.terms[t]?[t]:Object.keys(S.idx.terms).filter(k=>k.startsWith(t)).slice(0,40);
+    keys.forEach(k=>{
+      const posts=S.idx.terms[k]; if(!posts) return;
+      const idf=Math.log(1+N/posts.length);
+      posts.forEach(([di,tf])=>sc.set(di,(sc.get(di)||0)+idf*(1+Math.log(tf))*(k===t?1:.6)));
+    });
+  });
+  const out=new Map(); sc.forEach((v,di)=>out.set(S.idx.docs[di],v)); return out;
+}
+function snippet(id,q){
+  const b=CORPUS.get(id); if(!b||!b.text) return '';
+  const terms=q.toLowerCase().split(/\s+/).filter(t=>t.length>2);
+  const low=b.text.toLowerCase(); let at=-1;
+  for(const t of terms){ at=low.indexOf(t); if(at>=0) break; }
+  if(at<0) return '';
+  const s=Math.max(0,at-70), frag=b.text.slice(s,s+180).replace(/\s+/g,' ').trim();
+  return esc(frag).replace(new RegExp('('+terms.map(t=>t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')','ig'),'<mark>$1</mark>');
+}
+function results(){
+  const q=($('#q').value||'').trim(), sc=q?score(q):null;
+  let list=pool().filter(d=>{
+    if(!passes(d)) return false;
     if(!q) return true;
     const meta=(d.id+' '+d.title+' '+(d.note||'')+' '+(d.topic||[]).join(' ')).toLowerCase();
-    return meta.includes(q.toLowerCase()) || (scores && scores.has(d.id));
+    return meta.includes(q.toLowerCase()) || (sc&&sc.has(d.id));
   });
-  if(q && scores){
-    pool.forEach(d=>{
-      const meta=(d.id+' '+d.title).toLowerCase().includes(q.toLowerCase()) ? 6 : 0;
-      d._score=(scores.get(d.id)||0)+meta;
-    });
-    pool.sort((a,b)=>(b._score||0)-(a._score||0));
+  if(q&&sc){
+    list.forEach(d=>{ d._s=(sc.get(d.id)||0)+((d.id+' '+d.title).toLowerCase().includes(q.toLowerCase())?6:0); });
+    list.sort((a,b)=>(b._s||0)-(a._s||0));
   }
-  return pool;
+  return list;
 }
-function renderDocs(){
-  const q=($('#search').value||'').trim();
-  const list=docList(), wrap=$('#docs');
+function renderList(){
+  const q=($('#q').value||'').trim(), wrap=$('#list'), list=results();
+  $('#n').textContent=list.length;
   wrap.innerHTML='';
-  $('#count').textContent=list.length;
   if(!list.length){
-    wrap.innerHTML='<div id="empty">No documents match.<br>Clear filters, or run '+
-      '<code>tools/build-manifest.py</code> to load the full VDOT index.</div>';
+    wrap.innerHTML='<div id="none">Nothing matches.<br>Clear filters, or run <code>tools/build-manifest.py</code> for the full VDOT index.</div>';
     return;
   }
-  list.forEach(doc=>{
-    const b=document.createElement('button');
-    b.className='doc'+(S.doc && S.doc.id===doc.id ? ' active':'')+(doc.mine?' mine':'');
-    b.dataset.id=doc.id;
-    const snip=q?snippet(doc.id,q):'';
-    const badges=[];
-    if(doc.kind && doc.kind!=='IIM') badges.push('<span class="badge kind">'+esc(doc.kind)+'</span>');
-    if(doc.status && doc.status!=='current') badges.push('<span class="badge warn">'+esc(doc.status)+'</span>');
-    if(doc.mine) badges.push('<span class="badge mine">yours</span>');
-    else if(doc.text) badges.push('<span class="badge text">full text</span>');
-    (doc.topic||[]).slice(0,2).forEach(t=>badges.push('<span class="badge">'+esc(t)+'</span>'));
-    b.innerHTML='<span class="id">'+esc(doc.id)+
-      (doc.revision?'<span class="rev">rev '+esc(doc.revision)+'</span>':'')+
-      (doc.effective?'<span class="rev">'+esc(doc.effective)+'</span>':'')+
-      '</span><span class="ttl">'+esc(doc.title)+'</span>'+
-      (snip?'<span class="hit">'+snip+'</span>':'')+
-      (badges.length?'<span class="badges">'+badges.join('')+'</span>':'');
-    wrap.appendChild(b);
+  const pins=list.filter(d=>S.pins.includes(d.id));
+  const rest=list.filter(d=>!S.pins.includes(d.id));
+  if(pins.length && !q){ wrap.appendChild(sectionRow('Pinned',pins.length)); pins.forEach(d=>wrap.appendChild(itemRow(d,q))); }
+  if(pins.length && !q) wrap.appendChild(sectionRow(S.div?'In this division':'All documents',rest.length));
+  rest.forEach(d=>wrap.appendChild(itemRow(d,q)));
+}
+function sectionRow(label,count){
+  const s=document.createElement('div'); s.className='sect';
+  s.innerHTML=esc(label)+'<span class="k">'+count+'</span>'; return s;
+}
+function itemRow(d,q){
+  const b=document.createElement('button');
+  b.className='it'+(S.doc&&S.doc.id===d.id?' on':'');
+  b.dataset.id=d.id;
+  const badges=[];
+  if(d.mine) badges.push('<span class="bd t">yours</span>');
+  else if(d.text) badges.push('<span class="bd t">full text</span>');
+  if(d.kind&&d.kind!=='IIM') badges.push('<span class="bd k">'+esc(d.kind)+'</span>');
+  if(d.status&&!['current','uploaded'].includes(d.status)) badges.push('<span class="bd w">'+esc(d.status)+'</span>');
+  (d.topic||[]).slice(0,2).forEach(t=>badges.push('<span class="bd">'+esc(t)+'</span>'));
+  const sn=q?snippet(d.id,q):'';
+  b.innerHTML='<span class="id">'+esc(d.id)+
+    (d.revision?'<span class="rv">rev '+esc(d.revision)+'</span>':'')+
+    (d.effective?'<span class="rv">'+esc(d.effective)+'</span>':'')+'</span>'+
+    '<span class="tt">'+esc(d.title)+'</span>'+
+    (sn?'<span class="snip">'+sn+'</span>':'')+
+    (badges.length?'<span class="bg">'+badges.join('')+'</span>':'');
+  const pin=document.createElement('button');
+  pin.className='pin'+(S.pins.includes(d.id)?' on':''); pin.setAttribute('aria-label','Pin');
+  pin.innerHTML='<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5l1.9 3.9 4.3.6-3.1 3 .7 4.3L8 11.3l-3.8 2 .7-4.3-3.1-3 4.3-.6z"/></svg>';
+  pin.addEventListener('click',e=>{ e.stopPropagation();
+    S.pins.includes(d.id)?S.pins=S.pins.filter(x=>x!==d.id):S.pins.push(d.id);
+    save(); renderList(); });
+  b.appendChild(pin);
+  return b;
+}
+$('#list').addEventListener('click',e=>{
+  const b=e.target.closest('.it'); if(!b) return;
+  const d=(S.man.documents||[]).find(x=>x.id===b.dataset.id);
+  selectDoc(S.doc&&S.doc.id===b.dataset.id?null:d);
+});
+$('#q').addEventListener('input',renderList);
+$$('.ftab').forEach(t=>t.addEventListener('click',()=>{
+  FTAB=(FTAB===t.dataset.f&&t.dataset.f!=='all')?'all':t.dataset.f;
+  $$('.ftab').forEach(x=>x.classList.toggle('on',x.dataset.f===FTAB));
+  renderFacets();
+}));
+
+/* ---------- 5. Workspace ---------- */
+const feed=$('#feed'), col=$('#col'), input=$('#in');
+function paintWork(){
+  const d=S.doc, dv=d?(S.man.divisions||[]).find(x=>x.id===d.div)
+                   :(S.div?(S.man.divisions||[]).find(x=>x.id===S.div):null);
+  $('#crumb').textContent = d ? (dv?dv.label+'  ›  ':'')+d.id+(d.revision?'  ›  rev '+d.revision:'')
+                              : (dv?dv.label:'All divisions');
+  $('#title').textContent = d ? d.title : 'VDOT guidance, answered';
+  const link=$('#open-vdot');
+  if(d&&d.url&&!d.mine){ link.hidden=false; link.href=d.url; } else link.hidden=true;
+  input.placeholder = d ? 'Ask about '+d.id+'…' : 'Ask about VDOT guidance…';
+  buildAsks(); render();
+  if(!$('#ctx').hidden) renderCtx();
+}
+function selectDoc(d, quiet){
+  S.doc=d||null; S.cur=-1;
+  if(d){
+    S.recents=[d.id,...S.recents.filter(x=>x!==d.id)].slice(0,20);
+    if(!d.mine) loadCorpus(d.id).then(()=>{ renderList(); if(!$('#ctx').hidden) renderCtx(); });
+  }
+  renderList(); paintWork();
+  if(!quiet){ save(); writeHash(); }
+  if(innerWidth<=1100) document.body.classList.remove('idx');
+}
+async function loadCorpus(id){
+  if(CORPUS.has(id)) return CORPUS.get(id);
+  try{
+    const r=await fetch('data/corpus/'+slugOf(id)+'.json',{cache:'force-cache'});
+    if(!r.ok) throw 0;
+    const b=await r.json(); CORPUS.set(id,b); return b;
+  }catch(e){ CORPUS.set(id,null); return null; }
+}
+function buildAsks(){
+  const box=$('#asks'), role=ROLES[S.role];
+  const mine=S.doc&&S.doc.mine;
+  const labels = mine
+    ? [['Summarize','this document'],['Which guidance','applies here'],['Review','compliance check'],['Extract','commitments']]
+    : role.asks;
+  box.innerHTML='';
+  labels.forEach((l,i)=>{
+    const b=document.createElement('button'); b.className='ask'; b.dataset.i=i;
+    b.innerHTML='<b>'+esc(l[0])+'</b><i>'+esc(l[1])+'</i>';
+    b.addEventListener('click',()=>runAsk(i,b));
+    box.appendChild(b);
   });
 }
-$('#docs').addEventListener('click', e=>{
-  const b=e.target.closest('.doc'); if(!b) return;
-  const doc=(S.manifest.documents||[]).find(d=>d.id===b.dataset.id);
-  selectDoc(S.doc && S.doc.id===b.dataset.id ? null : doc);
-});
-$('#search').addEventListener('input', renderDocs);
-addEventListener('keydown', e=>{
-  if(e.key==='/' && !/input|textarea/i.test(e.target.tagName)){ e.preventDefault(); $('#search').focus(); }
-});
-
-function selectDoc(doc){
-  S.doc=doc; S.history=[];
-  renderDocs();
-  const dv = doc ? (S.manifest.divisions||[]).find(x=>x.id===doc.div) : null;
-  $('#doc-title').textContent = doc ? doc.title : 'VDOT guidance console';
-  $('#doc-div').textContent = doc
-    ? (dv? dv.label+'  ›  ' : '') + doc.id + (doc.revision? '  ›  rev '+doc.revision : '')
-    : (S.div ? ((S.manifest.divisions||[]).find(x=>x.id===S.div)||{}).label : 'All divisions');
-  const link=$('#doclink');
-  if(doc && doc.url && !doc.mine){ link.hidden=false; link.href=doc.url; } else link.hidden=true;
-  $('#prompt-in').placeholder = doc ? 'Ask about '+doc.id+'…' : 'Ask about VDOT guidance…';
-  $('#detail-btn').hidden = !doc;
-  if(doc){ loadCorpus(doc.id).then(()=>{ if(S.doc && S.doc.id===doc.id) renderDocs(); }); renderDetail(); }
-  else closeDetail();
-  startCard();
-  if(innerWidth<900) closeSide();
+function askText(i){
+  const d=S.doc, role=S.role;
+  if(d&&d.mine) return [
+    'Summarize this document: what it is, what it covers, and the key figures, dates and commitments.',
+    'Which VDOT guidance governs this document? Name the IIMs, manuals and regulations by number and say why each applies.',
+    'Review this document against the governing VDOT requirements. List what is missing, inconsistent or likely to draw a review comment, citing both the document and the VDOT section.',
+    'Extract every commitment, deadline, quantity and responsible party from this document as a table.'][i];
+  const t=d?d.id:(S.div?((S.man.divisions||[]).find(x=>x.id===S.div)||{}).label+' guidance':'VDOT guidance');
+  const byRole={
+    locality:['Summarize '+t+'. Lead with the operative requirements, then conditions and exceptions. Cite revision and sections.',
+      'What exactly is the locality responsible for under '+t+'? Separate what we do, what VDOT does, and what needs an agreement.',
+      'Where does VDOT review or approve under '+t+'? Name the approval, who holds it, and what triggers it.',
+      'What other VDOT documents does '+t+' depend on or reference? Note anything superseded.'],
+    consultant:['Summarize '+t+'. Lead with the operative requirements, then conditions and exceptions. Cite revision and sections.',
+      'What are the design criteria and thresholds in '+t+'? Give numbers in a table where possible.',
+      'What does '+t+' require on the plans and in the submittal? Sheet by sheet if it says so.',
+      'What other VDOT documents does '+t+' reference or depend on? Note anything superseded.'],
+    contractor:['Summarize '+t+'. Lead with what must happen in the field, citing specification sections.',
+      'What are the field steps and hold points under '+t+'? Who inspects and when?',
+      'What documentation, testing and records does '+t+' require during construction?',
+      'What other specifications and standards does '+t+' tie to? Note anything superseded.'],
+    developer:['Summarize '+t+' from a permit applicant’s point of view.',
+      'What triggers '+t+' — which projects, entrances or streets fall under it, and what is exempt?',
+      'What is the submittal and review path under '+t+'? What do I file, with whom, and in what order?',
+      'What related regulations and standards apply alongside '+t+'?'],
+    vdot:['Summarize '+t+'. Lead with the operative requirements and cite revision and sections.',
+      'Who holds approval authority under '+t+', and what is delegated to the District?',
+      'What is the internal process under '+t+' — steps, owners and documentation?',
+      'What other guidance does '+t+' reference, supersede or depend on?'],
+    newcomer:['Explain '+t+' in plain language. What is it for, and who needs it?',
+      'Why does '+t+' exist? What problem is it solving, and what happens without it?',
+      'Where does '+t+' fit among VDOT’s manuals, standards and specifications? What should I read next?',
+      'What related documents should I know about, and in what order?'],
+  };
+  return (byRole[role]||byRole.consultant)[i];
 }
-
-/* ---------- 3. Chat ---------- */
-const feed=$('#feed'), msgCol=$('#msg-col'), promptIn=$('#prompt-in');
-function startCard(){
-  msgCol.innerHTML='';
-  if(S.history.length){ S.history.forEach(m=>addMsg(m.role==='user'?'user':'ai', m.display||m.content)); return; }
-  const d=document.createElement('div'); d.id='start';
-  const doc=S.doc;
-  d.innerHTML = doc
-    ? '<h2>'+esc(doc.id)+'</h2><p>'+esc(doc.title)+'</p>'+
-      '<div class="warn">Answers are read from the live VDOT document at question time and cite what was retrieved. '+
-      'IIMs are revised often — confirm the revision on the official page before relying on it for design or submittal.</div>'
-    : '<h2>VDOT guidance console</h2>'+
-      '<p>Pick a division on the left rail, choose a document, or just ask. Answers are grounded by fetching the '+
-      'memorandum from vdot.virginia.gov and cite the document, revision and section.</p>'+
-      '<div class="warn">Unofficial reference tool. Not VDOT approval, not engineering judgment, and no substitute '+
-      'for your District office or project point of contact.</div>';
-  msgCol.appendChild(d);
+let askBusy=false;
+function runAsk(i,b){
+  if(S.busy||askBusy) return;
+  askBusy=true; b.classList.add('on');
+  S.fast=!(S.doc&&CORPUS.get(S.doc.id));
+  send(askText(i));
+  setTimeout(()=>{ askBusy=false; b.classList.remove('on'); S.fast=false; }, 400);
 }
-function addMsg(cls, text){
-  const s=$('#start'); s&&s.remove();
-  const el=document.createElement('div'); el.className='msg '+cls;
-  if(cls==='ai'){ el.innerHTML=md(text); if(text) addCopy(el,text); }
+function render(){
+  const h=thread();
+  col.innerHTML='';
+  if(!h.length){ hello(); return; }
+  h.forEach(m=>addMsg(m.role==='user'?'u':'a', m.display||m.content, m.cites));
+  feed.scrollTop=feed.scrollHeight;
+}
+function hello(){
+  const role=ROLES[S.role], d=S.doc;
+  const w=document.createElement('div'); w.id='hello';
+  const suggestions = d ? [
+      ['Summarize '+d.id,'the operative requirements'],
+      ['What changed recently','check the current revision'],
+      ['Common mistakes','what reviewers flag'],
+      ['Plain-language version','explain it simply'],
+    ] : [
+      ['What applies to my project?','describe it and I’ll map the guidance'],
+      ['Locally administered project basics','LAP Manual, agreements, approvals'],
+      ['Entrance / land use permit path','what to file and with whom'],
+      ['Which manual controls?','design vs standards vs specs'],
+    ];
+  w.innerHTML='<h1>'+(d?esc(d.title):'What do you need from VDOT guidance?')+'</h1>'+
+    '<p class="sub">'+(d
+      ? 'Answers are grounded in this document and cite the revision and section they came from.'
+      : 'Working as <b>'+esc(role.name)+'</b>. '+esc(role.blurb)+' Pick a document on the left, or just ask.')+'</p>';
+  const cards=document.createElement('div'); cards.className='cards';
+  suggestions.forEach(([t,s])=>{
+    const b=document.createElement('button'); b.className='card';
+    b.innerHTML='<b>'+esc(t)+'</b><span>'+esc(s)+'</span>';
+    b.addEventListener('click',()=>send(d?askOf(t,d):t));
+    cards.appendChild(b);
+  });
+  w.appendChild(cards);
+  const tips=document.createElement('div'); tips.className='tips';
+  tips.innerHTML='<span class="tip"><kbd>⌘K</kbd>search everything</span>'+
+    '<span class="tip"><kbd>/</kbd>filter index</span>'+
+    '<span class="tip"><kbd>J</kbd><kbd>K</kbd>move through list</span>'+
+    '<span class="tip">drag a PDF in to review it</span>';
+  w.appendChild(tips);
+  const n=document.createElement('div'); n.className='notice';
+  n.textContent='Unofficial reference tool. Not VDOT approval and not engineering judgment — confirm the current revision on the official page before relying on anything for design or submittal.';
+  w.appendChild(n);
+  col.appendChild(w);
+}
+function askOf(t,d){
+  if(/^Summarize/.test(t)) return askText(0);
+  if(/changed/.test(t)) return 'Check whether '+d.id+' has been revised. Fetch the current VDOT page, report the revision and effective date you find, and compare against '+(d.revision||'the value on file')+'.';
+  if(/mistakes/.test(t)) return 'What do practitioners most often get wrong or miss when applying '+d.id+'? Be specific and cite sections.';
+  return 'Explain '+d.id+' in plain language, defining every acronym on first use.';
+}
+function addMsg(cls,text,cites){
+  const h=$('#hello'); h&&h.remove();
+  const el=document.createElement('div'); el.className='m '+cls;
+  if(cls==='a'){ el.innerHTML=glossify(md(text)); if(text) foot(el,text,cites); }
   else el.textContent=text;
-  msgCol.appendChild(el); feed.scrollTop=feed.scrollHeight;
+  col.appendChild(el); feed.scrollTop=feed.scrollHeight;
   return el;
 }
-function addCopy(el, text){
-  const b=document.createElement('button'); b.className='copy'; b.textContent='Copy';
-  b.addEventListener('click',()=>navigator.clipboard&&navigator.clipboard.writeText(text)
-    .then(()=>{ b.textContent='Copied'; setTimeout(()=>b.textContent='Copy',1200); }));
-  el.appendChild(b);
+function foot(el,text,cites){
+  const f=document.createElement('div'); f.className='mfoot';
+  const mk=(label,fn,cls)=>{ const b=document.createElement('button'); b.textContent=label;
+    if(cls) b.className=cls; b.addEventListener('click',()=>fn(b)); f.appendChild(b); return b; };
+  mk('Copy',b=>{ navigator.clipboard&&navigator.clipboard.writeText(text);
+    b.textContent='Copied'; setTimeout(()=>b.textContent='Copy',1200); });
+  if(S.doc&&S.doc.url&&!S.doc.mine){
+    const a=document.createElement('a'); a.href=S.doc.url; a.target='_blank'; a.rel='noopener noreferrer';
+    a.textContent='Verify on VDOT ↗'; f.appendChild(a);
+  }
+  if(S.doc&&CORPUS.get(S.doc.id)){ const s=document.createElement('button'); s.className='ok';
+    s.textContent='from cached text'; f.appendChild(s); }
+  mk('👍',b=>{ b.classList.toggle('on'); fb(text,1); },'fb');
+  mk('👎',b=>{ b.classList.toggle('on'); fb(text,-1); },'fb');
+  el.appendChild(f);
+  if(cites&&cites.length){
+    const c=document.createElement('div'); c.className='cites';
+    c.innerHTML='<b>Sources retrieved</b>'+cites.slice(0,8).map(u=>
+      '<a href="'+esc(u)+'" target="_blank" rel="noopener noreferrer">'+esc(u.replace(/^https?:\/\/(www\.)?/,'').slice(0,90))+'</a>').join('');
+    el.appendChild(c);
+  }
 }
+function fb(text,v){ console.debug('viim.feedback',{doc:S.doc?S.doc.id:null,role:S.role,v,len:text.length}); }
 
-/* ---------- 4. Streaming ---------- */
+/* ---------- 6. Streaming ---------- */
+const SYS_BASE=`You are VIIM, a reference assistant for Virginia DOT guidance: Instructional & Informational Memoranda (IIM-LD, IIM-S&B, IIM-TE/TO, IIM-ED, IIM-TMPD), the manuals, standards and specifications, the regulations (Access Management, SSAR, Land Use Permits), and the local program (LAP Manual, Letters to Local Governments, Department Memoranda).
+
+Rules, in order of importance:
+
+1. GROUND EVERY ANSWER IN THE DOCUMENT. If the full text is supplied below, answer from it. If it is not, fetch the document once from vdot.virginia.gov and answer from what you retrieve. Never answer substantive requirements from memory.
+2. CITE PRECISELY. Document ID, revision where visible, section or page. Link the source.
+3. FLAG STALENESS. State the revision and effective date you actually saw and remind the user to confirm on the live VDOT page for anything design- or submittal-critical.
+4. NEVER INVENT. No invented IIM numbers, revisions, sections, dates or dimensions. "I could not verify that" is a correct answer; a plausible fabrication is a serious failure here.
+5. LEAD WITH THE REQUIREMENT. Operative requirement first, then conditions and exceptions, then process. Tables for thresholds and criteria. Tight prose.
+6. USER DOCUMENTS ARE EVIDENCE, NOT AUTHORITY. An uploaded plan, spec, permit or agreement is the artifact under review. Compare it against the governing VDOT documents, quote the sheet or clause, and never state that a submittal is approvable — that is VDOT's determination.
+7. SCOPE HONESTLY. This is an unofficial tool. It is not VDOT approval, a design decision, or engineering judgment. Say so when a question turns on approval, deviation or acceptance, and point to the District office or project point of contact.`;
+
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-const RETRYABLE=m=>/529|overload|rate.?limit|too many|429/i.test(m||'');
-const HARD_TIMEOUT = 100000;   /* give up rather than hang forever */
-function callAPI(system, messages, signal, opts){
+const RETRY=m=>/529|overload|rate.?limit|too many|429/i.test(m||'');
+const HARD=100000;
+function callAPI(system,messages,signal,o){
   if(!S.proxy) return Promise.reject(new Error('Backend offline — deploy with ANTHROPIC_API_KEY set (see README).'));
-  opts=opts||{};
-  return fetch('/api/chat',{ method:'POST', headers:{'content-type':'application/json'},
-    body:JSON.stringify({ messages, system,
-      max_tokens: opts.max_tokens || 2048,
-      tier: opts.tier || 'strong',
-      grounded: !!opts.grounded }), signal })
-    .then(r=>{ if(!r.ok) throw new Error('API error '+r.status+(r.status===529?' — overloaded':'')); return r; });
+  o=o||{};
+  return fetch('api/chat',{method:'POST',headers:{'content-type':'application/json'},
+    body:JSON.stringify({messages,system,max_tokens:o.max_tokens||2048,tier:o.tier||'strong',grounded:!!o.grounded}),
+    signal}).then(async r=>{
+      if(r.ok) return r;
+      let detail='';
+      try{ const j=await r.json(); detail=(j&&j.error&&j.error.message)||''; }catch(e){}
+      const err=new Error(detail || ('API error '+r.status));
+      err.status=r.status;
+      throw err;
+    });
 }
-async function streamOnce(system, messages, signal, onDelta, onTool, opts){
-  const res=await callAPI(system, messages, signal, opts);
-  const reader=res.body.getReader(), dec=new TextDecoder();
-  let buf='', acc='';
-  /* batch DOM writes to one per frame — long answers no longer thrash layout */
-  let pending=null, raf=0;
-  const paint=(t)=>{ pending=t; if(raf) return;
-    raf=requestAnimationFrame(()=>{ raf=0; onDelta(pending); }); };
+async function streamOnce(system,messages,signal,onDelta,onTool,o){
+  const res=await callAPI(system,messages,signal,o);
+  const rd=res.body.getReader(), dec=new TextDecoder();
+  let buf='',acc='',cites=[],pending=null,raf=0;
+  const paint=t=>{ pending=t; if(raf) return; raf=requestAnimationFrame(()=>{ raf=0; onDelta(pending); }); };
   const flush=()=>{ if(raf){ cancelAnimationFrame(raf); raf=0; } if(pending!==null) onDelta(pending); };
   while(true){
-    const {done,value}=await reader.read(); if(done) break;
+    const {done,value}=await rd.read(); if(done) break;
     buf+=dec.decode(value,{stream:true});
     let nl;
     while((nl=buf.indexOf('\n'))>=0){
@@ -838,180 +1065,148 @@ async function streamOnce(system, messages, signal, onDelta, onTool, opts){
       const data=line.slice(5).trim();
       if(!data||data==='[DONE]') continue;
       let j; try{ j=JSON.parse(data); }catch(e){ continue; }
-      if(j.type==='content_block_start' && j.content_block){
+      if(j.type==='content_block_start'&&j.content_block){
         const t=j.content_block.type;
         if(t==='server_tool_use'||t==='web_fetch_tool_result'||t==='web_search_tool_result') onTool&&onTool(t);
+        const c=j.content_block.content;
+        if(c&&c.url&&!cites.includes(c.url)) cites.push(c.url);
       }
-      if(j.type==='content_block_delta' && j.delta && j.delta.text){ acc+=j.delta.text; paint(acc); }
+      if(j.type==='content_block_delta'&&j.delta){
+        if(j.delta.text){ acc+=j.delta.text; paint(acc); }
+        if(j.delta.citation&&j.delta.citation.url&&!cites.includes(j.delta.citation.url))
+          cites.push(j.delta.citation.url);
+      }
       if(j.type==='error') throw new Error((j.error&&j.error.message)||'stream error');
     }
   }
   flush();
   if(!acc){ const e=new Error('Empty response'); e.empty=true; throw e; }
-  return acc;
+  return {text:acc,cites};
 }
-async function streamWithRetry(system, messages, signal, onDelta, onWait, onTool, opts){
+async function withRetry(system,messages,signal,onDelta,onWait,onTool,o){
   for(let a=0;;a++){
-    try{ return await streamOnce(system, messages, signal, onDelta, onTool, opts); }
+    try{ return await streamOnce(system,messages,signal,onDelta,onTool,o); }
     catch(err){
-      const retryable = RETRYABLE(err.message) || err.empty;
-      if(err.name==='AbortError' || a>=2 || !retryable) throw err;
+      const ok=RETRY(err.message)||err.empty;
+      if(err.name==='AbortError'||a>=2||!ok) throw err;
       onWait&&onWait(a+1);
       await sleep(600*Math.pow(2,a)+Math.random()*300);
       if(signal.aborted){ const e=new Error('aborted'); e.name='AbortError'; throw e; }
     }
   }
 }
-function docContext(){
-  if(!S.doc) return S.div
-    ? '\n\nScope: the user is browsing the '+((S.manifest.divisions||[]).find(d=>d.id===S.div)||{}).label+' division.'
-    : '';
+function context(){
+  const role=ROLES[S.role];
+  let c='\n\nAUDIENCE\n'+role.sys+'\n';
   const d=S.doc;
+  if(!d) return c + (S.div?('\nScope: browsing the '+((S.man.divisions||[]).find(x=>x.id===S.div)||{}).label+' division.\n'):'');
   if(d.mine){
     const rec=UPLOADS.get(d.id);
-    return '\n\nSELECTED DOCUMENT — UPLOADED BY THE USER\n'+
-      '- File: '+d.title+(rec?(' ('+rec.kind+', '+humanSize(rec.bytes)+')'):'')+'\n'+
-      'The file itself is attached in the conversation. It is the artifact under review, not VDOT guidance. '+
-      'Read it directly, cite sheet/section/page from it, and compare it against the governing VDOT documents '+
-      'in the index where relevant.\n';
+    return c+'\n\nSELECTED — UPLOADED BY THE USER\n- File: '+d.title+(rec?' ('+rec.kind+')':'')+
+      '\nThe file is attached in the conversation. It is the artifact under review, not VDOT guidance. '+
+      'Cite sheet/section/page from it and compare against the governing VDOT documents.\n';
   }
-  const body=CORPUS.get(d.id);
-  let ctx='\n\nSELECTED DOCUMENT\n'+
-    '- ID: '+d.id+'\n- Title: '+d.title+'\n- Type: '+(d.kind||'IIM')+'\n'+
+  const b=CORPUS.get(d.id);
+  c+='\n\nSELECTED DOCUMENT\n- ID: '+d.id+'\n- Title: '+d.title+'\n- Type: '+(d.kind||'IIM')+'\n'+
     (d.revision?'- Revision on file: '+d.revision+'\n':'')+
     (d.effective?'- Effective date on file: '+d.effective+'\n':'')+
     (d.status&&d.status!=='current'?'- Status: '+d.status+'\n':'')+
     (d.supersedes?'- Supersedes: '+d.supersedes.join(', ')+'\n':'')+
     (d.superseded_by?'- Superseded by: '+d.superseded_by.join(', ')+'\n':'')+
     (d.xrefs&&d.xrefs.length?'- References: '+d.xrefs.join(', ')+'\n':'')+
-    (d.referenced_by&&d.referenced_by.length?'- Referenced by: '+d.referenced_by.join(', ')+'\n':'')+
-    (d.authority&&d.authority.length?'- Authority cited: '+d.authority.join('; ')+'\n':'')+
-    (d.note?'- Note: '+d.note+'\n':'')+
-    (d.url?'- URL: '+d.url+'\n':'');
-  if(body && body.text){
-    const text=body.text.length>240000 ? body.text.slice(0,240000)+'\n[truncated]' : body.text;
-    ctx+='\nThe full extracted text follows. It was pulled from the URL above and cached with '+
-      'sha256 '+(body.sha256||'').slice(0,12)+'. Answer from THIS TEXT — do not re-fetch unless the user '+
-      'asks whether a newer revision exists, or the text plainly cannot answer the question. '+
-      'Cite section headings and page numbers from it.\n\n=== BEGIN '+d.id+' ===\n'+text+
-      '\n=== END '+d.id+' ===\n';
+    (d.authority&&d.authority.length?'- Authority: '+d.authority.join('; ')+'\n':'')+
+    (d.note?'- Note: '+d.note+'\n':'')+(d.url?'- URL: '+d.url+'\n':'');
+  if(b&&b.text){
+    const t=b.text.length>240000?b.text.slice(0,240000)+'\n[truncated]':b.text;
+    c+='\nFull extracted text follows (sha256 '+(b.sha256||'').slice(0,12)+'). Answer from THIS TEXT; do not '+
+       're-fetch unless asked whether a newer revision exists. Cite section headings and page numbers from it.\n\n'+
+       '=== BEGIN '+d.id+' ===\n'+t+'\n=== END '+d.id+' ===\n';
   } else {
-    ctx+='\nFull text is NOT cached for this document. Fetch the URL above ONCE, then answer from what '+
-      'you retrieved. Do not chain multiple fetches — if the first fetch does not resolve to the document, '+
-      'say so plainly, give what you can from the metadata above, and link the page for the user to open. '+
-      'Be concise; speed matters more than exhaustiveness here.\n';
+    c+='\nFull text is NOT cached. Fetch the URL above ONCE, then answer from what you retrieved. Do not chain '+
+       'fetches — if the first does not resolve to the document, say so, give what the metadata supports, and '+
+       'link the page. Be concise; speed matters.\n';
   }
-  return ctx;
+  return c;
 }
 async function run(){
   if(S.busy) return;
-  const ai=addMsg('ai',''); ai.innerHTML='<span class="typing"><i></i><i></i><i></i></span>';
-  feed.scrollTop=Math.max(0, ai.offsetTop-8);
+  const h=thread();
+  const el=addMsg('a',''); el.innerHTML='<span class="dots"><i></i><i></i><i></i></span>';
+  feed.scrollTop=Math.max(0, el.offsetTop-8);
   S.busy=true; S.ctrl=new AbortController();
-  const killer=setTimeout(()=>S.ctrl && S.ctrl.abort('timeout'), HARD_TIMEOUT);
-  $('#stop-btn').hidden=false; $('#send-btn').disabled=true;
-  const grounded = !!(S.doc && CORPUS.get(S.doc.id));
-  const opts={ grounded, tier: S.fast ? 'fast' : 'strong', max_tokens: grounded ? 2048 : 1600 };
+  const kill=setTimeout(()=>S.ctrl&&S.ctrl.abort('timeout'),HARD);
+  $('#stop').hidden=false; $('#send').disabled=true;
+  const grounded=!!(S.doc&&(CORPUS.get(S.doc.id)||S.doc.mine));
+  const o={grounded,tier:S.fast?'fast':'strong',max_tokens:grounded?2048:1600};
   let last='';
   try{
-    const acc=await streamWithRetry(
-      BASE_SYS+docContext(), S.history.map(m=>({role:m.role, content:m.content})), S.ctrl.signal,
-      a=>{ last=a; ai.innerHTML=md(a); },
-      n=>{ ai.innerHTML='<p><em>Busy — retrying ('+n+'/2)…</em></p>'; },
-      t=>{ if(!last) ai.innerHTML='<div class="fetching"><span class="typing"><i></i><i></i><i></i></span>'+
-             (t==='web_search_tool_result'?'searching vdot.virginia.gov':'reading the source document')+'</div>'; },
-      opts
-    );
-    S.history.push({role:'assistant', content:acc});
-    ai.innerHTML=md(acc); addCopy(ai, acc);
-    ANSWERS.set(cacheKey(S.history.filter(m=>m.role==='user').slice(-1)[0].content), acc);
-    if(S.doc && S.doc.url){
-      const sl=document.createElement('div'); sl.className='srcline';
-      sl.innerHTML='<a href="'+S.doc.url+'" target="_blank" rel="noopener noreferrer">'+esc(S.doc.id)+' on VDOT ↗</a>'+
-        (CORPUS.get(S.doc.id)?'<span class="corpus-note">from cached corpus</span>':'');
-      ai.appendChild(sl);
-    }
+    const {text,cites}=await withRetry(SYS_BASE+context(),
+      h.map(m=>({role:m.role,content:m.content})), S.ctrl.signal,
+      a=>{ last=a; el.innerHTML=glossify(md(a)); },
+      n=>{ el.innerHTML='<p><em>Busy — retrying ('+n+'/2)…</em></p>'; },
+      t=>{ if(!last) el.innerHTML='<div class="tool"><span class="dots"><i></i><i></i><i></i></span>'+
+            (t==='web_search_tool_result'?'searching vdot.virginia.gov':'reading the source document')+'</div>'; },
+      o);
+    h.push({role:'assistant',content:text,cites});
+    el.innerHTML=glossify(md(text)); foot(el,text,cites);
+    ANSWERS.set(threadKey()+'|'+(h.filter(m=>m.role==='user').slice(-1)[0]||{}).content,text);
+    save();
   }catch(err){
-    ai.remove();
+    el.remove();
     if(err.name==='AbortError'){
-      if(last){ S.history.push({role:'assistant',content:last}); addMsg('ai',last); }
-    }else{
-      const el=document.createElement('div'); el.className='msg err';
-      el.textContent =
-        err.empty ? 'The model returned nothing — usually a slow source document. Retry, or open it on VDOT. '
-        : /timeout|abort/i.test(String(err.message))
-          ? 'Timed out reading the source. Build the corpus (tools/build-corpus.py) to answer from cached text instead. '
-        : RETRYABLE(err.message) ? 'Upstream busy after several tries — wait a moment, then retry. '
-        : err.message+' ';
-      const b=document.createElement('button'); b.className='btn'; b.textContent='Retry';
-      b.addEventListener('click',()=>{ el.remove(); run(); });
-      el.appendChild(b); msgCol.appendChild(el); feed.scrollTop=feed.scrollHeight;
+      if(last){ h.push({role:'assistant',content:last}); addMsg('a',last); save(); }
+    } else {
+      const e=document.createElement('div'); e.className='m e';
+      e.textContent = err.empty ? 'The model returned nothing — usually a slow source document. Retry, or open it on VDOT. '
+        : /timeout|abort/i.test(String(err.message)) ? 'Timed out reading the source. Build the corpus (tools/build-corpus.py) to answer from cached text. '
+        : RETRY(err.message) ? 'Upstream busy after several tries — wait a moment and retry. '
+        : err.status===401 ? 'The backend rejected the API key — check ANTHROPIC_API_KEY in your Vercel environment variables. '
+        : err.status===403 ? 'Blocked by ALLOWED_ORIGINS — add this domain to that environment variable. '
+        : (err.message||'Request failed')+' ';
+      const b=document.createElement('button'); b.className='wbtn'; b.textContent='Retry';
+      b.addEventListener('click',()=>{ e.remove(); run(); });
+      e.appendChild(b); col.appendChild(e); feed.scrollTop=feed.scrollHeight;
     }
-  }finally{
-    clearTimeout(killer);
-    S.busy=false; S.ctrl=null;
-    $('#stop-btn').hidden=true; $('#send-btn').disabled=false;
+  } finally {
+    clearTimeout(kill); S.busy=false; S.ctrl=null;
+    $('#stop').hidden=true; $('#send').disabled=false;
   }
 }
-function cacheKey(t){ return (S.doc?S.doc.id:'none')+'|'+t.trim().toLowerCase(); }
 function send(text){
   if(S.busy) return;
   text=(text||'').trim();
   const staged=pending.filter(a=>!a.bad);
-  if(!text && !staged.length) return;
+  if(!text&&!staged.length) return;
   if(!text) text='Review the attached document'+(staged.length>1?'s':'')+
-    ' against the relevant VDOT guidance. Flag anything that looks non-compliant, missing or out of date.';
-  const ck=cacheKey(text);
-  if(ANSWERS.has(ck) && !staged.length){
-    S.history.push({role:'user', content:text}); addMsg('user', text);
-    const cached=ANSWERS.get(ck);
-    S.history.push({role:'assistant', content:cached});
-    const el=addMsg('ai', cached);
-    const n=document.createElement('div'); n.className='corpus-note'; n.textContent='cached answer';
-    el.appendChild(n);
-    promptIn.value=''; promptIn.style.height='auto';
-    return;
-  }
-  /* the selected document, if it is one of yours, rides along every turn
-     (cached after the first, so follow-ups stay fast) */
-  const selfUp = S.doc && S.doc.mine ? UPLOADS.get(S.doc.id) : null;
-  const carry = [];
-  if(selfUp && !staged.some(a=>a.id===selfUp.id)) carry.push(selfUp);
-
-  let content = text, display = text;
-  if(staged.length || carry.length){
-    content = [];
-    [...carry, ...staged].forEach(rec=>{
-      content.push(blocksFor(rec, true));
-      if(rec.kind!=='text') content.push({ type:'text',
-        text:'(attached document above: '+rec.name+')' });
+    ' against the relevant VDOT guidance. Flag anything non-compliant, missing or out of date.';
+  const h=thread();
+  const selfUp=S.doc&&S.doc.mine?UPLOADS.get(S.doc.id):null;
+  const carry=selfUp&&!staged.some(a=>a.id===selfUp.id)?[selfUp]:[];
+  let content=text, display=text;
+  if(staged.length||carry.length){
+    content=[];
+    [...carry,...staged].forEach(r=>{
+      content.push(blockFor(r,true));
+      if(r.kind!=='text') content.push({type:'text',text:'(attached: '+r.name+')'});
     });
-    content.push({ type:'text', text });
-    const names=[...carry, ...staged].map(r=>r.name);
-    display = text + '\n📎 ' + names.join(' · ');
-    clearStaged();
+    content.push({type:'text',text});
+    display=text+'\n📎 '+[...carry,...staged].map(r=>r.name).join(' · ');
+    clearFiles();
   }
-
-  S.history.push({role:'user', content, display});
-  addMsg('user', display);
-  promptIn.value=''; promptIn.style.height='auto';
+  h.push({role:'user',content,display});
+  addMsg('u',display);
+  input.value=''; input.style.height='auto';
   run();
 }
-$('#send-btn').addEventListener('click', ()=>send(promptIn.value));
-$('#stop-btn').addEventListener('click', ()=>S.ctrl&&S.ctrl.abort());
-promptIn.addEventListener('keydown', e=>{
-  if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); send(promptIn.value); }
-});
-promptIn.addEventListener('input', ()=>{ promptIn.style.height='auto';
-  promptIn.style.height=Math.min(promptIn.scrollHeight,152)+'px'; });
-if(window.visualViewport){
-  visualViewport.addEventListener('resize', ()=>{
-    $('#app').style.bottom=Math.max(0, innerHeight-visualViewport.height-visualViewport.offsetTop)+'px';
-  });
-}
+$('#send').addEventListener('click',()=>send(input.value));
+$('#stop').addEventListener('click',()=>S.ctrl&&S.ctrl.abort());
+input.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); send(input.value); } });
+input.addEventListener('input',()=>{ input.style.height='auto'; input.style.height=Math.min(input.scrollHeight,180)+'px'; });
+if(window.visualViewport) visualViewport.addEventListener('resize',()=>{
+  $('#app').style.bottom=Math.max(0,innerHeight-visualViewport.height-visualViewport.offsetTop)+'px'; });
+$('#new-btn').addEventListener('click',()=>{ S.threads[threadKey()]=[]; save(); render(); });
 
-/* ---------- 5. Markdown ---------- */
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+/* ---------- 7. Markdown ---------- */
 function inline(s){
   return s.replace(/`([^`]+)`/g,(_,c)=>'<code>'+c+'</code>')
     .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
@@ -1021,592 +1216,449 @@ function inline(s){
 }
 function md(src){
   const lines=esc(src).split('\n');
-  let out='', inCode=false, inUl=false, inOl=false, para=[], tbl=null;
-  const flushP=()=>{ if(para.length){ out+='<p>'+inline(para.join(' '))+'</p>'; para=[]; } };
-  const flushL=()=>{ if(inUl){out+='</ul>';inUl=false;} if(inOl){out+='</ol>';inOl=false;} };
-  const flushT=()=>{ if(tbl){ out+='<table>'+tbl+'</table>'; tbl=null; } };
-  const row=(l,cell)=>'<tr>'+l.split('|').slice(1,-1).map(c=>'<'+cell+'>'+inline(c.trim())+'</'+cell+'>').join('')+'</tr>';
+  let out='',code=false,ul=false,ol=false,para=[],tbl=null;
+  const fp=()=>{ if(para.length){ out+='<p>'+inline(para.join(' '))+'</p>'; para=[]; } };
+  const fl=()=>{ if(ul){out+='</ul>';ul=false;} if(ol){out+='</ol>';ol=false;} };
+  const ft=()=>{ if(tbl){ out+='<table>'+tbl+'</table>'; tbl=null; } };
+  const row=(l,c)=>'<tr>'+l.split('|').slice(1,-1).map(x=>'<'+c+'>'+inline(x.trim())+'</'+c+'>').join('')+'</tr>';
   for(let i=0;i<lines.length;i++){
     const raw=lines[i], l=raw.trim();
-    if(l.startsWith('```')){ flushP(); flushL(); flushT();
-      out+= inCode?'</code></pre>':'<pre><code>'; inCode=!inCode; continue; }
-    if(inCode){ out+=raw+'\n'; continue; }
+    if(l.startsWith('```')){ fp(); fl(); ft(); out+=code?'</code></pre>':'<pre><code>'; code=!code; continue; }
+    if(code){ out+=raw+'\n'; continue; }
     if(/^\|.*\|$/.test(l)){
-      const next=(lines[i+1]||'').trim();
-      if(!tbl && /^\|[\s:|-]+\|$/.test(next)){ tbl=row(l,'th'); i++; continue; }
+      const nx=(lines[i+1]||'').trim();
+      if(!tbl&&/^\|[\s:|-]+\|$/.test(nx)){ tbl=row(l,'th'); i++; continue; }
       if(tbl){ tbl+=row(l,'td'); continue; }
-    } else flushT();
+    } else ft();
     let m;
-    if(!l){ flushP(); flushL(); continue; }
-    if(m=l.match(/^(#{1,3})\s+(.*)/)){ flushP(); flushL(); const n=m[1].length;
-      out+='<h'+n+'>'+inline(m[2])+'</h'+n+'>'; continue; }
-    if(m=l.match(/^[-*•]\s+(.*)/)){ flushP(); if(inOl){out+='</ol>';inOl=false;}
-      if(!inUl){out+='<ul>';inUl=true;} out+='<li>'+inline(m[1])+'</li>'; continue; }
-    if(m=l.match(/^\d+[.)]\s+(.*)/)){ flushP(); if(inUl){out+='</ul>';inUl=false;}
-      if(!inOl){out+='<ol>';inOl=true;} out+='<li>'+inline(m[1])+'</li>'; continue; }
-    if(m=l.match(/^&gt;\s?(.*)/)){ flushP(); flushL(); out+='<blockquote>'+inline(m[1])+'</blockquote>'; continue; }
-    if(l==='---'||l==='***'){ flushP(); flushL(); out+='<hr>'; continue; }
+    if(!l){ fp(); fl(); continue; }
+    if(m=l.match(/^(#{1,3})\s+(.*)/)){ fp(); fl(); out+='<h'+m[1].length+'>'+inline(m[2])+'</h'+m[1].length+'>'; continue; }
+    if(m=l.match(/^[-*•]\s+(.*)/)){ fp(); if(ol){out+='</ol>';ol=false;} if(!ul){out+='<ul>';ul=true;} out+='<li>'+inline(m[1])+'</li>'; continue; }
+    if(m=l.match(/^\d+[.)]\s+(.*)/)){ fp(); if(ul){out+='</ul>';ul=false;} if(!ol){out+='<ol>';ol=true;} out+='<li>'+inline(m[1])+'</li>'; continue; }
+    if(m=l.match(/^&gt;\s?(.*)/)){ fp(); fl(); out+='<blockquote>'+inline(m[1])+'</blockquote>'; continue; }
+    if(l==='---'||l==='***'){ fp(); fl(); out+='<hr>'; continue; }
     para.push(l);
   }
-  flushP(); flushL(); flushT(); if(inCode) out+='</code></pre>';
+  fp(); fl(); ft(); if(code) out+='</code></pre>';
   return out;
 }
 
-/* ---------- 6. Common questions ---------- */
-const ASKS = [
-  d => d && d.mine ? 'Summarize this document: what is it, what does it cover, and what are the key figures, dates and commitments in it?'
-     : d ? 'Summarize '+d.id+'. What does it actually require? Lead with the operative requirements, then the conditions and exceptions. Cite the revision and the sections you used.'
-         : 'What guidance applies here, and where should I start? Point me to the governing documents by number.',
-  d => d && d.mine ? 'Which VDOT guidance applies to this document? Name the governing IIMs, manuals and regulations by number and say why each applies.'
-     : d ? 'What is the scope of '+d.id+' — which projects, facilities and conditions does it apply to, and what triggers it? Note anything expressly excluded.'
-         : 'How do I determine which VDOT guidance documents apply to a given project?',
-  d => d && d.mine ? 'Review this document against VDOT requirements for a locally administered project. What is missing, inconsistent, or likely to draw a comment in review?'
-     : d ? 'How does '+d.id+' apply to a locally administered project? Cover the locality’s responsibilities, VDOT review or approval points, and how the LAP Manual interacts with it.'
-         : 'For a locally administered project, which VDOT documents govern — and how do the LAP Manual, LLGs and DM 8-7 fit together?',
-  d => d && d.mine ? 'Cross-check this document against current VDOT standards and cite the specific sections it should conform to. Flag anything that appears to rely on superseded guidance.'
-     : d ? 'What other VDOT documents does '+d.id+' reference or depend on — related IIMs, manual chapters, standards or specifications? Note anything it supersedes or that supersedes it.'
-         : 'Map the main VDOT guidance documents and how they relate to each other.',
-];
-let askBusy=false;
-$$('.ask').forEach(b=>b.addEventListener('click', ()=>{
-  if(S.busy||askBusy) return;
-  askBusy=true; b.classList.add('busy');
-  S.fast = !(S.doc && CORPUS.get(S.doc.id));   /* no cached text → keep it short and quick */
-  send(ASKS[+b.dataset.ask](S.doc));
-  setTimeout(()=>{ S.fast=false; }, 50);
-  setTimeout(()=>{ askBusy=false; b.classList.remove('busy'); }, 600);
-}));
-
-/* ---------- 7. Voice ---------- */
-const SRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-const micBtn=$('#mic-btn');
-if(!SRec) micBtn.hidden=true;
-let rec=null, recOn=false;
-micBtn && micBtn.addEventListener('click', ()=>{
-  if(recOn){ rec.stop(); return; }
-  rec=new SRec(); rec.continuous=true; rec.interimResults=true; rec.lang=navigator.language||'en-US';
-  rec.onresult=e=>{
-    let fin='';
-    for(let i=e.resultIndex;i<e.results.length;i++) if(e.results[i].isFinal) fin+=e.results[i][0].transcript;
-    if(fin){ promptIn.value=(promptIn.value?promptIn.value.replace(/\s*$/,' '):'')+fin.trim();
-             promptIn.dispatchEvent(new Event('input')); }
-  };
-  const off=()=>{ recOn=false; micBtn.classList.remove('rec'); micBtn.setAttribute('aria-pressed','false'); };
-  rec.onend=off; rec.onerror=off;
-  try{ rec.start(); recOn=true; micBtn.classList.add('rec'); micBtn.setAttribute('aria-pressed','true'); }catch(e){}
+/* ---------- 8. Uploads ---------- */
+const MAXF=4*1024*1024, MAXT=12*1024*1024;
+let pending=[];
+const MINE={id:'mine',code:'MINE',label:'Your documents',hub:null,
+  scope:'Documents you uploaded this session. Compared against VDOT guidance, never treated as guidance.'};
+const kindOf=f=>/^image\/(png|jpeg|gif|webp)$/.test(f.type)?'image'
+  :(f.type==='application/pdf'||/\.pdf$/i.test(f.name))?'pdf'
+  :(/^text\//.test(f.type)||/\.(txt|md|csv|tsv|json|xml|html?|log)$/i.test(f.name))?'text':null;
+const size=b=>b>=1048576?(b/1048576).toFixed(1)+' MB':Math.max(1,Math.round(b/1024))+' KB';
+function addFiles(fs){
+  [...fs].forEach(f=>{
+    const k=kindOf(f);
+    if(!k) return bad(f.name,'unsupported');
+    if(f.size>MAXF) return bad(f.name,'over 4 MB');
+    if(pending.reduce((n,a)=>n+(a.bytes||0),0)+f.size>MAXT) return bad(f.name,'turn limit');
+    const rd=new FileReader();
+    rd.onload=()=>{
+      const rec={id:'up:'+f.name+':'+f.size,name:f.name,kind:k,bytes:f.size,
+        data:k==='text'?rd.result:String(rd.result).split(',')[1],
+        mime:f.type||(k==='pdf'?'application/pdf':'text/plain')};
+      pending.push(rec); UPLOADS.set(rec.id,rec); registerUpload(rec); drawFiles();
+    };
+    rd.onerror=()=>bad(f.name,'unreadable');
+    k==='text'?rd.readAsText(f):rd.readAsDataURL(f);
+  });
+}
+function bad(name,why){ pending.push({bad:true,name,why}); drawFiles(); }
+function registerUpload(rec){
+  const docs=S.man.documents;
+  if(docs.some(d=>d.id===rec.id)) return;
+  if(!S.man.divisions.some(d=>d.id==='mine')) S.man.divisions.push(MINE);
+  docs.push({id:rec.id,div:'mine',title:rec.name,kind:rec.kind==='pdf'?'manual':'guide',
+    status:'uploaded',mine:true,text:true,url:null,topic:['program delivery'],
+    phase:[],delivery:[],district:['Statewide'],
+    note:'Uploaded '+new Date().toLocaleString()+' · '+size(rec.bytes)});
+  buildDivs(); renderList();
+}
+function drawFiles(){
+  const box=$('#files'); box.hidden=!pending.length; box.innerHTML='';
+  pending.forEach((a,i)=>{
+    const c=document.createElement('span'); c.className='fchip'+(a.bad?' bad':'');
+    const ico=a.kind==='image'
+      ?'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="m3 11 3-3 3 3 2-2 2 2"/></svg>'
+      :'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2h5l3 3v9H4z"/><path d="M9 2v3h3"/></svg>';
+    c.innerHTML=(a.bad?'':ico)+'<b></b><i>'+esc(a.bad?a.why:size(a.bytes))+'</i>';
+    c.querySelector('b').textContent=a.name;
+    const x=document.createElement('button'); x.className='x'; x.textContent='×';
+    x.addEventListener('click',()=>{ pending.splice(i,1); drawFiles(); });
+    c.appendChild(x); box.appendChild(c);
+  });
+}
+function clearFiles(){ pending=[]; drawFiles(); }
+function blockFor(r,cache){
+  if(r.kind==='image') return {type:'image',source:{type:'base64',media_type:r.mime,data:r.data}};
+  if(r.kind==='pdf'){ const b={type:'document',source:{type:'base64',media_type:'application/pdf',data:r.data},
+      title:r.name,citations:{enabled:true}}; if(cache) b.cache_control={type:'ephemeral'}; return b; }
+  const t={type:'text',text:'--- FILE: '+r.name+' ---\n'+String(r.data).slice(0,180000)};
+  if(cache) t.cache_control={type:'ephemeral'}; return t;
+}
+$('#attach').addEventListener('click',()=>$('#file-in').click());
+$('#file-in').addEventListener('change',e=>{ addFiles(e.target.files); e.target.value=''; });
+input.addEventListener('paste',e=>{
+  const it=[...(e.clipboardData?e.clipboardData.items:[])].filter(i=>i.kind==='file');
+  if(it.length) addFiles(it.map(i=>i.getAsFile()).filter(Boolean));
 });
-
-/* ---------- 8. Chrome ---------- */
-const side=$('#side'), scrim=$('#scrim');
-function openSide(){ side.classList.add('open'); scrim.style.display='block'; $('#menu-btn').setAttribute('aria-expanded','true'); }
-function closeSide(){ side.classList.remove('open'); scrim.style.display='none'; $('#menu-btn').setAttribute('aria-expanded','false'); }
-$('#menu-btn').addEventListener('click', ()=> side.classList.contains('open') ? closeSide() : openSide());
-scrim.addEventListener('click', closeSide);
-$('#sigil').addEventListener('click', ()=>{ selectDoc(null); setDivision(null); });
-addEventListener('keydown', e=>{
-  if(e.key==='Escape'){
-    if(!$('#palette').hidden) closePal();
-    else if(!$('#detail').hidden) closeDetail();
-    else if(recOn && rec) rec.stop();
-    else if(side.classList.contains('open')) closeSide();
-    else if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
-  }
-});
-(async function probe(){
-  if(location.protocol==='file:') return;
-  try{ const r=await fetch('/api/chat',{method:'GET'}); S.proxy=(r.status===405); }
-  catch(e){ S.proxy=false; }
+(function(){
+  const z=$('#drop'), w=$('#work'); let n=0;
+  ['dragenter','dragover'].forEach(ev=>w.addEventListener(ev,e=>{
+    if(!e.dataTransfer||![...e.dataTransfer.types].includes('Files')) return;
+    e.preventDefault(); if(ev==='dragenter') n++; z.hidden=false; }));
+  w.addEventListener('dragleave',()=>{ if(--n<=0){ n=0; z.hidden=true; } });
+  w.addEventListener('drop',e=>{ if(!e.dataTransfer) return; e.preventDefault(); n=0; z.hidden=true;
+    if(e.dataTransfer.files&&e.dataTransfer.files.length) addFiles(e.dataTransfer.files); });
 })();
 
-/* cursor light */
-if(matchMedia('(hover: hover) and (pointer: fine)').matches && !RM){
-  const c=$('#chat'); let lx=0,ly=0,tx=0,ty=0,raf=0;
-  c.addEventListener('pointermove', e=>{
-    const r=c.getBoundingClientRect(); tx=e.clientX-r.left; ty=e.clientY-r.top;
-    if(!raf) raf=requestAnimationFrame(function g(){
-      lx+=(tx-lx)*.12; ly+=(ty-ly)*.12;
-      c.style.setProperty('--mx', lx.toFixed(1)+'px'); c.style.setProperty('--my', ly.toFixed(1)+'px');
-      raf=(Math.abs(tx-lx)>.5||Math.abs(ty-ly)>.5)?requestAnimationFrame(g):0;
-    });
-  });
-}
-
-/* ============================================================
-   v2 — facets, ranked search, corpus, palette, detail
-   ============================================================ */
-const F = { topic:new Set(), phase:new Set(), delivery:new Set(), district:new Set(), kind:new Set() };
-let FACET_TAB = 'all';
-let INDEX = null;          /* inverted index */
-const CORPUS = new Map();  /* id -> {text, sections, pages} */
-const ANSWERS = new Map(); /* cache key -> markdown */
-
-/* ---------- corpus ---------- */
-const slugOf = id => id.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-async function loadIndex(){
-  try{
-    const r = await fetch('/data/search-index.json', {cache:'force-cache'});
-    if(r.ok) INDEX = await r.json();
-  }catch(e){ INDEX = null; }
-}
-async function loadCorpus(id){
-  if(CORPUS.has(id)) return CORPUS.get(id);
-  try{
-    const r = await fetch('/data/corpus/'+slugOf(id)+'.json', {cache:'force-cache'});
-    if(!r.ok) throw 0;
-    const body = await r.json();
-    CORPUS.set(id, body);
-    return body;
-  }catch(e){ CORPUS.set(id, null); return null; }
-}
-
-/* ---------- ranked search over the prebuilt index ---------- */
-function searchScore(q){
-  if(!INDEX || !q) return null;
-  const terms = q.toLowerCase().split(/\s+/).filter(t=>t.length>1);
-  if(!terms.length) return null;
-  const N = INDEX.docs.length, scores = new Map();
-  terms.forEach(t=>{
-    const keys = INDEX.terms[t] ? [t] : Object.keys(INDEX.terms).filter(k=>k.startsWith(t)).slice(0,40);
-    keys.forEach(k=>{
-      const posts = INDEX.terms[k]; if(!posts) return;
-      const idf = Math.log(1 + N/posts.length);
-      posts.forEach(([di,tf])=>{
-        scores.set(di, (scores.get(di)||0) + idf * (1 + Math.log(tf)) * (k===t?1:0.6));
-      });
-    });
-  });
-  const out = new Map();
-  scores.forEach((s,di)=> out.set(INDEX.docs[di], s));
-  return out;
-}
-function snippet(id, q){
-  const body = CORPUS.get(id); if(!body || !body.text) return '';
-  const terms = q.toLowerCase().split(/\s+/).filter(t=>t.length>2);
-  const low = body.text.toLowerCase();
-  let at = -1;
-  for(const t of terms){ at = low.indexOf(t); if(at>=0) break; }
-  if(at<0) return '';
-  const s = Math.max(0, at-70), frag = body.text.slice(s, s+190).replace(/\s+/g,' ').trim();
-  return esc(frag).replace(new RegExp('('+terms.map(t=>t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')','ig'),'<mark>$1</mark>');
-}
-
-/* ---------- facets ---------- */
-function facetCounts(field, pool){
-  const c = new Map();
-  pool.forEach(d => (d[field]||[]).forEach(v => c.set(v, (c.get(v)||0)+1)));
-  return c;
-}
-function passesFacets(d){
-  for(const f of Object.keys(F)){
-    if(!F[f].size) continue;
-    const vals = d[f] ? (Array.isArray(d[f]) ? d[f] : [d[f]]) : [];
-    if(![...F[f]].some(v => vals.includes(v))) return false;
-  }
-  return true;
-}
-function renderFacets(){
-  const box=$('#facets');
-  if(FACET_TAB==='all'){ box.hidden=true; return; }
-  box.hidden=false;
-  const pool=(S.manifest.documents||[]).filter(d=>!S.div||d.div===S.div);
-  const counts=facetCounts(FACET_TAB, pool);
-  const opts=(S.manifest.facets&&S.manifest.facets[FACET_TAB])||[...counts.keys()].sort();
-  box.innerHTML='';
-  opts.forEach(v=>{
-    const n=counts.get(v)||0;
-    const b=document.createElement('button');
-    b.className='facet-row'+(F[FACET_TAB].has(v)?' on':'')+(n?'':' zero');
-    b.innerHTML='<span class="box"></span><span>'+esc(v)+'</span><span class="n">'+n+'</span>';
-    b.addEventListener('click', ()=>{
-      F[FACET_TAB].has(v) ? F[FACET_TAB].delete(v) : F[FACET_TAB].add(v);
-      renderFacets(); renderChips(); renderDocs();
-    });
-    box.appendChild(b);
-  });
-}
-function renderChips(){
-  const box=$('#chips'); const active=[];
-  Object.keys(F).forEach(f=>F[f].forEach(v=>active.push([f,v])));
-  if(!active.length){ box.hidden=true; return; }
-  box.hidden=false; box.innerHTML='';
-  active.forEach(([f,v])=>{
-    const c=document.createElement('button'); c.className='chip';
-    c.innerHTML=esc(v)+' <b>×</b>';
-    c.addEventListener('click',()=>{ F[f].delete(v); renderFacets(); renderChips(); renderDocs(); });
-    box.appendChild(c);
-  });
-  const clr=document.createElement('button'); clr.className='clear'; clr.textContent='Clear all';
-  clr.addEventListener('click',()=>{ Object.keys(F).forEach(f=>F[f].clear()); renderFacets(); renderChips(); renderDocs(); });
-  box.appendChild(clr);
-}
-$$('.facet-tab').forEach(t=>t.addEventListener('click',()=>{
-  FACET_TAB = (FACET_TAB===t.dataset.facet && t.dataset.facet!=='all') ? 'all' : t.dataset.facet;
-  $$('.facet-tab').forEach(x=>x.classList.toggle('active', x.dataset.facet===FACET_TAB));
-  renderFacets();
-}));
-
-/* ---------- detail panel ---------- */
-function relatedByFacet(d, limit=6){
-  const pool=(S.manifest.documents||[]).filter(x=>x.id!==d.id);
-  const score=x=>{
+/* ---------- 9. Context panel ---------- */
+function relatedTo(d,limit){
+  return (S.man.documents||[]).filter(x=>x.id!==d.id).map(x=>{
     let s=0;
     (d.topic||[]).forEach(t=>{ if((x.topic||[]).includes(t)) s+=3; });
     (d.phase||[]).forEach(t=>{ if((x.phase||[]).includes(t)) s+=1; });
     (d.delivery||[]).forEach(t=>{ if((x.delivery||[]).includes(t)) s+=1; });
-    if(x.div===d.div) s+=2;
-    if(x.kind===d.kind) s+=0.5;
-    return s;
-  };
-  return pool.map(x=>[x,score(x)]).filter(p=>p[1]>=4)
-             .sort((a,b)=>b[1]-a[1]).slice(0,limit).map(p=>p[0]);
-}
-function citationOf(d){
-  const dv=(S.manifest.divisions||[]).find(x=>x.id===d.div);
-  return [d.id, d.revision?('rev '+d.revision):null, d.title,
-          dv?('VDOT '+dv.label+' Division'):null, d.effective?('eff. '+d.effective):null,
-          d.url].filter(Boolean).join(', ');
-}
-function renderDetail(){
-  const d=S.doc, panel=$('#detail');
-  if(!d){ panel.hidden=true; document.body.classList.remove('has-detail'); return; }
-  panel.hidden=false; document.body.classList.add('has-detail');
-  $('#detail-title').textContent=d.id;
-  const body=$('#detail-body'); body.innerHTML='';
-  const sec=(t)=>{ const e=document.createElement('h4'); e.textContent=t; body.appendChild(e); };
-  const html=(s)=>{ const w=document.createElement('div'); w.innerHTML=s; body.appendChild(w); return w; };
-  const act=(label, key, svg, fn)=>{
-    const b=document.createElement('button'); b.className='act';
-    b.innerHTML=svg+'<span>'+esc(label)+'</span>'+(key?'<span class="k">'+esc(key)+'</span>':'');
-    b.addEventListener('click', fn); body.appendChild(b);
-  };
-  const I={
-    ask:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 3h12v8H6l-4 3z"/></svg>',
-    doc:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 2h5l3 3v9H4z"/><path d="M9 2v3h3"/></svg>',
-    ext:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6.5 3H3v10h10V9.5"/><path d="M9.5 2.5H14V7"/><path d="M7.5 8.5 13.5 2.5"/></svg>',
-    copy:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2H3.5A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/></svg>',
-    fresh:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13.5 8a5.5 5.5 0 1 1-1.7-4"/><path d="M12.5 2v3h-3"/></svg>',
-    filter:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 3h12l-4.6 5.4V13L6.6 11.4V8.4z"/></svg>',
-  };
-
-  /* ---- actions: the panel earns its space ---- */
-  sec('Actions');
-  if(d.mine){
-    act('Summarize this document','', I.ask, ()=>send('Summarize this document: what it is, what it covers, and the key figures, dates and commitments.'));
-    act('Which VDOT guidance applies','', I.ask, ()=>send('Which VDOT guidance governs this document? Name the IIMs, manuals and regulations by number, and say why each applies.'));
-    act('Compliance review','', I.ask, ()=>send('Review this document against the governing VDOT requirements. List what is missing, inconsistent or likely to draw a review comment, citing both the document and the VDOT section.'));
-    act('Extract commitments','', I.ask, ()=>send('Extract every commitment, deadline, quantity and responsible party from this document as a table.'));
-    act('Remove from session','', I.copy, ()=>{
-      UPLOADS.delete(d.id);
-      S.manifest.documents = S.manifest.documents.filter(x=>x.id!==d.id);
-      if(!S.manifest.documents.some(x=>x.div==='mine'))
-        S.manifest.divisions = S.manifest.divisions.filter(x=>x.id!=='mine');
-      selectDoc(null); buildRail(); renderDocs();
-    });
-    sec('Record');
-    html(kv('Source','uploaded this session')+kv('Type', d.kind||'—')+
-         kv('Status','not VDOT guidance')+kv('Note', d.note||'—'));
-    return;
-  }
-  act('Summarize requirements','', I.ask, ()=>send('Summarize '+d.id+'. Lead with the operative requirements, then conditions and exceptions. Cite revision and sections.'));
-  act('Checklist for my project','', I.ask, ()=>send('Turn '+d.id+' into a practical compliance checklist for a project team: what must be done, by whom, at which milestone, and what gets submitted or documented.'));
-  act('What changed recently','', I.fresh, ()=>send('Check whether '+d.id+' has been revised recently. Fetch the current VDOT page, report the revision number and effective date you find, and compare against the value on file'+(d.revision?(' ('+d.revision+')'):'')+'. If it changed, summarize what changed.'));
-  act('Common mistakes','', I.ask, ()=>send('What do practitioners most often get wrong or miss when applying '+d.id+'? Be specific and cite sections.'));
-  if(d.url) act('Open on VDOT','↗', I.ext, ()=>window.open(d.url,'_blank','noopener'));
-  act('Copy citation','', I.copy, (e)=>{
-    navigator.clipboard && navigator.clipboard.writeText(citationOf(d));
-    const s=e.currentTarget.querySelector('span'); const o=s.textContent;
-    s.textContent='Copied'; setTimeout(()=>s.textContent=o,1200);
-  });
-
-  /* ---- record ---- */
-  const dv=(S.manifest.divisions||[]).find(x=>x.id===d.div);
-  sec('Record');
-  html(kv('Division', dv?dv.label+' ('+dv.code+')':'—')+
-       kv('Type', d.kind||'—')+kv('Revision', d.revision||'—')+
-       kv('Effective', d.effective||'—')+kv('Status', d.status||'current')+
-       (d.pages?kv('Pages', d.pages):'')+
-       kv('Full text', d.text?'cached in corpus':'live fetch at question time'));
-
-  /* ---- classification: clickable filters ---- */
-  const facetFields=[['topic','Topics'],['phase','Project phase'],['delivery','Delivery'],['district','District'],];
-  if(facetFields.some(([f])=>(d[f]||[]).length)){
-    sec('Classification');
-    const w=html('');
-    facetFields.forEach(([f])=>(d[f]||[]).forEach(v=>{
-      const b=document.createElement('button'); b.className='tag'; b.textContent=v;
-      b.title='Filter the index by '+v;
-      b.addEventListener('click',()=>{
-        F[f].add(v); FACET_TAB=f;
-        $$('.facet-tab').forEach(x=>x.classList.toggle('active', x.dataset.facet===f));
-        renderFacets(); renderChips(); renderDocs();
-      });
-      w.appendChild(b);
-    }));
-  }
-
-  /* ---- sections ---- */
-  if(d.sections && d.sections.length){
-    sec('Sections');
-    d.sections.slice(0,40).forEach(s=>{
-      const b=document.createElement('button'); b.className='sec';
-      b.innerHTML=esc(s.heading)+'<i>p.'+s.page+'</i>';
-      b.addEventListener('click',()=>send('In '+d.id+', explain section “'+s.heading+'” (page '+s.page+'). Quote the operative language and say what it requires in practice.'));
-      body.appendChild(b);
-    });
-  } else if(d.text===undefined || d.text===false){
-    sec('Sections');
-    html('<div class="empty">Section map appears after <code>tools/build-corpus.py</code> extracts this document.</div>');
-  }
-
-  /* ---- cross references ---- */
-  const rel=[...new Set([...(d.xrefs||[]), ...(d.referenced_by||[])])];
-  if(rel.length){
-    sec('Cross-references');
-    const w=html('');
-    rel.slice(0,30).forEach(rid=>{
-      const target=(S.manifest.documents||[]).find(x=>x.id===rid);
-      const b=document.createElement('button'); b.className='ref'; b.textContent=rid;
-      b.title=target?target.title:'not in index — will be looked up';
-      b.addEventListener('click',()=> target ? selectDoc(target)
-        : send('What is '+rid+', and how does it relate to '+d.id+'?'));
-      w.appendChild(b);
-    });
-  }
-
-  /* ---- related by classification (always works, no corpus needed) ---- */
-  const near=relatedByFacet(d);
-  if(near.length){
-    sec('Related guidance');
-    near.forEach(x=>{
-      const b=document.createElement('button'); b.className='rel';
-      b.innerHTML='<b>'+esc(x.id)+'</b>'+esc(x.title);
-      b.addEventListener('click',()=>selectDoc(x));
-      body.appendChild(b);
-    });
-  }
-
-  /* ---- lineage / authority / note ---- */
-  if(d.supersedes||d.superseded_by){
-    sec('Lineage');
-    html((d.supersedes?kv('Supersedes', d.supersedes.join(', ')):'')+
-         (d.superseded_by?kv('Superseded by', d.superseded_by.join(', ')):''));
-  }
-  if(d.authority && d.authority.length){
-    sec('Authority cited');
-    html('<div class="auth">'+d.authority.map(esc).join('<br>')+'</div>');
-  }
-  if(d.note){ sec('Note'); html('<div class="empty">'+esc(d.note)+'</div>'); }
+    if(x.div===d.div) s+=2; if(x.kind===d.kind) s+=.5;
+    return [x,s];
+  }).filter(p=>p[1]>=4).sort((a,b)=>b[1]-a[1]).slice(0,limit||6).map(p=>p[0]);
 }
 const kv=(k,v)=>'<div class="kv"><span>'+esc(k)+'</span><span>'+esc(v)+'</span></div>';
-function closeDetail(){ $('#detail').hidden=true; document.body.classList.remove('has-detail'); }
-$('#detail-close').addEventListener('click', closeDetail);
-$('#detail-btn').addEventListener('click', ()=>{
-  $('#detail').hidden ? renderDetail() : closeDetail();
+function citationOf(d){
+  const dv=(S.man.divisions||[]).find(x=>x.id===d.div);
+  return [d.id,d.revision?'rev '+d.revision:null,d.title,dv?'VDOT '+dv.label+' Division':null,
+    d.effective?'eff. '+d.effective:null,d.url].filter(Boolean).join(', ');
+}
+function renderCtx(){
+  const d=S.doc, p=$('#ctx');
+  if(!d){ p.hidden=true; document.body.classList.remove('ctx'); return; }
+  p.hidden=false; document.body.classList.add('ctx');
+  $('#ctx-title').textContent=d.id;
+  const b=$('#ctxb'); b.innerHTML='';
+  const H=t=>{ const e=document.createElement('h4'); e.textContent=t; b.appendChild(e); };
+  const HTML=s=>{ const w=document.createElement('div'); w.innerHTML=s; b.appendChild(w); return w; };
+  const A=(label,icon,fn)=>{ const x=document.createElement('button'); x.className='ax';
+    x.innerHTML=icon+'<span>'+esc(label)+'</span>'; x.addEventListener('click',fn); b.appendChild(x); };
+  const I={ask:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 3h12v8H6l-4 3z"/></svg>',
+    ref:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13.5 8a5.5 5.5 0 1 1-1.7-4"/><path d="M12.5 2v3h-3"/></svg>',
+    ext:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6.5 3H3v10h10V9.5"/><path d="M9.5 2.5H14V7"/><path d="M7.5 8.5 13.5 2.5"/></svg>',
+    cp:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2H3.5A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/></svg>'};
+
+  H('Actions');
+  if(d.mine){
+    A('Summarize this document',I.ask,()=>send(askText(0)));
+    A('Which guidance applies',I.ask,()=>send(askText(1)));
+    A('Compliance review',I.ask,()=>send(askText(2)));
+    A('Extract commitments',I.ask,()=>send(askText(3)));
+    A('Remove from session',I.cp||I.cp,()=>{
+      UPLOADS.delete(d.id);
+      S.man.documents=S.man.documents.filter(x=>x.id!==d.id);
+      if(!S.man.documents.some(x=>x.div==='mine')) S.man.divisions=S.man.divisions.filter(x=>x.id!=='mine');
+      selectDoc(null); buildDivs(); renderList(); toast('Removed');
+    });
+    H('Record');
+    HTML(kv('Source','uploaded this session')+kv('Type',d.kind||'—')+kv('Status','not VDOT guidance')+kv('Note',d.note||'—'));
+    return;
+  }
+  A('Summarize requirements',I.ask,()=>send(askText(0)));
+  A('Compliance checklist',I.ask,()=>send('Turn '+d.id+' into a practical compliance checklist: what must be done, by whom, at which milestone, and what gets submitted or documented.'));
+  A('Check for a newer revision',I.ref,()=>send('Check whether '+d.id+' has been revised. Fetch the current VDOT page, report the revision and effective date, and compare against '+(d.revision||'the value on file')+'.'));
+  A('Common review comments',I.ask,()=>send('What do practitioners most often get wrong when applying '+d.id+'? Be specific and cite sections.'));
+  if(d.url) A('Open on VDOT',I.ext,()=>window.open(d.url,'_blank','noopener'));
+  A('Copy citation',I.cp,()=>{ navigator.clipboard&&navigator.clipboard.writeText(citationOf(d)); toast('Citation copied'); });
+
+  const dv=(S.man.divisions||[]).find(x=>x.id===d.div);
+  H('Record');
+  HTML(kv('Division',dv?dv.label+' ('+dv.code+')':'—')+kv('Type',d.kind||'—')+
+    kv('Revision',d.revision||'—')+kv('Effective',d.effective||'—')+kv('Status',d.status||'current')+
+    (d.pages?kv('Pages',d.pages):'')+kv('Full text',d.text?'cached':'live fetch'));
+
+  const ff=[['topic'],['phase'],['delivery'],['district']];
+  if(ff.some(([f])=>(d[f]||[]).length)){
+    H('Classification'); const w=HTML('');
+    ff.forEach(([f])=>(d[f]||[]).forEach(v=>{
+      const x=document.createElement('button'); x.className='tg'; x.textContent=v;
+      x.addEventListener('click',()=>{ F[f].add(v); FTAB=f;
+        $$('.ftab').forEach(t=>t.classList.toggle('on',t.dataset.f===f));
+        renderFacets(); renderChips(); renderList(); save(); });
+      w.appendChild(x);
+    }));
+  }
+  if(d.sections&&d.sections.length){
+    H('Sections');
+    d.sections.slice(0,40).forEach(s=>{
+      const x=document.createElement('button'); x.className='sc';
+      x.innerHTML=esc(s.heading)+'<i>p.'+s.page+'</i>';
+      x.addEventListener('click',()=>send('In '+d.id+', explain section “'+s.heading+'” (page '+s.page+'). Quote the operative language and say what it requires.'));
+      b.appendChild(x);
+    });
+  } else if(!d.text){ H('Sections'); HTML('<div class="mute">Section map appears after <code>tools/build-corpus.py</code> runs.</div>'); }
+  const rel=[...new Set([...(d.xrefs||[]),...(d.referenced_by||[])])];
+  if(rel.length){
+    H('Cross-references'); const w=HTML('');
+    rel.slice(0,30).forEach(id=>{
+      const t=(S.man.documents||[]).find(x=>x.id===id);
+      const x=document.createElement('button'); x.className='rf'; x.textContent=id;
+      x.title=t?t.title:'not in index';
+      x.addEventListener('click',()=>t?selectDoc(t):send('What is '+id+', and how does it relate to '+d.id+'?'));
+      w.appendChild(x);
+    });
+  }
+  const near=relatedTo(d);
+  if(near.length){
+    H('Related guidance');
+    near.forEach(x=>{ const r=document.createElement('button'); r.className='rl';
+      r.innerHTML='<b>'+esc(x.id)+'</b>'+esc(x.title);
+      r.addEventListener('click',()=>selectDoc(x)); b.appendChild(r); });
+  }
+  if(d.supersedes||d.superseded_by){ H('Lineage');
+    HTML((d.supersedes?kv('Supersedes',d.supersedes.join(', ')):'')+
+         (d.superseded_by?kv('Superseded by',d.superseded_by.join(', ')):'')); }
+  if(d.authority&&d.authority.length){ H('Authority cited'); HTML('<div class="auth">'+d.authority.map(esc).join('<br>')+'</div>'); }
+  if(d.note){ H('Note'); HTML('<div class="mute">'+esc(d.note)+'</div>'); }
+  H('Report');
+  A('Report an error in this entry',I.cp,()=>{
+    const url='https://github.com/YOURORG/viim/issues/new?title='+encodeURIComponent('Index error: '+d.id)+
+      '&body='+encodeURIComponent('Document: '+d.id+'\nTitle: '+d.title+'\nURL: '+(d.url||'')+'\n\nWhat is wrong:\n');
+    window.open(url,'_blank','noopener');
+  });
+}
+function closeCtx(){ $('#ctx').hidden=true; document.body.classList.remove('ctx'); }
+$('#ctx-close').addEventListener('click',closeCtx);
+$('#ctx-btn').addEventListener('click',()=>{ $('#ctx').hidden?renderCtx():closeCtx(); });
+
+/* ---------- 10. Roles ---------- */
+function setRole(id,quiet){
+  S.role=ROLES[id]?id:'consultant';
+  $('#role-name').textContent=ROLES[S.role].name;
+  if(!quiet){
+    const r=ROLES[S.role];
+    Object.keys(F).forEach(f=>F[f].clear());
+    Object.entries(r.facets||{}).forEach(([f,vals])=>vals.forEach(v=>F[f]&&F[f].add(v)));
+    if(r.div) setDiv(r.div,true);
+    buildDivs(); renderFacets(); renderChips(); renderList(); paintWork(); save();
+    toast('Tuned for '+r.name);
+  }
+}
+$('#role-btn').addEventListener('click',()=>{
+  const box=modal('<h3>Who are you working as?</h3>'+
+    '<p class="lead">This tunes the default filters, the four quick questions, and how answers are framed. Change it any time.</p>'+
+    '<div class="roles">'+Object.entries(ROLES).map(([k,r])=>
+      '<button class="role'+(k===S.role?' on':'')+'" data-r="'+k+'"><b>'+esc(r.name)+'</b><span>'+esc(r.blurb)+'</span></button>').join('')+'</div>');
+  box.querySelectorAll('.role').forEach(b=>b.addEventListener('click',()=>{ setRole(b.dataset.r); closeModal(); }));
 });
 
-/* ---------- command palette ---------- */
+/* ---------- 11. Glossary ---------- */
+let GLOSSARY={};
+function glossify(html){
+  const keys=Object.keys(GLOSSARY); if(!keys.length) return html;
+  const re=new RegExp('\\b('+keys.map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')\\b','g');
+  return html.replace(/>([^<]+)</g,(m,txt)=>'>'+txt.replace(re,'<span class="gl" data-g="$1">$1</span>')+'<');
+}
+document.addEventListener('mouseover',e=>{
+  const g=e.target.closest('.gl'); if(!g) return;
+  const k=g.dataset.g, v=GLOSSARY[k]; if(!v) return;
+  const t=$('#tip'); t.hidden=false;
+  t.innerHTML='<b>'+esc(k)+'</b>'+esc(typeof v==='string'?v:v.def||'');
+  const r=g.getBoundingClientRect();
+  t.style.left=Math.min(innerWidth-300,Math.max(8,r.left))+'px';
+  t.style.top=(r.bottom+8)+'px';
+});
+document.addEventListener('mouseout',e=>{ if(e.target.closest('.gl')) $('#tip').hidden=true; });
+$('#gloss-btn').addEventListener('click',()=>{
+  const rows=Object.entries(GLOSSARY).sort((a,b)=>a[0].localeCompare(b[0]));
+  modal('<h3>VDOT acronyms and terms</h3><p class="lead">'+rows.length+
+    ' entries. They are underlined wherever they appear in an answer — hover for the definition.</p>'+
+    '<div class="body"><dl class="gl-list">'+rows.map(([k,v])=>
+      '<dt>'+esc(k)+'</dt><dd>'+esc(typeof v==='string'?v:v.def||'')+'</dd>').join('')+'</dl></div>');
+});
+
+/* ---------- 12. Compare ---------- */
+$('#cmp-btn').addEventListener('click',()=>{
+  const opts=(S.man.documents||[]).map(d=>'<option value="'+esc(d.id)+'">'+esc(d.id+' — '+d.title)+'</option>').join('');
+  const box=modal('<h3>Compare two documents</h3>'+
+    '<p class="lead">Requirement-by-requirement, with the differences that matter in practice.</p>'+
+    '<div style="padding:0 18px 16px;display:flex;flex-direction:column;gap:9px">'+
+    '<select id="cA" style="padding:9px;border:1px solid var(--line2);border-radius:8px">'+opts+'</select>'+
+    '<select id="cB" style="padding:9px;border:1px solid var(--line2);border-radius:8px">'+opts+'</select>'+
+    '<button class="wbtn p" id="cGo" style="justify-content:center">Compare</button></div>');
+  if(S.doc) box.querySelector('#cA').value=S.doc.id;
+  box.querySelector('#cGo').addEventListener('click',()=>{
+    const a=box.querySelector('#cA').value, b=box.querySelector('#cB').value;
+    closeModal();
+    if(a===b) return toast('Pick two different documents');
+    const da=(S.man.documents||[]).find(x=>x.id===a), db=(S.man.documents||[]).find(x=>x.id===b);
+    selectDoc(da);
+    send('Compare '+a+' and '+b+' requirement by requirement. Use a table with the requirement, what '+a+
+      ' says, what '+b+' says, and which controls when they overlap. Then a short note on where a practitioner '+
+      'most often trips between the two. Titles for reference: '+a+' — '+(da?da.title:'')+'; '+b+' — '+(db?db.title:'')+'.');
+  });
+});
+
+/* ---------- 13. Command palette ---------- */
 let palSel=0, palItems=[];
 function openPal(){
-  $('#palette').hidden=false; $('#pal-in').value=''; palFill('');
-  setTimeout(()=>$('#pal-in').focus(), 30);
+  const box=modal('<input class="q" id="pq" placeholder="Documents, divisions, acronyms…" autocomplete="off">'+
+    '<div class="body" id="pl"></div>'+
+    '<div class="hint"><span><kbd>↑↓</kbd>navigate</span><span><kbd>↵</kbd>open</span><span><kbd>esc</kbd>close</span></div>');
+  const q=box.querySelector('#pq');
+  palFill('');
+  q.addEventListener('input',()=>palFill(q.value));
+  q.addEventListener('keydown',e=>{
+    if(e.key==='ArrowDown'){ e.preventDefault(); palMove(1); }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); palMove(-1); }
+    else if(e.key==='Enter'){ e.preventDefault(); palItems[palSel]&&palItems[palSel].go(); }
+  });
+  setTimeout(()=>q.focus(),20);
 }
-function closePal(){ $('#palette').hidden=true; }
 function palFill(q){
-  const list=$('#pal-list'); list.innerHTML=''; palSel=0; palItems=[];
-  const ql=q.toLowerCase();
-  (S.manifest.divisions||[]).forEach(dv=>{
-    if(!ql || dv.label.toLowerCase().includes(ql) || dv.code.toLowerCase().includes(ql))
-      palItems.push({kind:'division', id:dv.code, txt:dv.label, run:()=>{ setDivision(dv.id); closePal(); }});
-  });
-  (S.manifest.documents||[]).forEach(d=>{
-    if(!ql || (d.id+' '+d.title).toLowerCase().includes(ql))
-      palItems.push({kind:d.kind||'doc', id:d.id, txt:d.title, run:()=>{ selectDoc(d); closePal(); }});
-  });
+  const list=document.querySelector('#pl'); if(!list) return;
+  const ql=q.toLowerCase(); palItems=[]; palSel=0;
+  (S.man.divisions||[]).forEach(d=>{ if(!ql||(d.label+d.code).toLowerCase().includes(ql))
+    palItems.push({id:d.code,tx:d.label,k:'division',go:()=>{ setDiv(d.id); closeModal(); }}); });
+  (S.man.documents||[]).forEach(d=>{ if(!ql||(d.id+' '+d.title).toLowerCase().includes(ql))
+    palItems.push({id:d.id,tx:d.title,k:d.kind||'doc',go:()=>{ selectDoc(d); closeModal(); }}); });
+  Object.keys(GLOSSARY).forEach(k=>{ if(ql&&k.toLowerCase().includes(ql))
+    palItems.push({id:k,tx:(typeof GLOSSARY[k]==='string'?GLOSSARY[k]:GLOSSARY[k].def||''),k:'term',
+      go:()=>{ closeModal(); send('What does '+k+' mean in VDOT practice, and which documents govern it?'); }}); });
+  if(ql) palItems.unshift({id:'Ask',tx:q,k:'question',go:()=>{ closeModal(); send(q); }});
   palItems=palItems.slice(0,60);
+  list.innerHTML='';
   palItems.forEach((it,i)=>{
-    const b=document.createElement('button');
-    b.className='pal-item'+(i===0?' sel':'');
-    b.innerHTML='<span class="pid">'+esc(it.id)+'</span><span class="ptxt">'+esc(it.txt)+'</span><span class="pk">'+esc(it.kind)+'</span>';
-    b.addEventListener('click', it.run);
-    list.appendChild(b);
+    const b=document.createElement('button'); b.className='row'+(i===0?' sel':'');
+    b.innerHTML='<span class="rid">'+esc(it.id)+'</span><span class="rtx">'+esc(it.tx)+'</span><span class="rk">'+esc(it.k)+'</span>';
+    b.addEventListener('click',it.go); list.appendChild(b);
   });
 }
 function palMove(d){
-  const items=$$('#pal-list .pal-item'); if(!items.length) return;
+  const items=document.querySelectorAll('#pl .row'); if(!items.length) return;
   items[palSel]&&items[palSel].classList.remove('sel');
   palSel=(palSel+d+items.length)%items.length;
   items[palSel].classList.add('sel'); items[palSel].scrollIntoView({block:'nearest'});
 }
-$('#pal-in').addEventListener('input', e=>palFill(e.target.value));
-$('#pal-in').addEventListener('keydown', e=>{
-  if(e.key==='ArrowDown'){ e.preventDefault(); palMove(1); }
-  else if(e.key==='ArrowUp'){ e.preventDefault(); palMove(-1); }
-  else if(e.key==='Enter'){ e.preventDefault(); palItems[palSel]&&palItems[palSel].run(); }
-  else if(e.key==='Escape'){ closePal(); }
+$('#gsearch').addEventListener('click',openPal);
+
+/* modal plumbing */
+function modal(html){
+  closeModal();
+  const ov=document.createElement('div'); ov.className='ov'; ov.id='modal';
+  const bx=document.createElement('div'); bx.className='box'; bx.innerHTML=html;
+  ov.appendChild(bx); document.body.appendChild(ov);
+  ov.addEventListener('click',e=>{ if(e.target===ov) closeModal(); });
+  return bx;
+}
+function closeModal(){ const m=$('#modal'); m&&m.remove(); }
+
+/* ---------- 14. Export / print / share ---------- */
+function threadMarkdown(){
+  const d=S.doc, when=new Date().toLocaleString();
+  let out='# VIIM — '+(d?d.id+' · '+d.title:'VDOT guidance')+'\n\n';
+  out+='_Exported '+when+' · role: '+ROLES[S.role].name+'_\n\n';
+  if(d){ out+='**Document:** '+d.id+(d.revision?' rev '+d.revision:'')+'  \n';
+    if(d.effective) out+='**Effective on file:** '+d.effective+'  \n';
+    if(d.url) out+='**Source:** '+d.url+'  \n'; out+='\n---\n\n'; }
+  thread().forEach(m=>{
+    const body=typeof m.content==='string'?m.content:(m.display||'[attachment]');
+    out+=(m.role==='user'?'## Question\n\n':'## Answer\n\n')+body+'\n\n';
+    if(m.cites&&m.cites.length) out+='Sources: '+m.cites.join(' · ')+'\n\n';
+  });
+  out+='\n---\n\nUnofficial reference output. Not VDOT approval and not engineering judgment. '+
+       'Confirm the current revision on vdot.virginia.gov before relying on this for design or submittal.\n';
+  return out;
+}
+$('#export-btn').addEventListener('click',()=>{
+  if(!thread().length) return toast('Nothing to export yet');
+  const blob=new Blob([threadMarkdown()],{type:'text/markdown'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='viim-'+(S.doc?slugOf(S.doc.id):'thread')+'.md';
+  a.click(); URL.revokeObjectURL(a.href); toast('Exported');
 });
-$('#palette').addEventListener('click', e=>{ if(e.target.id==='palette') closePal(); });
-addEventListener('keydown', e=>{
-  if((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); $('#palette').hidden?openPal():closePal(); }
+$('#print-btn').addEventListener('click',()=>{
+  const d=S.doc;
+  $('#printfoot').innerHTML='VIIM — unofficial reference output · printed '+new Date().toLocaleString()+
+    (d?' · '+esc(d.id)+(d.revision?' rev '+esc(d.revision):'')+(d.url?' · '+esc(d.url):''):'')+
+    '<br>Not VDOT approval and not engineering judgment. Confirm the current revision on vdot.virginia.gov before relying on this for design or submittal.';
+  print();
+});
+$('#share-btn').addEventListener('click',()=>{
+  writeHash();
+  navigator.clipboard&&navigator.clipboard.writeText(location.href);
+  toast('Link copied');
 });
 
-/* ============================================================
-   Uploads — your documents, indexed alongside VDOT's
-   PDFs and images go to the model as native content blocks;
-   text files are inlined. Nothing leaves the browser except
-   through the same /api/chat proxy.
-   ============================================================ */
-const UPLOADS = new Map();          /* id -> record */
-const MAX_FILE = 4 * 1024 * 1024;   /* 4 MB per file  */
-const MAX_TOTAL = 12 * 1024 * 1024; /* 12 MB per turn */
-let pending = [];                   /* staged for the next message */
-
-const MINE_DIV = { id:'mine', code:'MINE', label:'Your documents',
-  hub:null, scope:'Documents you uploaded this session — plans, specs, permits, correspondence. Compared against VDOT guidance, never treated as guidance themselves.' };
-
-function fileKind(f){
-  if(/^image\/(png|jpeg|gif|webp)$/.test(f.type)) return 'image';
-  if(f.type==='application/pdf' || /\.pdf$/i.test(f.name)) return 'pdf';
-  if(/^text\//.test(f.type) || /\.(txt|md|csv|tsv|json|xml|html?|log)$/i.test(f.name)) return 'text';
-  return null;
+/* ---------- 15. Deep links ---------- */
+function writeHash(){
+  const p=[];
+  if(S.doc&&!S.doc.mine) p.push('doc='+encodeURIComponent(S.doc.id));
+  else if(S.div) p.push('div='+encodeURIComponent(S.div));
+  const h=p.join('&');
+  if(('#'+h)!==location.hash) history.replaceState(null,'','#'+h);
 }
-function totalStaged(){ return pending.reduce((n,a)=>n+(a.bytes||0),0); }
-function humanSize(b){ return b>=1048576 ? (b/1048576).toFixed(1)+' MB' : Math.max(1,Math.round(b/1024))+' KB'; }
-
-function addFiles(files){
-  [...files].forEach(f=>{
-    const kind=fileKind(f);
-    if(!kind){ stageError(f.name, 'unsupported type'); return; }
-    if(f.size > MAX_FILE){ stageError(f.name, 'over 4 MB'); return; }
-    if(totalStaged() + f.size > MAX_TOTAL){ stageError(f.name, 'turn limit reached'); return; }
-    const rd=new FileReader();
-    rd.onload=()=>{
-      const rec={ id:'up:'+f.name+':'+f.size, name:f.name, kind, bytes:f.size,
-        data: kind==='text' ? rd.result : String(rd.result).split(',')[1],
-        mime: f.type || (kind==='pdf'?'application/pdf':'text/plain') };
-      pending.push(rec);
-      UPLOADS.set(rec.id, rec);
-      registerUpload(rec);
-      drawAtts();
-    };
-    rd.onerror=()=>stageError(f.name,'could not read');
-    kind==='text' ? rd.readAsText(f) : rd.readAsDataURL(f);
-  });
-}
-function stageError(name, why){ pending.push({ bad:true, name, why }); drawAtts(); }
-
-/* uploaded files become selectable documents in the index */
-function registerUpload(rec){
-  const docs=S.manifest.documents||[];
-  if(docs.some(d=>d.id===rec.id)) return;
-  if(!(S.manifest.divisions||[]).some(d=>d.id==='mine')) S.manifest.divisions.push(MINE_DIV);
-  docs.push({
-    id: rec.id, div:'mine', title: rec.name, kind: rec.kind==='pdf'?'manual':'guide',
-    status:'uploaded', mine:true, text:true, url:null,
-    topic:['program delivery'], phase:[], delivery:[], district:['Statewide'],
-    note:'Uploaded '+new Date().toLocaleString()+' · '+humanSize(rec.bytes),
-  });
-  buildRail(); renderDocs();
-}
-
-function drawAtts(){
-  const box=$('#atts');
-  box.hidden = !pending.length;
-  box.innerHTML='';
-  pending.forEach((a,i)=>{
-    const c=document.createElement('span');
-    c.className='att'+(a.bad?' bad':'');
-    if(a.bad){
-      c.innerHTML='<b></b><i>'+esc(a.why)+'</i>';
-      c.querySelector('b').textContent=a.name;
-    } else {
-      const icon = a.kind==='image'
-        ? '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="m3 11 3-3 3 3 2-2 2 2"/></svg>'
-        : '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2h5l3 3v9H4z"/><path d="M9 2v3h3"/></svg>';
-      c.innerHTML=icon+'<b></b><i>'+humanSize(a.bytes)+'</i>';
-      c.querySelector('b').textContent=a.name;
-    }
-    const x=document.createElement('button'); x.className='x'; x.textContent='×';
-    x.setAttribute('aria-label','Remove '+a.name);
-    x.addEventListener('click',()=>{ pending.splice(i,1); drawAtts(); });
-    c.appendChild(x); box.appendChild(c);
-  });
-}
-function clearStaged(){ pending=[]; drawAtts(); }
-
-/* content blocks for the API */
-function blocksFor(rec, cache){
-  if(rec.kind==='image')
-    return { type:'image', source:{ type:'base64', media_type:rec.mime, data:rec.data } };
-  if(rec.kind==='pdf'){
-    const b={ type:'document', source:{ type:'base64', media_type:'application/pdf', data:rec.data },
-              title:rec.name, citations:{ enabled:true } };
-    if(cache) b.cache_control={ type:'ephemeral' };
-    return b;
+function readHash(){
+  const h=location.hash.replace(/^#/,''); if(!h) return false;
+  const p=new URLSearchParams(h);
+  const id=p.get('doc'), dv=p.get('div'), q=p.get('q');
+  if(dv) setDiv(dv,true);
+  if(id){
+    const d=(S.man.documents||[]).find(x=>x.id===id);
+    if(d){ if(d.div) setDiv(d.div,true); selectDoc(d,true); }
   }
-  const t={ type:'text', text:'--- FILE: '+rec.name+' ---\n'+String(rec.data).slice(0,180000) };
-  if(cache) t.cache_control={ type:'ephemeral' };
-  return t;
+  buildDivs(); renderList(); paintWork();
+  if(q) setTimeout(()=>send(decodeURIComponent(q)),400);
+  return !!(id||dv||q);
 }
+addEventListener('hashchange',()=>readHash());
 
-$('#att-btn').addEventListener('click', ()=>$('#file-in').click());
-$('#file-in').addEventListener('change', e=>{ addFiles(e.target.files); e.target.value=''; });
-
-/* paste a screenshot straight in */
-$('#prompt-in').addEventListener('paste', e=>{
-  const items=[...(e.clipboardData?.items||[])].filter(i=>i.kind==='file');
-  if(items.length){ addFiles(items.map(i=>i.getAsFile()).filter(Boolean)); }
+/* ---------- 16. Keys & chrome ---------- */
+$('#menu').addEventListener('click',()=>document.body.classList.toggle('idx'));
+$('#scrim').addEventListener('click',()=>document.body.classList.remove('idx'));
+$('#brand').addEventListener('click',e=>{ e.preventDefault(); selectDoc(null); setDiv(null); });
+addEventListener('keydown',e=>{
+  const typing=/input|textarea|select/i.test(e.target.tagName);
+  if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){ e.preventDefault(); $('#modal')?closeModal():openPal(); return; }
+  if(e.key==='Escape'){ if($('#modal')) return closeModal();
+    if(recOn&&rec) return rec.stop();
+    if(!$('#ctx').hidden) return closeCtx();
+    if(document.body.classList.contains('idx')) return document.body.classList.remove('idx');
+    if(typing) e.target.blur(); return; }
+  if(typing) return;
+  if(e.key==='/'){ e.preventDefault(); $('#q').focus(); return; }
+  if(e.key==='j'||e.key==='k'||e.key==='ArrowDown'&&!typing||e.key==='ArrowUp'&&!typing){
+    const items=$$('#list .it'); if(!items.length) return;
+    e.preventDefault();
+    S.cur=Math.max(0,Math.min(items.length-1,S.cur+((e.key==='j'||e.key==='ArrowDown')?1:-1)));
+    items.forEach(i=>i.classList.remove('cur'));
+    items[S.cur].classList.add('cur'); items[S.cur].scrollIntoView({block:'nearest'});
+    return;
+  }
+  if(e.key==='Enter'&&S.cur>=0){ const items=$$('#list .it'); items[S.cur]&&items[S.cur].click(); }
 });
 
-/* drag and drop over the workspace */
-(function(){
-  const zone=$('#dropzone'), chat=$('#chat');
-  let depth=0;
-  const show=v=>{ zone.hidden=!v; };
-  ['dragenter','dragover'].forEach(ev=>chat.addEventListener(ev, e=>{
-    if(!e.dataTransfer || ![...e.dataTransfer.types].includes('Files')) return;
-    e.preventDefault(); if(ev==='dragenter') depth++; show(true);
-  }));
-  chat.addEventListener('dragleave', ()=>{ if(--depth<=0){ depth=0; show(false); } });
-  chat.addEventListener('drop', e=>{
-    if(!e.dataTransfer) return;
-    e.preventDefault(); depth=0; show(false);
-    if(e.dataTransfer.files && e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
-  });
-  addEventListener('dragend', ()=>{ depth=0; show(false); });
-})();
+/* ---------- 17. Voice ---------- */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let rec=null, recOn=false;
+if(!SR) $('#mic').hidden=true;
+$('#mic').addEventListener('click',()=>{
+  if(!SR) return;
+  if(recOn){ rec.stop(); return; }
+  rec=new SR(); rec.continuous=true; rec.interimResults=true; rec.lang=navigator.language||'en-US';
+  rec.onresult=e=>{ let f='';
+    for(let i=e.resultIndex;i<e.results.length;i++) if(e.results[i].isFinal) f+=e.results[i][0].transcript;
+    if(f){ input.value=(input.value?input.value.replace(/\s*$/,' '):'')+f.trim();
+      input.dispatchEvent(new Event('input')); } };
+  const off=()=>{ recOn=false; $('#mic').classList.remove('rec'); $('#mic').setAttribute('aria-pressed','false'); };
+  rec.onend=off; rec.onerror=off;
+  try{ rec.start(); recOn=true; $('#mic').classList.add('rec'); $('#mic').setAttribute('aria-pressed','true'); }catch(e){}
+});
 
-/* ---------- 9. Background — survey grid ---------- */
-const bg=$('#bg'), bctx=bg.getContext('2d');
-let layer=null;
-function sizeBg(){
-  const d=Math.min(devicePixelRatio||1,2);
-  bg.width=innerWidth*d; bg.height=innerHeight*d; bctx.setTransform(d,0,0,d,0,0);
-}
-function buildLayer(){
-  const d=Math.min(devicePixelRatio||1,2), w=innerWidth, h=innerHeight;
-  layer=document.createElement('canvas'); layer.width=w*d; layer.height=h*d;
-  const c=layer.getContext('2d'); c.setTransform(d,0,0,d,0,0);
-  c.strokeStyle='rgba(15,111,214,.05)'; c.lineWidth=1;
-  for(let x=0;x<w;x+=28){ c.beginPath(); c.moveTo(x+.5,0); c.lineTo(x+.5,h); c.stroke(); }
-  for(let y=0;y<h;y+=28){ c.beginPath(); c.moveTo(0,y+.5); c.lineTo(w,y+.5); c.stroke(); }
-  c.strokeStyle='rgba(15,111,214,.08)';
-  for(let x=0;x<w;x+=140){ c.beginPath(); c.moveTo(x+.5,0); c.lineTo(x+.5,h); c.stroke(); }
-  for(let y=0;y<h;y+=140){ c.beginPath(); c.moveTo(0,y+.5); c.lineTo(w,y+.5); c.stroke(); }
-  c.fillStyle='rgba(251,191,36,.10)';
-  for(let x=140;x<w;x+=140) for(let y=140;y<h;y+=140){ c.fillRect(x-1.5,y-1.5,3,3); }
-}
-function drawBg(){
-  bctx.clearRect(0,0,innerWidth,innerHeight);
-  const g=bctx.createRadialGradient(innerWidth*.7, innerHeight*.2, 0, innerWidth*.7, innerHeight*.2, Math.max(innerWidth,innerHeight)*.7);
-  g.addColorStop(0,'rgba(56,189,248,.07)'); g.addColorStop(1,'rgba(255,255,255,0)');
-  bctx.fillStyle=g; bctx.fillRect(0,0,innerWidth,innerHeight);
-  if(layer) bctx.drawImage(layer,0,0,innerWidth,innerHeight);
-}
-sizeBg(); buildLayer(); drawBg();
-addEventListener('resize', ()=>{ sizeBg(); buildLayer(); drawBg(); });
-addEventListener('orientationchange', ()=>setTimeout(()=>{ sizeBg(); buildLayer(); drawBg(); },120));
-
-loadManifest();
+boot();
 
 </script>
 </body>
