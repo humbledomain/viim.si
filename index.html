@@ -43,7 +43,8 @@
    ============================================================ */
 :root{
   --u:8px; --u2:16px; --u3:24px; --u4:32px;
-  --rail-w:64px; --bar-h:56px; --side-w:clamp(280px,24vw,352px); --foot-h:26px;
+  --rail-w:64px; --bar-h:56px; --side-w:clamp(280px,24vw,352px);
+  --detail-w:clamp(300px,23vw,368px); --foot-h:26px;
   --safe-t:env(safe-area-inset-top,0px); --safe-b:env(safe-area-inset-bottom,0px);
   --hair:1px; --r1:6px; --r2:10px;
 
@@ -72,11 +73,11 @@ html,body{ height:100%; overflow:hidden; overscroll-behavior:none }
 body{ background:var(--bg); color:var(--ink); font-family:var(--f-ui); font-size:var(--t1);
   line-height:1.6; -webkit-font-smoothing:antialiased; touch-action:manipulation }
 #app{ position:fixed; inset:0; height:100dvh; height:min(100dvh,100svh); display:grid;
-  grid-template-columns:var(--rail-w) var(--side-w) 1fr;
+  grid-template-columns:var(--rail-w,64px) var(--side-w,320px) minmax(0,1fr);
   grid-template-rows:calc(var(--bar-h) + var(--safe-t)) 1fr calc(var(--foot-h) + var(--safe-b)) }
-#rail{ grid-column:1; grid-row:1/-1 } header.top{ grid-column:2/-1; grid-row:1 }
+#rail{ grid-column:1; grid-row:1 / span 3 } header.top{ grid-column:2 / -1; grid-row:1 }
 #side{ grid-column:2; grid-row:2 } #chat{ grid-column:3; grid-row:2 }
-footer.bot{ grid-column:2/-1; grid-row:3 }
+footer.bot{ grid-column:2 / -1; grid-row:3 }
 ::selection{ background:var(--accent); color:#fff }
 button{ font:inherit; color:inherit; background:none; border:none; cursor:pointer;
   appearance:none; -webkit-appearance:none; -webkit-tap-highlight-color:transparent }
@@ -137,7 +138,7 @@ header.top .sp{ flex:1 }
 #doclink svg{ width:14px; height:14px }
 
 /* index panel */
-#side{ position:relative; z-index:12; display:flex; flex-direction:column; min-height:0;
+#side{ position:relative; z-index:12; display:flex; flex-direction:column; min-height:0; min-width:0;
   background:var(--panel); border-right:var(--hair) solid var(--line) }
 #side .tools{ height:44px; flex:none; padding:0 var(--u2); display:flex; gap:var(--u); align-items:center;
   border-bottom:var(--hair) solid var(--line); background:var(--panel2) }
@@ -176,7 +177,7 @@ header.top .sp{ flex:1 }
 #scrim{ position:fixed; inset:0; z-index:39; background:rgba(15,24,38,.38); backdrop-filter:blur(2px); display:none }
 
 /* workspace */
-#chat{ position:relative; display:flex; flex-direction:column; min-height:0;
+#chat{ position:relative; display:flex; flex-direction:column; min-height:0; min-width:0;
   background:linear-gradient(180deg,#fbfcfe,#f1f4f9) }
 #feed{ flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain;
   position:relative; z-index:1; padding:var(--u3) var(--u3) var(--u4);
@@ -252,6 +253,7 @@ header.top .sp{ flex:1 }
   gap:1px; background:var(--line); border-top:var(--hair) solid var(--line) }
 .ask{ position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; gap:7px;
   padding:9px 6px; min-height:38px; background:rgba(255,255,255,.9); transition:background .2s }
+.ask{ white-space:nowrap }
 .ask b{ font-size:12.5px; font-weight:650; color:var(--accent-ink) }
 .ask i{ font-style:normal; font-family:var(--f-mono); font-size:9px; letter-spacing:.1em;
   text-transform:uppercase; color:var(--faint); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
@@ -317,6 +319,7 @@ footer.bot a{ color:var(--faint) }
   #feed{ padding:var(--u2) }
   #composer{ padding:var(--u2) var(--u2) calc(var(--u2) + var(--safe-b)) }
 }
+@media (max-width:1400px){ .ask i{ display:none } }
 @media (max-width:599px){
   .div-btn em{ display:none }
   #doclink span{ display:none } #doclink{ padding:0 10px }
@@ -364,12 +367,13 @@ footer.bot a{ color:var(--faint) }
 
 /* ---------- v2: detail panel ---------- */
 /* docked as a real column on wide screens — never covers the conversation */
-#detail{ grid-column:4; grid-row:2; background:var(--panel);
+#detail{ grid-column:4; grid-row:2; min-width:0; overflow:hidden; background:var(--panel);
   border-left:var(--hair) solid var(--line); display:flex; flex-direction:column;
   min-height:0; animation:slideIn .3s var(--ease) both }
-body.has-detail #app{ grid-template-columns:var(--rail-w) var(--side-w) 1fr var(--detail-w) }
+body.has-detail #app{ grid-template-columns:var(--rail-w,64px) var(--side-w,320px)
+  minmax(0,1fr) var(--detail-w,340px) }
 @media (max-width:1200px){
-  body.has-detail #app{ grid-template-columns:var(--rail-w) var(--side-w) 1fr }
+  body.has-detail #app{ grid-template-columns:var(--rail-w,64px) var(--side-w,320px) minmax(0,1fr) }
   #detail{ position:fixed; top:calc(var(--bar-h) + var(--safe-t)); right:0; bottom:0;
     width:min(94vw,380px); z-index:45; box-shadow:-16px 0 50px rgba(15,24,38,.14) }
 }
@@ -612,7 +616,8 @@ function buildRail(){
     const b=document.createElement('button');
     b.className='div-btn'; b.dataset.div=d.id; b.title=d.label;
     b.setAttribute('aria-label', d.label);
-    const SHORT={ld:'design',sb:'bridge',te:'traffic',ed:'environ',tmpd:'planning',lad:'local'};
+    const SHORT={ld:'design',sb:'bridge',te:'traffic',ed:'environ',tmpd:'planning',lad:'local',
+                 mat:'materials',con:'constr',rw:'row',mnt:'maint',prog:'program'};
     b.innerHTML='<b>'+esc(d.code)+'</b><em>'+esc(SHORT[d.id]||d.label.split(/[ &]/)[0].slice(0,8))+'</em>';
     b.addEventListener('click', ()=>setDivision(d.id));
     divsNav.appendChild(b);
