@@ -363,10 +363,16 @@ footer.bot a{ color:var(--faint) }
 .badge.text{ background:rgba(15,122,82,.12); color:var(--ok) }
 
 /* ---------- v2: detail panel ---------- */
-#detail{ position:fixed; top:calc(var(--bar-h) + var(--safe-t)); right:0; bottom:0; width:min(94vw,380px);
-  z-index:45; background:var(--panel); border-left:var(--hair) solid var(--line);
-  box-shadow:-16px 0 50px rgba(15,24,38,.14); display:flex; flex-direction:column;
-  animation:slideIn .3s var(--ease) both }
+/* docked as a real column on wide screens — never covers the conversation */
+#detail{ grid-column:4; grid-row:2; background:var(--panel);
+  border-left:var(--hair) solid var(--line); display:flex; flex-direction:column;
+  min-height:0; animation:slideIn .3s var(--ease) both }
+body.has-detail #app{ grid-template-columns:var(--rail-w) var(--side-w) 1fr var(--detail-w) }
+@media (max-width:1200px){
+  body.has-detail #app{ grid-template-columns:var(--rail-w) var(--side-w) 1fr }
+  #detail{ position:fixed; top:calc(var(--bar-h) + var(--safe-t)); right:0; bottom:0;
+    width:min(94vw,380px); z-index:45; box-shadow:-16px 0 50px rgba(15,24,38,.14) }
+}
 @keyframes slideIn{ from{ transform:translateX(20px); opacity:0 } to{ transform:none; opacity:1 } }
 #detail header{ display:flex; align-items:center; gap:var(--u); height:44px; flex:none;
   padding:0 var(--u2); border-bottom:var(--hair) solid var(--line); background:var(--panel2) }
@@ -387,6 +393,20 @@ footer.bot a{ color:var(--faint) }
 @media (hover:hover){ #detail-body .ref:hover{ background:rgba(15,111,214,.14) } }
 #detail-body .auth{ font-family:var(--f-mono); font-size:10.5px; color:var(--dim); line-height:1.9 }
 #detail-body .empty{ font-size:11.5px; color:var(--faint) }
+#detail-body .act{ display:flex; align-items:center; gap:8px; width:100%; text-align:left;
+  font-size:12px; padding:7px 9px; border-radius:var(--r1); border:var(--hair) solid var(--line);
+  background:var(--panel2); margin-bottom:5px; color:var(--ink); transition:.16s }
+@media (hover:hover){ #detail-body .act:hover{ border-color:var(--accent-lo); background:#fff;
+  color:var(--accent-ink); box-shadow:0 0 0 3px var(--glow) } }
+#detail-body .act svg{ width:14px; height:14px; flex:none; color:var(--accent) }
+#detail-body .act .k{ margin-left:auto; font-family:var(--f-mono); font-size:9px; color:var(--faint) }
+#detail-body .tag{ display:inline-block; font-size:10.5px; padding:3px 8px; margin:0 4px 4px 0;
+  border-radius:999px; background:var(--panel3); color:var(--dim); transition:.16s }
+@media (hover:hover){ #detail-body .tag:hover{ background:rgba(15,111,214,.12); color:var(--accent-ink) } }
+#detail-body .rel{ display:block; width:100%; text-align:left; padding:6px 8px; border-radius:var(--r1);
+  font-size:11.5px; line-height:1.35; color:var(--ink); transition:.16s }
+#detail-body .rel b{ display:block; font-family:var(--f-mono); font-size:10px; color:var(--accent-ink) }
+@media (hover:hover){ #detail-body .rel:hover{ background:var(--panel2) } }
 
 /* ---------- v2: command palette ---------- */
 #palette{ position:fixed; inset:0; z-index:70; background:rgba(15,24,38,.42); backdrop-filter:blur(3px);
@@ -574,7 +594,8 @@ async function loadManifest(){
   loadIndex();
   const g = S.manifest.generated;
   const withText=(S.manifest.documents||[]).filter(d=>d.text).length;
-  $('#foot-stat').textContent = S.manifest.documents.length+' documents · '+withText+' full text · index '+(g||'unknown')+' · ⌘K';
+  $('#foot-stat').textContent = (S.manifest.divisions||[]).length+' divisions · '+
+    S.manifest.documents.length+' documents · '+withText+' full text · '+(g||'unknown')+' · ⌘K';
 }
 
 /* ---------- 2. Rail & index ---------- */
@@ -683,7 +704,7 @@ function selectDoc(doc){
   $('#prompt-in').placeholder = doc ? 'Ask about '+doc.id+'…' : 'Ask about VDOT guidance…';
   $('#detail-btn').hidden = !doc;
   if(doc){ loadCorpus(doc.id).then(()=>{ if(S.doc && S.doc.id===doc.id) renderDocs(); }); renderDetail(); }
-  else $('#detail').hidden = true;
+  else closeDetail();
   startCard();
   if(innerWidth<900) closeSide();
 }
@@ -960,7 +981,7 @@ $('#sigil').addEventListener('click', ()=>{ selectDoc(null); setDivision(null); 
 addEventListener('keydown', e=>{
   if(e.key==='Escape'){
     if(!$('#palette').hidden) closePal();
-    else if(!$('#detail').hidden) $('#detail').hidden=true;
+    else if(!$('#detail').hidden) closeDetail();
     else if(recOn && rec) rec.stop();
     else if(side.classList.contains('open')) closeSide();
     else if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
@@ -1100,60 +1121,145 @@ $$('.facet-tab').forEach(t=>t.addEventListener('click',()=>{
 }));
 
 /* ---------- detail panel ---------- */
+function relatedByFacet(d, limit=6){
+  const pool=(S.manifest.documents||[]).filter(x=>x.id!==d.id);
+  const score=x=>{
+    let s=0;
+    (d.topic||[]).forEach(t=>{ if((x.topic||[]).includes(t)) s+=3; });
+    (d.phase||[]).forEach(t=>{ if((x.phase||[]).includes(t)) s+=1; });
+    (d.delivery||[]).forEach(t=>{ if((x.delivery||[]).includes(t)) s+=1; });
+    if(x.div===d.div) s+=2;
+    if(x.kind===d.kind) s+=0.5;
+    return s;
+  };
+  return pool.map(x=>[x,score(x)]).filter(p=>p[1]>=4)
+             .sort((a,b)=>b[1]-a[1]).slice(0,limit).map(p=>p[0]);
+}
+function citationOf(d){
+  const dv=(S.manifest.divisions||[]).find(x=>x.id===d.div);
+  return [d.id, d.revision?('rev '+d.revision):null, d.title,
+          dv?('VDOT '+dv.label+' Division'):null, d.effective?('eff. '+d.effective):null,
+          d.url].filter(Boolean).join(', ');
+}
 function renderDetail(){
   const d=S.doc, panel=$('#detail');
-  if(!d){ panel.hidden=true; return; }
-  panel.hidden=false;
+  if(!d){ panel.hidden=true; document.body.classList.remove('has-detail'); return; }
+  panel.hidden=false; document.body.classList.add('has-detail');
   $('#detail-title').textContent=d.id;
   const body=$('#detail-body'); body.innerHTML='';
-  const add=(html)=>{ const w=document.createElement('div'); w.innerHTML=html; body.appendChild(w); };
+  const sec=(t)=>{ const e=document.createElement('h4'); e.textContent=t; body.appendChild(e); };
+  const html=(s)=>{ const w=document.createElement('div'); w.innerHTML=s; body.appendChild(w); return w; };
+  const act=(label, key, svg, fn)=>{
+    const b=document.createElement('button'); b.className='act';
+    b.innerHTML=svg+'<span>'+esc(label)+'</span>'+(key?'<span class="k">'+esc(key)+'</span>':'');
+    b.addEventListener('click', fn); body.appendChild(b);
+  };
+  const I={
+    ask:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 3h12v8H6l-4 3z"/></svg>',
+    doc:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 2h5l3 3v9H4z"/><path d="M9 2v3h3"/></svg>',
+    ext:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6.5 3H3v10h10V9.5"/><path d="M9.5 2.5H14V7"/><path d="M7.5 8.5 13.5 2.5"/></svg>',
+    copy:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2H3.5A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/></svg>',
+    fresh:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13.5 8a5.5 5.5 0 1 1-1.7-4"/><path d="M12.5 2v3h-3"/></svg>',
+    filter:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 3h12l-4.6 5.4V13L6.6 11.4V8.4z"/></svg>',
+  };
+
+  /* ---- actions: the panel earns its space ---- */
+  sec('Actions');
+  act('Summarize requirements','', I.ask, ()=>send('Summarize '+d.id+'. Lead with the operative requirements, then conditions and exceptions. Cite revision and sections.'));
+  act('Checklist for my project','', I.ask, ()=>send('Turn '+d.id+' into a practical compliance checklist for a project team: what must be done, by whom, at which milestone, and what gets submitted or documented.'));
+  act('What changed recently','', I.fresh, ()=>send('Check whether '+d.id+' has been revised recently. Fetch the current VDOT page, report the revision number and effective date you find, and compare against the value on file'+(d.revision?(' ('+d.revision+')'):'')+'. If it changed, summarize what changed.'));
+  act('Common mistakes','', I.ask, ()=>send('What do practitioners most often get wrong or miss when applying '+d.id+'? Be specific and cite sections.'));
+  if(d.url) act('Open on VDOT','↗', I.ext, ()=>window.open(d.url,'_blank','noopener'));
+  act('Copy citation','', I.copy, (e)=>{
+    navigator.clipboard && navigator.clipboard.writeText(citationOf(d));
+    const s=e.currentTarget.querySelector('span'); const o=s.textContent;
+    s.textContent='Copied'; setTimeout(()=>s.textContent=o,1200);
+  });
+
+  /* ---- record ---- */
   const dv=(S.manifest.divisions||[]).find(x=>x.id===d.div);
+  sec('Record');
+  html(kv('Division', dv?dv.label+' ('+dv.code+')':'—')+
+       kv('Type', d.kind||'—')+kv('Revision', d.revision||'—')+
+       kv('Effective', d.effective||'—')+kv('Status', d.status||'current')+
+       (d.pages?kv('Pages', d.pages):'')+
+       kv('Full text', d.text?'cached in corpus':'live fetch at question time'));
 
-  add('<h4>Record</h4>'+
-    kv('Division', dv?dv.label+' ('+dv.code+')':'—')+
-    kv('Type', d.kind||'—')+
-    kv('Revision', d.revision||'—')+
-    kv('Effective', d.effective||'—')+
-    kv('Status', d.status||'current')+
-    (d.pages?kv('Pages', d.pages):'')+
-    kv('Full text', d.text?'in corpus':'live fetch'));
+  /* ---- classification: clickable filters ---- */
+  const facetFields=[['topic','Topics'],['phase','Project phase'],['delivery','Delivery'],];
+  if(facetFields.some(([f])=>(d[f]||[]).length)){
+    sec('Classification');
+    const w=html('');
+    facetFields.forEach(([f])=>(d[f]||[]).forEach(v=>{
+      const b=document.createElement('button'); b.className='tag'; b.textContent=v;
+      b.title='Filter the index by '+v;
+      b.addEventListener('click',()=>{
+        F[f].add(v); FACET_TAB=f;
+        $$('.facet-tab').forEach(x=>x.classList.toggle('active', x.dataset.facet===f));
+        renderFacets(); renderChips(); renderDocs();
+      });
+      w.appendChild(b);
+    }));
+  }
 
-  if(d.sections&&d.sections.length){
-    add('<h4>Sections</h4>');
+  /* ---- sections ---- */
+  if(d.sections && d.sections.length){
+    sec('Sections');
     d.sections.slice(0,40).forEach(s=>{
       const b=document.createElement('button'); b.className='sec';
       b.innerHTML=esc(s.heading)+'<i>p.'+s.page+'</i>';
       b.addEventListener('click',()=>send('In '+d.id+', explain section “'+s.heading+'” (page '+s.page+'). Quote the operative language and say what it requires in practice.'));
       body.appendChild(b);
     });
+  } else if(d.text===undefined || d.text===false){
+    sec('Sections');
+    html('<div class="empty">Section map appears after <code>tools/build-corpus.py</code> extracts this document.</div>');
   }
-  const rel=[...(d.xrefs||[]), ...(d.referenced_by||[])];
+
+  /* ---- cross references ---- */
+  const rel=[...new Set([...(d.xrefs||[]), ...(d.referenced_by||[])])];
   if(rel.length){
-    add('<h4>Cross-references</h4>');
-    const w=document.createElement('div');
-    [...new Set(rel)].slice(0,30).forEach(rid=>{
+    sec('Cross-references');
+    const w=html('');
+    rel.slice(0,30).forEach(rid=>{
       const target=(S.manifest.documents||[]).find(x=>x.id===rid);
       const b=document.createElement('button'); b.className='ref'; b.textContent=rid;
-      b.title=target?target.title:'not in index';
+      b.title=target?target.title:'not in index — will be looked up';
       b.addEventListener('click',()=> target ? selectDoc(target)
-        : send('What is '+rid+' and how does it relate to '+d.id+'?'));
+        : send('What is '+rid+', and how does it relate to '+d.id+'?'));
       w.appendChild(b);
     });
-    body.appendChild(w);
   }
+
+  /* ---- related by classification (always works, no corpus needed) ---- */
+  const near=relatedByFacet(d);
+  if(near.length){
+    sec('Related guidance');
+    near.forEach(x=>{
+      const b=document.createElement('button'); b.className='rel';
+      b.innerHTML='<b>'+esc(x.id)+'</b>'+esc(x.title);
+      b.addEventListener('click',()=>selectDoc(x));
+      body.appendChild(b);
+    });
+  }
+
+  /* ---- lineage / authority / note ---- */
   if(d.supersedes||d.superseded_by){
-    add('<h4>Lineage</h4>'+
-      (d.supersedes?kv('Supersedes', d.supersedes.join(', ')):'')+
-      (d.superseded_by?kv('Superseded by', d.superseded_by.join(', ')):''));
+    sec('Lineage');
+    html((d.supersedes?kv('Supersedes', d.supersedes.join(', ')):'')+
+         (d.superseded_by?kv('Superseded by', d.superseded_by.join(', ')):''));
   }
-  if(d.authority&&d.authority.length)
-    add('<h4>Authority cited</h4><div class="auth">'+d.authority.map(esc).join('<br>')+'</div>');
-  if(d.note) add('<h4>Note</h4><div class="empty">'+esc(d.note)+'</div>');
+  if(d.authority && d.authority.length){
+    sec('Authority cited');
+    html('<div class="auth">'+d.authority.map(esc).join('<br>')+'</div>');
+  }
+  if(d.note){ sec('Note'); html('<div class="empty">'+esc(d.note)+'</div>'); }
 }
 const kv=(k,v)=>'<div class="kv"><span>'+esc(k)+'</span><span>'+esc(v)+'</span></div>';
-$('#detail-close').addEventListener('click', ()=>$('#detail').hidden=true);
+function closeDetail(){ $('#detail').hidden=true; document.body.classList.remove('has-detail'); }
+$('#detail-close').addEventListener('click', closeDetail);
 $('#detail-btn').addEventListener('click', ()=>{
-  const p=$('#detail'); p.hidden ? renderDetail() : p.hidden=true;
+  $('#detail').hidden ? renderDetail() : closeDetail();
 });
 
 /* ---------- command palette ---------- */

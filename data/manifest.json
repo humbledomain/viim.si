@@ -1,5 +1,5 @@
 {
-  "generated": "seed-v2",
+  "generated": "seed-v3",
   "schema": 2,
   "note": "Verified seed catalog. Run tools/build-manifest.py for the full VDOT index and tools/build-corpus.py to attach full text.",
   "source_indexes": [
@@ -13,15 +13,21 @@
       "structures & bridges",
       "traffic & safety",
       "pedestrian & ADA",
+      "bicycle & multimodal",
       "work zones",
       "geometrics & design",
+      "pavement & geotech",
       "right of way",
       "utilities",
-      "materials",
+      "materials & testing",
+      "construction & inspection",
       "survey & CADD",
       "planning & access",
       "maintenance",
-      "program delivery"
+      "program delivery",
+      "funding & programming",
+      "civil rights & DBE",
+      "permits"
     ],
     "phase": [
       "planning",
@@ -44,7 +50,10 @@
       "specification",
       "regulation",
       "policy memo",
-      "guidance letter"
+      "guidance letter",
+      "guide",
+      "form / template",
+      "index"
     ]
   },
   "divisions": [
@@ -89,6 +98,41 @@
       "label": "Local Assistance",
       "hub": "https://www.vdot.virginia.gov/doing-business/for-localities/local-assistance/",
       "scope": "Locally administered projects: the LAP Manual, Letters to Local Governments and Department Memoranda."
+    },
+    {
+      "id": "mat",
+      "code": "MAT",
+      "label": "Materials",
+      "hub": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/materials/",
+      "scope": "Field sampling, inspection, testing and control of materials; Virginia Test Methods; QA/QC."
+    },
+    {
+      "id": "con",
+      "code": "CON",
+      "label": "Construction",
+      "hub": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/",
+      "scope": "Construction administration, inspection, documentation, post-construction closeout."
+    },
+    {
+      "id": "rw",
+      "code": "RW",
+      "label": "Right of Way & Utilities",
+      "hub": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/",
+      "scope": "Acquisition, relocation assistance, appraisals, property management, utility relocation."
+    },
+    {
+      "id": "mnt",
+      "code": "MNT",
+      "label": "Maintenance",
+      "hub": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/",
+      "scope": "Asset management, pavement and roadside maintenance, snow and ice, permits to work in the ROW."
+    },
+    {
+      "id": "prog",
+      "code": "PROG",
+      "label": "Programming",
+      "hub": "https://www.vdot.virginia.gov/projects/",
+      "scope": "Six-Year Improvement Program, SMART SCALE, funding categories, project scoping and estimation."
     }
   ],
   "documents": [
@@ -751,6 +795,836 @@
         "locally administered"
       ],
       "note": "Local Assistance Division's direct policy notices to localities; issued in a numbered series."
+    },
+    {
+      "id": "Materials MOI",
+      "div": "mat",
+      "title": "Materials Division Manual of Instructions",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/materials-manual-of-instructions/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "materials & testing",
+        "construction & inspection"
+      ],
+      "phase": [
+        "construction"
+      ],
+      "delivery": [
+        "VDOT-administered",
+        "locally administered"
+      ],
+      "note": "Practices for field sampling, inspection, testing and control of materials used in construction and maintenance."
+    },
+    {
+      "id": "Virginia Test Methods",
+      "div": "mat",
+      "title": "Virginia Test Methods (VTM) Manual",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/materials/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "materials & testing"
+      ],
+      "phase": [
+        "construction"
+      ]
+    },
+    {
+      "id": "Guide for Statistical Quality Control",
+      "div": "mat",
+      "title": "Guide for Statistical Quality Control",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/materials/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "materials & testing"
+      ],
+      "phase": [
+        "construction"
+      ]
+    },
+    {
+      "id": "Nuclear Moisture-Density Manual",
+      "div": "mat",
+      "title": "Nuclear Moisture-Density Testing Procedure Manual",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/materials/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "materials & testing"
+      ],
+      "phase": [
+        "construction"
+      ]
+    },
+    {
+      "id": "Materials Certification Schedule",
+      "div": "mat",
+      "title": "Materials Certification Schedule",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/materials/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "materials & testing",
+        "construction & inspection"
+      ],
+      "phase": [
+        "construction"
+      ]
+    },
+    {
+      "id": "Construction Manual",
+      "div": "con",
+      "title": "Construction Manual",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/construction-manual/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "construction & inspection",
+        "program delivery"
+      ],
+      "phase": [
+        "construction"
+      ],
+      "delivery": [
+        "VDOT-administered",
+        "locally administered"
+      ],
+      "note": "Guidance for construction inspection personnel and documentation of project activities."
+    },
+    {
+      "id": "Post-Construction Manual",
+      "div": "con",
+      "title": "Post-Construction Manual",
+      "url": "https://www.vdot.virginia.gov/media/vdotvirginiagov/doing-business/technical-guidance-and-support/technical-guidance-documents/construction/pc_manual_acc100422.pdf",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "construction & inspection",
+        "program delivery"
+      ],
+      "phase": [
+        "construction"
+      ]
+    },
+    {
+      "id": "Contract Administration",
+      "div": "con",
+      "title": "Contract Administration Guidance",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "construction & inspection",
+        "program delivery"
+      ],
+      "phase": [
+        "advertisement",
+        "construction"
+      ]
+    },
+    {
+      "id": "Work Zone Safety Guidance",
+      "div": "con",
+      "title": "Work Zone Safety and Operations Guidance",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/traffic-operations/work-zones/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "work zones",
+        "construction & inspection"
+      ],
+      "phase": [
+        "construction"
+      ]
+    },
+    {
+      "id": "Geotech & Pavement Manual",
+      "div": "mat",
+      "title": "Geotechnical and Pavement Design and Evaluation Manual",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "pavement & geotech",
+        "materials & testing"
+      ],
+      "phase": [
+        "preliminary engineering"
+      ],
+      "delivery": [
+        "VDOT-administered",
+        "locally administered"
+      ],
+      "note": "Investigation, evaluation and design of geotechnical and pavement projects."
+    },
+    {
+      "id": "Pavement Design Guide",
+      "div": "mat",
+      "title": "Pavement Design Guide for Subdivision and Secondary Roads",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "pavement & geotech",
+        "planning & access"
+      ],
+      "phase": [
+        "preliminary engineering"
+      ],
+      "delivery": [
+        "permit / private development"
+      ]
+    },
+    {
+      "id": "Right of Way Manual",
+      "div": "rw",
+      "title": "Right of Way Manual of Instructions",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "right of way"
+      ],
+      "phase": [
+        "right of way"
+      ],
+      "delivery": [
+        "VDOT-administered",
+        "locally administered"
+      ],
+      "authority": [
+        "49 CFR 24 (Uniform Relocation Act)"
+      ]
+    },
+    {
+      "id": "Utility Relocation Policy",
+      "div": "rw",
+      "title": "Utility Relocation Policies and Procedures",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "utilities",
+        "right of way"
+      ],
+      "phase": [
+        "right of way",
+        "construction"
+      ],
+      "authority": [
+        "23 CFR 645"
+      ]
+    },
+    {
+      "id": "Utility Manual",
+      "div": "rw",
+      "title": "Utility Manual of Instructions",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "utilities"
+      ],
+      "phase": [
+        "right of way",
+        "construction"
+      ]
+    },
+    {
+      "id": "Relocation Assistance",
+      "div": "rw",
+      "title": "Relocation Assistance Program Guidance",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "right of way"
+      ],
+      "phase": [
+        "right of way"
+      ],
+      "authority": [
+        "49 CFR 24"
+      ]
+    },
+    {
+      "id": "Maintenance Division Manuals",
+      "div": "mnt",
+      "title": "Maintenance Division Manuals and Guidance",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "maintenance",
+        "program delivery"
+      ],
+      "phase": [
+        "maintenance"
+      ]
+    },
+    {
+      "id": "Asset Management",
+      "div": "mnt",
+      "title": "Transportation Asset Management Plan (TAMP)",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "maintenance",
+        "funding & programming"
+      ],
+      "phase": [
+        "maintenance"
+      ],
+      "authority": [
+        "23 CFR 515"
+      ]
+    },
+    {
+      "id": "Snow and Ice Guidance",
+      "div": "mnt",
+      "title": "Snow and Ice Control Guidance",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "maintenance"
+      ],
+      "phase": [
+        "maintenance"
+      ]
+    },
+    {
+      "id": "Land Use Permit Manual",
+      "div": "mnt",
+      "title": "Land Use Permit Manual",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "permits",
+        "utilities",
+        "right of way"
+      ],
+      "phase": [
+        "construction"
+      ],
+      "delivery": [
+        "permit / private development"
+      ],
+      "authority": [
+        "24VAC30-151"
+      ]
+    },
+    {
+      "id": "Traffic Impact Analysis Regs",
+      "div": "tmpd",
+      "title": "Traffic Impact Analysis Regulations (Chapter 527)",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/transportation-and-mobility-planning/",
+      "kind": "regulation",
+      "status": "current",
+      "topic": [
+        "planning & access",
+        "permits"
+      ],
+      "phase": [
+        "planning"
+      ],
+      "delivery": [
+        "permit / private development"
+      ],
+      "authority": [
+        "24VAC30-155"
+      ]
+    },
+    {
+      "id": "Entrance Design Standards",
+      "div": "tmpd",
+      "title": "Entrance Design and Access Management Standards",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/transportation-and-mobility-planning/",
+      "kind": "standard",
+      "status": "current",
+      "topic": [
+        "planning & access",
+        "geometrics & design"
+      ],
+      "phase": [
+        "planning",
+        "preliminary engineering"
+      ],
+      "delivery": [
+        "permit / private development"
+      ],
+      "authority": [
+        "24VAC30-73"
+      ]
+    },
+    {
+      "id": "Complete Streets Policy",
+      "div": "tmpd",
+      "title": "Complete Streets Policy and Guidance",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/transportation-and-mobility-planning/",
+      "kind": "policy memo",
+      "status": "current",
+      "topic": [
+        "bicycle & multimodal",
+        "pedestrian & ADA",
+        "planning & access"
+      ],
+      "phase": [
+        "planning",
+        "scoping"
+      ],
+      "delivery": [
+        "VDOT-administered",
+        "locally administered"
+      ]
+    },
+    {
+      "id": "Bicycle Policy Plan",
+      "div": "tmpd",
+      "title": "Policy for Integrating Bicycle and Pedestrian Accommodations",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/transportation-and-mobility-planning/",
+      "kind": "policy memo",
+      "status": "current",
+      "topic": [
+        "bicycle & multimodal",
+        "pedestrian & ADA"
+      ],
+      "phase": [
+        "planning",
+        "scoping"
+      ]
+    },
+    {
+      "id": "Multimodal Design Guidelines",
+      "div": "tmpd",
+      "title": "Multimodal System Design Guidelines",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/transportation-and-mobility-planning/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "bicycle & multimodal",
+        "geometrics & design"
+      ],
+      "phase": [
+        "planning",
+        "preliminary engineering"
+      ]
+    },
+    {
+      "id": "Arterial Preservation",
+      "div": "tmpd",
+      "title": "Arterial Preservation Program Guidance",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/transportation-and-mobility-planning/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "planning & access"
+      ],
+      "phase": [
+        "planning"
+      ]
+    },
+    {
+      "id": "Six-Year Improvement Program",
+      "div": "prog",
+      "title": "Six-Year Improvement Program (SYIP)",
+      "url": "https://www.vdot.virginia.gov/projects/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "funding & programming",
+        "program delivery"
+      ],
+      "phase": [
+        "planning"
+      ]
+    },
+    {
+      "id": "SMART SCALE",
+      "div": "prog",
+      "title": "SMART SCALE Prioritization Process",
+      "url": "https://www.vdot.virginia.gov/projects/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "funding & programming",
+        "planning & access"
+      ],
+      "phase": [
+        "planning"
+      ],
+      "authority": [
+        "Code of Virginia \u00a733.2-214.1"
+      ]
+    },
+    {
+      "id": "Revenue Sharing Program",
+      "div": "prog",
+      "title": "Revenue Sharing Program",
+      "url": "https://www.vdot.virginia.gov/doing-business/for-localities/local-assistance/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "funding & programming",
+        "program delivery"
+      ],
+      "phase": [
+        "planning"
+      ],
+      "delivery": [
+        "locally administered"
+      ],
+      "authority": [
+        "Code of Virginia \u00a733.2-357"
+      ]
+    },
+    {
+      "id": "Transportation Alternatives",
+      "div": "prog",
+      "title": "Transportation Alternatives Set-Aside Program",
+      "url": "https://www.vdot.virginia.gov/doing-business/for-localities/local-assistance/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "funding & programming",
+        "bicycle & multimodal"
+      ],
+      "phase": [
+        "planning"
+      ],
+      "delivery": [
+        "locally administered"
+      ]
+    },
+    {
+      "id": "Project Cost Estimation",
+      "div": "prog",
+      "title": "Project Cost Estimating Guidance",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "funding & programming",
+        "program delivery"
+      ],
+      "phase": [
+        "scoping",
+        "preliminary engineering"
+      ]
+    },
+    {
+      "id": "Environmental Manual",
+      "div": "ed",
+      "title": "Environmental Division Manuals and Guidance",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/environmental/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "environmental"
+      ],
+      "phase": [
+        "scoping",
+        "preliminary engineering"
+      ],
+      "authority": [
+        "NEPA 42 U.S.C. \u00a74321",
+        "23 CFR 771"
+      ]
+    },
+    {
+      "id": "Erosion and Sediment Control",
+      "div": "ed",
+      "title": "Erosion and Sediment Control Program",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/environmental/",
+      "kind": "regulation",
+      "status": "current",
+      "topic": [
+        "environmental",
+        "stormwater & drainage"
+      ],
+      "phase": [
+        "construction"
+      ],
+      "authority": [
+        "9VAC25-840"
+      ]
+    },
+    {
+      "id": "VSMP Guidance",
+      "div": "ed",
+      "title": "Virginia Stormwater Management Program (VSMP) Guidance",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/environmental/",
+      "kind": "regulation",
+      "status": "current",
+      "topic": [
+        "stormwater & drainage",
+        "environmental"
+      ],
+      "phase": [
+        "preliminary engineering",
+        "construction"
+      ],
+      "authority": [
+        "9VAC25-870"
+      ]
+    },
+    {
+      "id": "Cultural Resources",
+      "div": "ed",
+      "title": "Cultural Resources / Section 106 Guidance",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/environmental/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "environmental"
+      ],
+      "phase": [
+        "scoping"
+      ],
+      "authority": [
+        "54 U.S.C. \u00a7306108 (Section 106)",
+        "36 CFR 800"
+      ]
+    },
+    {
+      "id": "Hazardous Materials Guidance",
+      "div": "ed",
+      "title": "Hazardous Materials Screening and Remediation",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/environmental/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "environmental"
+      ],
+      "phase": [
+        "scoping",
+        "right of way"
+      ]
+    },
+    {
+      "id": "DBE Program",
+      "div": "con",
+      "title": "Disadvantaged Business Enterprise (DBE) Program",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "civil rights & DBE",
+        "program delivery"
+      ],
+      "phase": [
+        "advertisement",
+        "construction"
+      ],
+      "authority": [
+        "49 CFR 26"
+      ]
+    },
+    {
+      "id": "Title VI Program",
+      "div": "con",
+      "title": "Title VI / Nondiscrimination Program",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/",
+      "kind": "policy memo",
+      "status": "current",
+      "topic": [
+        "civil rights & DBE"
+      ],
+      "phase": [
+        "planning",
+        "construction"
+      ],
+      "authority": [
+        "42 U.S.C. \u00a72000d",
+        "23 CFR 200"
+      ]
+    },
+    {
+      "id": "Prevailing Wage & Labor",
+      "div": "con",
+      "title": "Labor Compliance and Prevailing Wage Guidance",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "civil rights & DBE",
+        "construction & inspection"
+      ],
+      "phase": [
+        "construction"
+      ],
+      "authority": [
+        "Davis-Bacon Act 40 U.S.C. \u00a73141"
+      ]
+    },
+    {
+      "id": "LAP Certification",
+      "div": "lad",
+      "title": "Locality Certification Program",
+      "url": "https://www.vdot.virginia.gov/doing-business/for-localities/local-assistance/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "program delivery"
+      ],
+      "phase": [
+        "planning",
+        "scoping"
+      ],
+      "delivery": [
+        "locally administered"
+      ]
+    },
+    {
+      "id": "LAP Training",
+      "div": "lad",
+      "title": "Locally Administered Projects Training",
+      "url": "https://www.vdot.virginia.gov/doing-business/for-localities/local-assistance/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "program delivery"
+      ],
+      "phase": [
+        "planning"
+      ],
+      "delivery": [
+        "locally administered"
+      ]
+    },
+    {
+      "id": "Standard Project Agreement",
+      "div": "lad",
+      "title": "Standard Project Administration Agreement",
+      "url": "https://www.vdot.virginia.gov/doing-business/for-localities/local-assistance/",
+      "kind": "form / template",
+      "status": "current",
+      "topic": [
+        "program delivery"
+      ],
+      "phase": [
+        "scoping"
+      ],
+      "delivery": [
+        "locally administered"
+      ]
+    },
+    {
+      "id": "Urban Construction Initiative",
+      "div": "lad",
+      "title": "Urban Construction Initiative (UCI) Program",
+      "url": "https://www.vdot.virginia.gov/doing-business/for-localities/local-assistance/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "program delivery"
+      ],
+      "phase": [
+        "planning"
+      ],
+      "delivery": [
+        "locally administered"
+      ]
+    },
+    {
+      "id": "Maintenance Payments to Localities",
+      "div": "lad",
+      "title": "Urban Maintenance and Street Payments",
+      "url": "https://www.vdot.virginia.gov/doing-business/for-localities/local-assistance/",
+      "kind": "guide",
+      "status": "current",
+      "topic": [
+        "funding & programming",
+        "maintenance"
+      ],
+      "phase": [
+        "maintenance"
+      ],
+      "delivery": [
+        "locally administered"
+      ],
+      "authority": [
+        "Code of Virginia \u00a733.2-319"
+      ]
+    },
+    {
+      "id": "CADD Manual",
+      "div": "ld",
+      "title": "CADD Manual",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "survey & CADD"
+      ],
+      "phase": [
+        "preliminary engineering"
+      ]
+    },
+    {
+      "id": "Survey Manual",
+      "div": "ld",
+      "title": "Survey Manual",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "survey & CADD"
+      ],
+      "phase": [
+        "scoping",
+        "preliminary engineering"
+      ]
+    },
+    {
+      "id": "IIM Index",
+      "div": "ld",
+      "title": "IIM Index \u2014 Location & Design",
+      "url": "https://www.vdot.virginia.gov/media/vdotvirginiagov/doing-business/technical-guidance-and-support/technical-guidance-documents/location-and-design/migrated/iim/IIM-INDEX_12_01_2025acc12012025.pdf",
+      "kind": "index",
+      "status": "current",
+      "topic": [
+        "program delivery"
+      ],
+      "phase": [
+        "planning"
+      ],
+      "note": "Authoritative list of Location & Design IIMs with revision numbers."
+    },
+    {
+      "id": "New and Revised IIM",
+      "div": "ld",
+      "title": "New and Revised IIM \u2014 changelog",
+      "url": "https://www.vdot.virginia.gov/media/vdotvirginiagov/doing-business/technical-guidance-and-support/technical-guidance-documents/location-and-design/migrated/iim/New-and-Revised-IIM_12_08_2025acc12082025.pdf",
+      "kind": "index",
+      "status": "current",
+      "topic": [
+        "program delivery"
+      ],
+      "phase": [
+        "planning"
+      ],
+      "note": "Running log of new, revised and voided IIMs. Primary change-detection source."
+    },
+    {
+      "id": "Guardrail Standards",
+      "div": "ld",
+      "title": "Guardrail and Barrier Standards (GR series)",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/road-and-bridge-standards/",
+      "kind": "standard",
+      "status": "current",
+      "topic": [
+        "traffic & safety",
+        "geometrics & design"
+      ],
+      "phase": [
+        "preliminary engineering",
+        "construction"
+      ]
     }
   ]
 }

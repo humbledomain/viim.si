@@ -122,3 +122,20 @@ Facet vocabularies live in `manifest.facets` — **topic** (14 values), **phase*
 - [Road Design Manual](https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/road-design-manual/) · [Road & Bridge Standards](https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/road-and-bridge-standards/) · [Road & Bridge Specifications](https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/road-and-bridge-specifications/)
 - [VDOT Local Assistance](https://www.vdot.virginia.gov/doing-business/for-localities/local-assistance/)
 - [Virginia Roads open data](https://www.virginiaroads.org/) · [Virginia Open Data Portal](https://data.virginia.gov/)
+
+---
+
+## The detail panel
+
+Docked as a real column on wide screens (it never covers the conversation) and slides over as a sheet below 1200px. Toggle it with the ▤ button in the command bar; `esc` closes it.
+
+It is not just metadata. Every document gets:
+
+- **Actions** — summarize requirements · turn it into a project checklist · check whether it has been revised since the value on file · common mistakes · open on VDOT · copy a formatted citation
+- **Record** — division, type, revision, effective date, status, page count, and whether full text is cached or will be fetched live
+- **Classification** — topics, phase and delivery as **clickable filters** that drive the index
+- **Sections** — click any heading to ask about that section specifically (populates after `build-corpus.py`)
+- **Cross-references** — outbound and inbound, clickable; unknown IDs get looked up instead of dead-ending
+- **Related guidance** — computed from shared topic, phase, delivery and division, so it works even before the corpus is built
+- **Lineage** — supersedes / superseded by
+- **Authority cited** — CFR, VAC and Code of Virginia references
