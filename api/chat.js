@@ -27,6 +27,16 @@ export default async function handler(req) {
   if (req.method !== 'POST') return new Response('Method not allowed', { status: 405 });
   const { messages, system, max_tokens = 3072, tools = true } = await req.json();
 
+  // Prompt caching: the system prompt carries the full document text when the
+  // corpus has it. Marking it ephemeral means repeat questions on the same
+  // document skip re-processing those tokens — much faster first token, ~90%
+  // cheaper on the cached portion. Anthropic requires a minimum block size, so
+  // only cache when it is actually worth it.
+  const sysBlocks =
+    typeof system === 'string' && system.length > 4000
+      ? [{ type: 'text', text: system, cache_control: { type: 'ephemeral' } }]
+      : system;
+
   let last = null;
 
   for (const model of MODELS) {
@@ -41,7 +51,7 @@ export default async function handler(req) {
         body: JSON.stringify({
           model,
           max_tokens,
-          system,
+          system: sysBlocks,
           messages,
           stream: true,
           ...(tools ? { tools: TOOLS } : {}),

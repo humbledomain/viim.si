@@ -1,75 +1,756 @@
 {
-  "generated": "seed",
-  "note": "Seed manifest. Run tools/build-manifest.py to replace with the full parsed VDOT index.",
+  "generated": "seed-v2",
+  "schema": 2,
+  "note": "Verified seed catalog. Run tools/build-manifest.py for the full VDOT index and tools/build-corpus.py to attach full text.",
   "source_indexes": [
     "https://www.vdot.virginia.gov/media/vdotvirginiagov/doing-business/technical-guidance-and-support/technical-guidance-documents/location-and-design/migrated/iim/IIM-INDEX_12_01_2025acc12012025.pdf",
     "https://www.vdot.virginia.gov/media/vdotvirginiagov/doing-business/technical-guidance-and-support/technical-guidance-documents/location-and-design/migrated/iim/New-and-Revised-IIM_12_08_2025acc12082025.pdf"
   ],
+  "facets": {
+    "topic": [
+      "stormwater & drainage",
+      "environmental",
+      "structures & bridges",
+      "traffic & safety",
+      "pedestrian & ADA",
+      "work zones",
+      "geometrics & design",
+      "right of way",
+      "utilities",
+      "materials",
+      "survey & CADD",
+      "planning & access",
+      "maintenance",
+      "program delivery"
+    ],
+    "phase": [
+      "planning",
+      "scoping",
+      "preliminary engineering",
+      "right of way",
+      "advertisement",
+      "construction",
+      "maintenance"
+    ],
+    "delivery": [
+      "VDOT-administered",
+      "locally administered",
+      "permit / private development"
+    ],
+    "kind": [
+      "IIM",
+      "manual",
+      "standard",
+      "specification",
+      "regulation",
+      "policy memo",
+      "guidance letter"
+    ]
+  },
   "divisions": [
-    { "id": "ld",   "code": "LD",    "label": "Location & Design",
+    {
+      "id": "ld",
+      "code": "LD",
+      "label": "Location & Design",
       "hub": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/location-and-design/",
-      "scope": "Roadway design, plan assembly, geometrics, drainage, right of way plans, CADD standards." },
-    { "id": "sb",   "code": "S&B",   "label": "Structure & Bridge",
+      "scope": "Roadway design, plan assembly, geometrics, drainage, right of way plans, CADD standards."
+    },
+    {
+      "id": "sb",
+      "code": "S&B",
+      "label": "Structure & Bridge",
       "hub": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/structure-and-bridge/",
-      "scope": "Bridge and culvert design, inspection, load rating, materials, plan approval authority." },
-    { "id": "te",   "code": "TE/TO", "label": "Traffic Operations",
+      "scope": "Bridge and culvert design, inspection, load rating, materials, plan approval authority."
+    },
+    {
+      "id": "te",
+      "code": "TE/TO",
+      "label": "Traffic Operations",
       "hub": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/traffic-operations/",
-      "scope": "Traffic engineering, safety, work zones, signals, signing, incident management. Two numbering series: IIM-TE (former Traffic Engineering) and IIM-TO (former Operations)." },
-    { "id": "ed",   "code": "ED",    "label": "Environmental",
+      "scope": "Traffic engineering, safety, work zones, signals, signing, incident management. Two series: IIM-TE and IIM-TO."
+    },
+    {
+      "id": "ed",
+      "code": "ED",
+      "label": "Environmental",
       "hub": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/environmental/",
-      "scope": "NEPA and state environmental review, permits, cultural resources, hazardous materials." },
-    { "id": "tmpd", "code": "TMPD",  "label": "Transportation & Mobility Planning",
+      "scope": "NEPA and state environmental review, permits, cultural resources, hazardous materials."
+    },
+    {
+      "id": "tmpd",
+      "code": "TMPD",
+      "label": "Transportation & Mobility Planning",
       "hub": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/transportation-and-mobility-planning/",
-      "scope": "Planning studies, traffic forecasting, access management, corridor and multimodal planning." },
-    { "id": "lad",  "code": "LAD",   "label": "Local Assistance",
+      "scope": "Planning studies, access management, SSAR, land use permits, corridor and multimodal planning."
+    },
+    {
+      "id": "lad",
+      "code": "LAD",
+      "label": "Local Assistance",
       "hub": "https://www.vdot.virginia.gov/doing-business/for-localities/local-assistance/",
-      "scope": "Locally administered projects. Governed by the LAP Manual, Letters to Local Governments (LLGs) and Department Memoranda rather than a separate IIM series." }
+      "scope": "Locally administered projects: the LAP Manual, Letters to Local Governments and Department Memoranda."
+    }
   ],
   "documents": [
-    { "id": "IIM-LD-204", "div": "ld", "title": "Title Sheets",
-      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/iim-ld-204-title-sheets/" },
-    { "id": "IIM-LD-242", "div": "ld", "title": "Stormwater Management for Municipal Separate Storm Sewer Systems",
-      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/" },
-    { "id": "IIM-LD-264", "div": "ld", "title": "VDOT UAS Program Guidance", "effective": "2025-02-21",
-      "url": "https://www.vdot.virginia.gov/media/vdotvirginiagov/doing-business/technical-guidance-and-support/technical-guidance-documents/location-and-design/migrated/iim/IIM264_acc.pdf" },
-    { "id": "IIM-LD-265", "div": "ld", "title": "Alterations to Pedestrian Facilities", "effective": "2025-12-01",
-      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/" },
-
-    { "id": "IIM-S&B-19", "div": "sb", "title": "Bridge Project/Plan Authorization and Approval Authority", "revision": "19.10",
-      "url": "https://www.vdot.virginia.gov/media/vdotvirginiagov/doing-business/technical-guidance-and-support/technical-guidance-documents/structure-and-bridge/migrated-acc/iim/SBIIM19.10.pdf" },
-    { "id": "IIM-S&B-27", "div": "sb", "title": "Inventory and Inspection Requirements for Bridges and Large Culverts", "revision": "27.14",
-      "url": "https://www.vdot.virginia.gov/media/vdotvirginiagov/doing-business/technical-guidance-and-support/technical-guidance-documents/structure-and-bridge/migrated-acc/iim/SBIIM27.14.pdf" },
-    { "id": "IIM-S&B-35", "div": "sb", "title": "Virginia TruckWeb; Structure and Restriction Coding Guidance",
-      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/iim-sb-35-virginia-truckweb-structure-and-restriction-coding-guidance/" },
-    { "id": "IIM-S&B-78", "div": "sb", "title": "Structure and Bridge Plan Requirements", "revision": "78.3",
-      "url": "https://www.vdot.virginia.gov/media/vdotvirginiagov/doing-business/technical-guidance-and-support/technical-guidance-documents/structure-and-bridge/migrated-acc/iim/SBIIM78.3.pdf" },
-    { "id": "IIM-S&B-80", "div": "sb", "title": "VDOT Modifications to the AASHTO LRFD Bridge Design Specifications", "revision": "80.10",
-      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/" },
-    { "id": "IIM-S&B-81", "div": "sb", "title": "Corrosion Resistant Reinforcing Steels (CRR)", "revision": "81.11",
-      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/" },
-    { "id": "IIM-S&B-86", "div": "sb", "title": "Load Rating and Posting of Structures (Bridges and Culverts)", "revision": "86.5",
-      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/iim-sb-86-load-rating-and-posting-of-structures-bridges-and-culverts/" },
-    { "id": "IIM-S&B-104", "div": "sb", "title": "Recording and Tracking Bridge Work Accomplishments",
-      "note": "Supersedes IIM-S&B-85.2",
-      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/" },
-
-    { "id": "IIM-TE-366", "div": "te", "title": "Guardrail System Upgrade", "revision": "366.4",
-      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/iim-te-3664-guardrail-system-upgrade/" },
-    { "id": "IIM-TE-376", "div": "te", "title": "Roles and Responsibilities for ADA Compliance, Curb Ramp Assessment, Curb Ramp Improvement", "revision": "376.1",
-      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/iim-te-3761-roles-and-responsibilities-for-ada-compliance-curb-ramp-assessment-curb-ramp-improvement/" },
-    { "id": "IIM-TE-384", "div": "te", "title": "Pedestrian Crossing Accommodations at Unsignalized Locations", "revision": "384.1",
-      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/iim-te-3841-pedestrian-crossing-accommodations-at-unsignalized-locations/" },
-    { "id": "IIM-TE-386", "div": "te", "title": "Guidelines for the use of Portable Temporary Rumble Strips (PTRS)", "revision": "386.2",
-      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/iim-te-3862-guidelines-for-the-use-of-portable-temporary-rumble-strips-ptrs/" },
-
-    { "id": "IIM-ED-1202", "div": "ed", "title": "Environmental Review for Locally Administered Projects",
-      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/iim-ed-1202-environmental-review-for-locally-administered-projects/" },
-
-    { "id": "LAP Manual", "div": "lad", "title": "Locally Administered Projects Manual",
-      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/locally-administered-projects-manual/chapter-01/" },
-    { "id": "DM 8-7", "div": "lad", "title": "Delivery of Locally Administered Programs and Projects",
-      "url": "https://www.vdot.virginia.gov/doing-business/for-localities/local-assistance/" },
-    { "id": "LLGs", "div": "lad", "title": "Letters to Local Governments",
-      "url": "https://www.vdot.virginia.gov/doing-business/for-localities/local-assistance/" }
+    {
+      "id": "IIM-LD-204",
+      "div": "ld",
+      "title": "Title Sheets",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/iim-ld-204-title-sheets/",
+      "kind": "IIM",
+      "status": "current",
+      "topic": [
+        "survey & CADD",
+        "geometrics & design"
+      ],
+      "phase": [
+        "preliminary engineering",
+        "advertisement"
+      ],
+      "delivery": [
+        "VDOT-administered",
+        "locally administered"
+      ]
+    },
+    {
+      "id": "IIM-LD-242",
+      "div": "ld",
+      "title": "Stormwater Management for Municipal Separate Storm Sewer Systems (MS4)",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/",
+      "kind": "IIM",
+      "status": "current",
+      "topic": [
+        "stormwater & drainage",
+        "environmental"
+      ],
+      "phase": [
+        "preliminary engineering",
+        "construction"
+      ],
+      "delivery": [
+        "VDOT-administered",
+        "locally administered"
+      ],
+      "authority": [
+        "Code of Virginia \u00a762.1-44.15",
+        "9VAC25-870 (VA Stormwater Management Program)"
+      ]
+    },
+    {
+      "id": "IIM-LD-264",
+      "div": "ld",
+      "title": "VDOT UAS Program Guidance",
+      "url": "https://www.vdot.virginia.gov/media/vdotvirginiagov/doing-business/technical-guidance-and-support/technical-guidance-documents/location-and-design/migrated/iim/IIM264_acc.pdf",
+      "kind": "IIM",
+      "status": "current",
+      "effective": "2025-02-21",
+      "topic": [
+        "survey & CADD"
+      ],
+      "phase": [
+        "scoping",
+        "construction"
+      ]
+    },
+    {
+      "id": "IIM-LD-265",
+      "div": "ld",
+      "title": "Alterations to Pedestrian Facilities",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/",
+      "kind": "IIM",
+      "status": "current",
+      "effective": "2025-12-01",
+      "topic": [
+        "pedestrian & ADA"
+      ],
+      "phase": [
+        "scoping",
+        "preliminary engineering",
+        "maintenance"
+      ],
+      "delivery": [
+        "VDOT-administered",
+        "locally administered"
+      ],
+      "authority": [
+        "28 CFR 35.151 (ADA Title II)"
+      ]
+    },
+    {
+      "id": "Road Design Manual",
+      "div": "ld",
+      "title": "Road Design Manual",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/road-design-manual/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "geometrics & design",
+        "stormwater & drainage",
+        "right of way"
+      ],
+      "phase": [
+        "scoping",
+        "preliminary engineering"
+      ],
+      "delivery": [
+        "VDOT-administered",
+        "locally administered"
+      ],
+      "note": "Primary roadway design resource for VDOT-owned or maintained projects."
+    },
+    {
+      "id": "Drainage Manual",
+      "div": "ld",
+      "title": "Drainage Manual",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "stormwater & drainage"
+      ],
+      "phase": [
+        "preliminary engineering"
+      ],
+      "url_hint": "https://www.vdot.virginia.gov/media/vdotvirginiagov/doing-business/technical-guidance-and-support/technical-guidance-documents/location-and-design/migrated/drainagemanual/"
+    },
+    {
+      "id": "Road and Bridge Standards",
+      "div": "ld",
+      "title": "Road and Bridge Standards",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/road-and-bridge-standards/",
+      "kind": "standard",
+      "status": "current",
+      "topic": [
+        "geometrics & design",
+        "structures & bridges",
+        "stormwater & drainage",
+        "traffic & safety"
+      ],
+      "phase": [
+        "preliminary engineering",
+        "construction"
+      ]
+    },
+    {
+      "id": "Road and Bridge Specifications",
+      "div": "ld",
+      "title": "Road and Bridge Specifications",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/road-and-bridge-specifications/",
+      "kind": "specification",
+      "status": "current",
+      "topic": [
+        "materials",
+        "geometrics & design"
+      ],
+      "phase": [
+        "advertisement",
+        "construction"
+      ]
+    },
+    {
+      "id": "IIM-S&B-19",
+      "div": "sb",
+      "title": "Bridge Project/Plan Authorization and Approval Authority",
+      "url": "https://www.vdot.virginia.gov/media/vdotvirginiagov/doing-business/technical-guidance-and-support/technical-guidance-documents/structure-and-bridge/migrated-acc/iim/SBIIM19.10.pdf",
+      "kind": "IIM",
+      "status": "current",
+      "revision": "19.10",
+      "topic": [
+        "structures & bridges",
+        "program delivery"
+      ],
+      "phase": [
+        "preliminary engineering",
+        "advertisement"
+      ],
+      "delivery": [
+        "VDOT-administered",
+        "locally administered"
+      ]
+    },
+    {
+      "id": "IIM-S&B-27",
+      "div": "sb",
+      "title": "Inventory and Inspection Requirements for Bridges and Large Culverts",
+      "url": "https://www.vdot.virginia.gov/media/vdotvirginiagov/doing-business/technical-guidance-and-support/technical-guidance-documents/structure-and-bridge/migrated-acc/iim/SBIIM27.14.pdf",
+      "kind": "IIM",
+      "status": "current",
+      "revision": "27.14",
+      "topic": [
+        "structures & bridges",
+        "maintenance"
+      ],
+      "phase": [
+        "maintenance"
+      ],
+      "authority": [
+        "23 CFR 650 Subpart C (National Bridge Inspection Standards)"
+      ]
+    },
+    {
+      "id": "IIM-S&B-35",
+      "div": "sb",
+      "title": "Virginia TruckWeb; Structure and Restriction Coding Guidance",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/iim-sb-35-virginia-truckweb-structure-and-restriction-coding-guidance/",
+      "kind": "IIM",
+      "status": "current",
+      "topic": [
+        "structures & bridges",
+        "traffic & safety"
+      ],
+      "phase": [
+        "maintenance"
+      ]
+    },
+    {
+      "id": "IIM-S&B-78",
+      "div": "sb",
+      "title": "Structure and Bridge Plan Requirements",
+      "url": "https://www.vdot.virginia.gov/media/vdotvirginiagov/doing-business/technical-guidance-and-support/technical-guidance-documents/structure-and-bridge/migrated-acc/iim/SBIIM78.3.pdf",
+      "kind": "IIM",
+      "status": "current",
+      "revision": "78.3",
+      "topic": [
+        "structures & bridges"
+      ],
+      "phase": [
+        "preliminary engineering",
+        "advertisement"
+      ]
+    },
+    {
+      "id": "IIM-S&B-80",
+      "div": "sb",
+      "title": "VDOT Modifications to the AASHTO LRFD Bridge Design Specifications",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/",
+      "kind": "IIM",
+      "status": "current",
+      "revision": "80.10",
+      "topic": [
+        "structures & bridges",
+        "materials"
+      ],
+      "phase": [
+        "preliminary engineering"
+      ]
+    },
+    {
+      "id": "IIM-S&B-81",
+      "div": "sb",
+      "title": "Corrosion Resistant Reinforcing Steels (CRR)",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/",
+      "kind": "IIM",
+      "status": "current",
+      "revision": "81.11",
+      "topic": [
+        "structures & bridges",
+        "materials"
+      ],
+      "phase": [
+        "preliminary engineering",
+        "construction"
+      ]
+    },
+    {
+      "id": "IIM-S&B-86",
+      "div": "sb",
+      "title": "Load Rating and Posting of Structures (Bridges and Culverts)",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/iim-sb-86-load-rating-and-posting-of-structures-bridges-and-culverts/",
+      "kind": "IIM",
+      "status": "current",
+      "revision": "86.5",
+      "topic": [
+        "structures & bridges",
+        "maintenance"
+      ],
+      "phase": [
+        "maintenance"
+      ]
+    },
+    {
+      "id": "IIM-S&B-104",
+      "div": "sb",
+      "title": "Recording and Tracking Bridge Work Accomplishments",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/",
+      "kind": "IIM",
+      "status": "current",
+      "topic": [
+        "structures & bridges",
+        "maintenance"
+      ],
+      "phase": [
+        "maintenance"
+      ],
+      "supersedes": [
+        "IIM-S&B-85"
+      ],
+      "note": "Supersedes IIM-S&B-85.2"
+    },
+    {
+      "id": "Manual of the Structure and Bridge Division",
+      "div": "sb",
+      "title": "Manual of the Structure and Bridge Division",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/manual-of-the-structure-and-bridge-division/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "structures & bridges"
+      ],
+      "phase": [
+        "preliminary engineering",
+        "construction",
+        "maintenance"
+      ]
+    },
+    {
+      "id": "IIM-TE-366",
+      "div": "te",
+      "title": "Guardrail System Upgrade",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/iim-te-3664-guardrail-system-upgrade/",
+      "kind": "IIM",
+      "status": "current",
+      "revision": "366.4",
+      "topic": [
+        "traffic & safety"
+      ],
+      "phase": [
+        "preliminary engineering",
+        "construction",
+        "maintenance"
+      ]
+    },
+    {
+      "id": "IIM-TE-376",
+      "div": "te",
+      "title": "Roles and Responsibilities for ADA Compliance, Curb Ramp Assessment, Curb Ramp Improvement",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/iim-te-3761-roles-and-responsibilities-for-ada-compliance-curb-ramp-assessment-curb-ramp-improvement/",
+      "kind": "IIM",
+      "status": "current",
+      "revision": "376.1",
+      "topic": [
+        "pedestrian & ADA",
+        "traffic & safety"
+      ],
+      "phase": [
+        "scoping",
+        "construction",
+        "maintenance"
+      ],
+      "delivery": [
+        "VDOT-administered",
+        "locally administered"
+      ],
+      "authority": [
+        "28 CFR 35.151 (ADA Title II)"
+      ]
+    },
+    {
+      "id": "IIM-TE-384",
+      "div": "te",
+      "title": "Pedestrian Crossing Accommodations at Unsignalized Locations",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/iim-te-3841-pedestrian-crossing-accommodations-at-unsignalized-locations/",
+      "kind": "IIM",
+      "status": "current",
+      "revision": "384.1",
+      "topic": [
+        "pedestrian & ADA",
+        "traffic & safety"
+      ],
+      "phase": [
+        "scoping",
+        "preliminary engineering"
+      ]
+    },
+    {
+      "id": "IIM-TE-386",
+      "div": "te",
+      "title": "Guidelines for the use of Portable Temporary Rumble Strips (PTRS)",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/iim-te-3862-guidelines-for-the-use-of-portable-temporary-rumble-strips-ptrs/",
+      "kind": "IIM",
+      "status": "current",
+      "revision": "386.2",
+      "topic": [
+        "work zones",
+        "traffic & safety"
+      ],
+      "phase": [
+        "construction",
+        "maintenance"
+      ]
+    },
+    {
+      "id": "Virginia MUTCD Supplement",
+      "div": "te",
+      "title": "Virginia Supplement to the MUTCD",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/",
+      "kind": "standard",
+      "status": "current",
+      "topic": [
+        "traffic & safety",
+        "work zones"
+      ],
+      "phase": [
+        "preliminary engineering",
+        "construction"
+      ]
+    },
+    {
+      "id": "Virginia Work Area Protection Manual",
+      "div": "te",
+      "title": "Virginia Work Area Protection Manual",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/traffic-operations/work-zones/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "work zones",
+        "traffic & safety"
+      ],
+      "phase": [
+        "construction",
+        "maintenance"
+      ]
+    },
+    {
+      "id": "IIM-ED-1202",
+      "div": "ed",
+      "title": "Environmental Review for Locally Administered Projects",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/iim-ed-1202-environmental-review-for-locally-administered-projects/",
+      "kind": "IIM",
+      "status": "current",
+      "topic": [
+        "environmental",
+        "program delivery"
+      ],
+      "phase": [
+        "scoping",
+        "preliminary engineering"
+      ],
+      "delivery": [
+        "locally administered"
+      ],
+      "authority": [
+        "NEPA 42 U.S.C. \u00a74321",
+        "23 CFR 771"
+      ]
+    },
+    {
+      "id": "Access Management Regulations",
+      "div": "tmpd",
+      "title": "Access Management Regulations and Standards",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/transportation-and-mobility-planning/",
+      "kind": "regulation",
+      "status": "current",
+      "topic": [
+        "planning & access",
+        "geometrics & design"
+      ],
+      "phase": [
+        "planning",
+        "scoping"
+      ],
+      "delivery": [
+        "permit / private development"
+      ],
+      "authority": [
+        "24VAC30-73 (Access Management)"
+      ]
+    },
+    {
+      "id": "SSAR",
+      "div": "tmpd",
+      "title": "Secondary Street Acceptance Requirements (SSAR)",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/transportation-and-mobility-planning/",
+      "kind": "regulation",
+      "status": "current",
+      "topic": [
+        "planning & access",
+        "program delivery"
+      ],
+      "phase": [
+        "planning",
+        "construction"
+      ],
+      "delivery": [
+        "permit / private development"
+      ],
+      "authority": [
+        "24VAC30-92 (Secondary Street Acceptance Requirements)"
+      ],
+      "note": "Governs acceptance of new secondary streets into the state system."
+    },
+    {
+      "id": "Subdivision Street Requirements",
+      "div": "tmpd",
+      "title": "Subdivision Street Requirements",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/transportation-and-mobility-planning/",
+      "kind": "regulation",
+      "status": "superseded",
+      "topic": [
+        "planning & access"
+      ],
+      "phase": [
+        "planning"
+      ],
+      "delivery": [
+        "permit / private development"
+      ],
+      "superseded_by": [
+        "SSAR"
+      ],
+      "note": "Largely superseded by the SSAR for streets accepted after 2009."
+    },
+    {
+      "id": "Land Use Permit Regulations",
+      "div": "tmpd",
+      "title": "Land Use Permit Regulations",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/",
+      "kind": "regulation",
+      "status": "current",
+      "topic": [
+        "utilities",
+        "right of way",
+        "planning & access"
+      ],
+      "phase": [
+        "construction"
+      ],
+      "delivery": [
+        "permit / private development"
+      ],
+      "authority": [
+        "24VAC30-151 (Land Use Permit Regulations)"
+      ]
+    },
+    {
+      "id": "LAP Manual",
+      "div": "lad",
+      "title": "Locally Administered Projects (LAP) Manual",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/locally-administered-projects-manual/chapter-01/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "program delivery"
+      ],
+      "phase": [
+        "planning",
+        "scoping",
+        "preliminary engineering",
+        "right of way",
+        "advertisement",
+        "construction"
+      ],
+      "delivery": [
+        "locally administered"
+      ],
+      "note": "Governing document for locally administered projects."
+    },
+    {
+      "id": "LAP Manual Ch. 1",
+      "div": "lad",
+      "title": "LAP Manual Chapter 1 \u2014 VDOT Policy",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/locally-administered-projects-manual/chapter-01/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "program delivery"
+      ],
+      "phase": [
+        "planning"
+      ],
+      "delivery": [
+        "locally administered"
+      ],
+      "parent": "LAP Manual"
+    },
+    {
+      "id": "LAP Manual Ch. 2",
+      "div": "lad",
+      "title": "LAP Manual Chapter 2 \u2014 Project Administration and Agreements",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/locally-administered-projects-manual/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "program delivery"
+      ],
+      "phase": [
+        "scoping"
+      ],
+      "delivery": [
+        "locally administered"
+      ],
+      "parent": "LAP Manual"
+    },
+    {
+      "id": "LAP Manual Ch. 6",
+      "div": "lad",
+      "title": "LAP Manual Chapter 6 \u2014 Right of Way",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/locally-administered-projects-manual/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "right of way"
+      ],
+      "phase": [
+        "right of way"
+      ],
+      "delivery": [
+        "locally administered"
+      ],
+      "parent": "LAP Manual"
+    },
+    {
+      "id": "LAP Manual Ch. 9",
+      "div": "lad",
+      "title": "LAP Manual Chapter 9 \u2014 Construction",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/locally-administered-projects-manual/",
+      "kind": "manual",
+      "status": "current",
+      "topic": [
+        "program delivery"
+      ],
+      "phase": [
+        "construction"
+      ],
+      "delivery": [
+        "locally administered"
+      ],
+      "parent": "LAP Manual"
+    },
+    {
+      "id": "DM 8-7",
+      "div": "lad",
+      "title": "Department Memorandum 8-7 \u2014 Delivery of Locally Administered Programs and Projects",
+      "url": "https://www.vdot.virginia.gov/doing-business/for-localities/local-assistance/",
+      "kind": "policy memo",
+      "status": "current",
+      "topic": [
+        "program delivery"
+      ],
+      "phase": [
+        "planning",
+        "scoping"
+      ],
+      "delivery": [
+        "locally administered"
+      ]
+    },
+    {
+      "id": "LLGs",
+      "div": "lad",
+      "title": "Letters to Local Governments (LLG)",
+      "url": "https://www.vdot.virginia.gov/doing-business/for-localities/local-assistance/",
+      "kind": "guidance letter",
+      "status": "current",
+      "topic": [
+        "program delivery"
+      ],
+      "phase": [
+        "planning"
+      ],
+      "delivery": [
+        "locally administered"
+      ],
+      "note": "Local Assistance Division's direct policy notices to localities; issued in a numbered series."
+    }
   ]
 }
