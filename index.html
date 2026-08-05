@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <title>VIIM — VDOT guidance console</title>
 <meta name="description" content="A working console for VDOT Instructional &amp; Informational Memoranda, the LAP Manual and related guidance — grounded, cited, and always linked back to the source document.">
+<link rel="preconnect" href="https://www.vdot.virginia.gov">
+<link rel="dns-prefetch" href="https://www.vdot.virginia.gov">
 <link rel="canonical" href="https://viim.si/">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20fill='%230d1420'/%3E%3Cpath%20d='M12%2014h40M12%2050h40'%20stroke='%2338bdf8'%20stroke-width='4'%20stroke-linecap='round'/%3E%3Cpath%20d='M22%2014v36M42%2014v36'%20stroke='%2338bdf8'%20stroke-width='4'%20stroke-linecap='round'/%3E%3Ccircle%20cx='32'%20cy='32'%20r='5'%20fill='%23fbbf24'/%3E%3C/svg%3E">
@@ -91,30 +93,36 @@ button{ font:inherit; color:inherit; background:none; border:none; cursor:pointe
   background:linear-gradient(180deg,var(--rail2),var(--rail)); color:var(--rail-ink) }
 #rail::after{ content:""; position:absolute; top:0; bottom:0; right:0; width:1px;
   background:linear-gradient(180deg,transparent,rgba(56,189,248,.5),rgba(251,191,36,.35),transparent) }
-#sigil{ width:44px; height:44px; display:grid; place-items:center; margin-bottom:var(--u); color:#7dd3fc }
-#logo{ width:32px; height:32px; filter:drop-shadow(0 0 8px rgba(56,189,248,.5)) }
+#sigil{ width:40px; height:40px; flex:none; display:grid; place-items:center; margin-bottom:4px; color:#7dd3fc }
+#logo{ width:28px; height:28px; filter:drop-shadow(0 0 8px rgba(56,189,248,.5)) }
 #logo .l-beam{ animation:beam 6s var(--ease-soft) infinite }
 #logo .l-core{ animation:pulse 3s ease-in-out infinite; transform-box:fill-box; transform-origin:center }
 @keyframes beam{ 0%,100%{ opacity:.45 } 50%{ opacity:1 } }
 @keyframes pulse{ 0%,100%{ transform:scale(1); opacity:.85 } 50%{ transform:scale(1.3); opacity:1 } }
-#divs{ display:flex; flex-direction:column; gap:3px; width:100%; align-items:center;
-  overflow-y:auto; overscroll-behavior:contain; scrollbar-width:none; min-height:0; flex:1 }
-#divs::-webkit-scrollbar{ display:none }
-.div-btn{ position:relative; width:54px; padding:8px 2px 6px; border-radius:var(--r2);
-  display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--rail-ink);
-  transition:color .2s, background .2s }
-.div-btn b{ font-family:var(--f-mono); font-size:11px; font-weight:700; letter-spacing:.02em; line-height:1 }
-.div-btn em{ font-style:normal; font-family:var(--f-mono); font-size:7px; letter-spacing:.02em;
-  text-transform:uppercase; opacity:.7; line-height:1; max-width:100%; overflow:hidden;
-  text-overflow:ellipsis; white-space:nowrap; padding:0 2px }
+#divs{ display:flex; flex-direction:column; gap:2px; width:100%; align-items:center;
+  flex:1; min-height:0; justify-content:flex-start; overflow:hidden }
+.div-btn{ position:relative; width:56px; flex:0 1 auto;
+  height:clamp(30px, calc((100dvh - 130px) / 16), 48px);
+  padding:2px; border-radius:var(--r2);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px;
+  color:var(--rail-ink); transition:color .2s, background .2s; overflow:hidden }
+.div-btn b{ font-family:var(--f-mono); font-size:clamp(9px,1.05vh,11px); font-weight:700;
+  letter-spacing:.01em; line-height:1.05 }
+.div-btn em{ font-style:normal; font-family:var(--f-mono); font-size:6.5px; letter-spacing:.01em;
+  text-transform:uppercase; opacity:.68; line-height:1; max-width:100%; overflow:hidden;
+  text-overflow:ellipsis; white-space:nowrap }
+/* short viewports: codes only, they stay unambiguous */
+@media (max-height:820px){ .div-btn em{ display:none } }
+@media (max-height:640px){ #sigil{ display:none } }
 @media (hover:hover){ .div-btn:hover{ color:#e6f3ff; background:rgba(255,255,255,.07) } }
 .div-btn.active{ color:#fff; background:rgba(56,189,248,.18); box-shadow:inset 0 0 0 1px rgba(56,189,248,.4) }
 .div-btn.active::before{ content:""; position:absolute; left:-5px; top:50%; transform:translateY(-50%);
   width:3px; height:24px; border-radius:0 3px 3px 0;
   background:linear-gradient(180deg,var(--accent-lo),var(--amber-lo)); box-shadow:0 0 10px rgba(56,189,248,.9) }
-.rail-sp{ flex:none; height:var(--u) }
-#railmark{ font-family:var(--f-mono); font-size:8px; letter-spacing:.2em; color:#3d4a5e;
-  writing-mode:vertical-rl; transform:rotate(180deg) }
+.rail-sp{ flex:none; height:2px }
+#railmark{ font-family:var(--f-mono); font-size:7.5px; letter-spacing:.18em; color:#3d4a5e;
+  writing-mode:vertical-rl; transform:rotate(180deg); flex:none }
+@media (max-height:760px){ #railmark{ display:none } }
 
 /* command bar */
 header.top{ position:relative; z-index:15; display:flex; align-items:center; gap:var(--u2);
@@ -615,7 +623,9 @@ function buildRail(){
   all.title='All divisions';
   all.addEventListener('click', ()=>setDivision(null));
   divsNav.appendChild(all);
-  (S.manifest.divisions||[]).forEach(d=>{
+  const counts={};
+  (S.manifest.documents||[]).forEach(x=>{ counts[x.div]=(counts[x.div]||0)+1; });
+  (S.manifest.divisions||[]).filter(d=>counts[d.id]>0).forEach(d=>{
     const b=document.createElement('button');
     b.className='div-btn'; b.dataset.div=d.id; b.title=d.label;
     b.setAttribute('aria-label', d.label);
@@ -754,16 +764,26 @@ function addCopy(el, text){
 /* ---------- 4. Streaming ---------- */
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const RETRYABLE=m=>/529|overload|rate.?limit|too many|429/i.test(m||'');
-function callAPI(system, messages, signal){
+const HARD_TIMEOUT = 100000;   /* give up rather than hang forever */
+function callAPI(system, messages, signal, opts){
   if(!S.proxy) return Promise.reject(new Error('Backend offline — deploy with ANTHROPIC_API_KEY set (see README).'));
+  opts=opts||{};
   return fetch('/api/chat',{ method:'POST', headers:{'content-type':'application/json'},
-    body:JSON.stringify({ messages, system, max_tokens:3072 }), signal })
+    body:JSON.stringify({ messages, system,
+      max_tokens: opts.max_tokens || 2048,
+      tier: opts.tier || 'strong',
+      grounded: !!opts.grounded }), signal })
     .then(r=>{ if(!r.ok) throw new Error('API error '+r.status+(r.status===529?' — overloaded':'')); return r; });
 }
-async function streamOnce(system, messages, signal, onDelta, onTool){
-  const res=await callAPI(system, messages, signal);
+async function streamOnce(system, messages, signal, onDelta, onTool, opts){
+  const res=await callAPI(system, messages, signal, opts);
   const reader=res.body.getReader(), dec=new TextDecoder();
   let buf='', acc='';
+  /* batch DOM writes to one per frame — long answers no longer thrash layout */
+  let pending=null, raf=0;
+  const paint=(t)=>{ pending=t; if(raf) return;
+    raf=requestAnimationFrame(()=>{ raf=0; onDelta(pending); }); };
+  const flush=()=>{ if(raf){ cancelAnimationFrame(raf); raf=0; } if(pending!==null) onDelta(pending); };
   while(true){
     const {done,value}=await reader.read(); if(done) break;
     buf+=dec.decode(value,{stream:true});
@@ -778,20 +798,22 @@ async function streamOnce(system, messages, signal, onDelta, onTool){
         const t=j.content_block.type;
         if(t==='server_tool_use'||t==='web_fetch_tool_result'||t==='web_search_tool_result') onTool&&onTool(t);
       }
-      if(j.type==='content_block_delta' && j.delta && j.delta.text){ acc+=j.delta.text; onDelta(acc); }
+      if(j.type==='content_block_delta' && j.delta && j.delta.text){ acc+=j.delta.text; paint(acc); }
       if(j.type==='error') throw new Error((j.error&&j.error.message)||'stream error');
     }
   }
-  if(!acc) throw new Error('Empty response');
+  flush();
+  if(!acc){ const e=new Error('Empty response'); e.empty=true; throw e; }
   return acc;
 }
-async function streamWithRetry(system, messages, signal, onDelta, onWait, onTool){
+async function streamWithRetry(system, messages, signal, onDelta, onWait, onTool, opts){
   for(let a=0;;a++){
-    try{ return await streamOnce(system, messages, signal, onDelta, onTool); }
+    try{ return await streamOnce(system, messages, signal, onDelta, onTool, opts); }
     catch(err){
-      if(err.name==='AbortError' || a>=3 || !RETRYABLE(err.message)) throw err;
+      const retryable = RETRYABLE(err.message) || err.empty;
+      if(err.name==='AbortError' || a>=2 || !retryable) throw err;
       onWait&&onWait(a+1);
-      await sleep(900*Math.pow(2,a)+Math.random()*500);
+      await sleep(600*Math.pow(2,a)+Math.random()*300);
       if(signal.aborted){ const e=new Error('aborted'); e.name='AbortError'; throw e; }
     }
   }
@@ -821,9 +843,10 @@ function docContext(){
       'Cite section headings and page numbers from it.\n\n=== BEGIN '+d.id+' ===\n'+text+
       '\n=== END '+d.id+' ===\n';
   } else {
-    ctx+='\nFull text is NOT cached for this document. Fetch the URL above before answering. '+
-      'If it resolves to a landing page, search vdot.virginia.gov and follow through to the current PDF. '+
-      'The metadata above may be stale — trust the fetched document and say so if they disagree.\n';
+    ctx+='\nFull text is NOT cached for this document. Fetch the URL above ONCE, then answer from what '+
+      'you retrieved. Do not chain multiple fetches — if the first fetch does not resolve to the document, '+
+      'say so plainly, give what you can from the metadata above, and link the page for the user to open. '+
+      'Be concise; speed matters more than exhaustiveness here.\n';
   }
   return ctx;
 }
@@ -832,15 +855,19 @@ async function run(){
   const ai=addMsg('ai',''); ai.innerHTML='<span class="typing"><i></i><i></i><i></i></span>';
   feed.scrollTop=Math.max(0, ai.offsetTop-8);
   S.busy=true; S.ctrl=new AbortController();
+  const killer=setTimeout(()=>S.ctrl && S.ctrl.abort('timeout'), HARD_TIMEOUT);
   $('#stop-btn').hidden=false; $('#send-btn').disabled=true;
+  const grounded = !!(S.doc && CORPUS.get(S.doc.id));
+  const opts={ grounded, tier: S.fast ? 'fast' : 'strong', max_tokens: grounded ? 2048 : 1600 };
   let last='';
   try{
     const acc=await streamWithRetry(
       BASE_SYS+docContext(), S.history.map(m=>({role:m.role, content:m.content})), S.ctrl.signal,
       a=>{ last=a; ai.innerHTML=md(a); },
-      n=>{ ai.innerHTML='<p><em>Anthropic is busy — retrying ('+n+'/3)…</em></p>'; },
+      n=>{ ai.innerHTML='<p><em>Busy — retrying ('+n+'/2)…</em></p>'; },
       t=>{ if(!last) ai.innerHTML='<div class="fetching"><span class="typing"><i></i><i></i><i></i></span>'+
-             (t==='web_search_tool_result'?'searching vdot.virginia.gov':'reading the source document')+'</div>'; }
+             (t==='web_search_tool_result'?'searching vdot.virginia.gov':'reading the source document')+'</div>'; },
+      opts
     );
     S.history.push({role:'assistant', content:acc});
     ai.innerHTML=md(acc); addCopy(ai, acc);
@@ -857,12 +884,18 @@ async function run(){
       if(last){ S.history.push({role:'assistant',content:last}); addMsg('ai',last); }
     }else{
       const el=document.createElement('div'); el.className='msg err';
-      el.textContent=(RETRYABLE(err.message)?'Still overloaded after several tries — wait a moment, then retry. ':err.message+' ');
+      el.textContent =
+        err.empty ? 'The model returned nothing — usually a slow source document. Retry, or open it on VDOT. '
+        : /timeout|abort/i.test(String(err.message))
+          ? 'Timed out reading the source. Build the corpus (tools/build-corpus.py) to answer from cached text instead. '
+        : RETRYABLE(err.message) ? 'Upstream busy after several tries — wait a moment, then retry. '
+        : err.message+' ';
       const b=document.createElement('button'); b.className='btn'; b.textContent='Retry';
       b.addEventListener('click',()=>{ el.remove(); run(); });
       el.appendChild(b); msgCol.appendChild(el); feed.scrollTop=feed.scrollHeight;
     }
   }finally{
+    clearTimeout(killer);
     S.busy=false; S.ctrl=null;
     $('#stop-btn').hidden=true; $('#send-btn').disabled=false;
   }
@@ -957,7 +990,9 @@ let askBusy=false;
 $$('.ask').forEach(b=>b.addEventListener('click', ()=>{
   if(S.busy||askBusy) return;
   askBusy=true; b.classList.add('busy');
+  S.fast = !(S.doc && CORPUS.get(S.doc.id));   /* no cached text → keep it short and quick */
   send(ASKS[+b.dataset.ask](S.doc));
+  setTimeout(()=>{ S.fast=false; }, 50);
   setTimeout(()=>{ askBusy=false; b.classList.remove('busy'); }, 600);
 }));
 

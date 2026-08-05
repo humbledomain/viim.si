@@ -168,34 +168,6 @@
       "scope": "Advertisement, bidding, award and contract administration for construction projects."
     },
     {
-      "id": "itd",
-      "code": "IT",
-      "label": "Information Technology",
-      "hub": "https://www.vdot.virginia.gov/about/divisions/",
-      "scope": "Enterprise systems of record \u2014 including the project and program systems referenced by delivery guidance."
-    },
-    {
-      "id": "bisd",
-      "code": "BISD",
-      "label": "Business Integrated Solutions",
-      "hub": "https://www.vdot.virginia.gov/about/divisions/",
-      "scope": "Business process improvement and reengineering, operational studies, data and trend analysis."
-    },
-    {
-      "id": "asd",
-      "code": "ASD",
-      "label": "Administrative Services",
-      "hub": "https://www.vdot.virginia.gov/about/divisions/",
-      "scope": "Procurement of goods and services, records management, document production."
-    },
-    {
-      "id": "ptd",
-      "code": "PTD",
-      "label": "Performance Transformation",
-      "hub": "https://www.vdot.virginia.gov/about/divisions/",
-      "scope": "Performance measures and reporting against VDOT objectives."
-    },
-    {
       "id": "gov",
       "code": "GOV",
       "label": "Governance & Policy",
