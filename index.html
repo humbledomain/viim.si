@@ -63,6 +63,7 @@
   --grad:linear-gradient(135deg,#1782ea,#0a4c96);
 
   --shadow-1:0 1px 2px rgba(15,24,38,.05);
+  --shadow-2:0 2px 6px rgba(15,24,38,.07), 0 14px 34px rgba(15,24,38,.10);
   --shadow-lift:0 3px 12px rgba(15,111,214,.2), 0 16px 40px rgba(15,111,214,.1);
 
   --f-ui:"Inter","SF Pro Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
@@ -337,6 +338,34 @@ footer.bot a{ color:var(--faint) }
   .msg{ padding:var(--u2) } .msg.ai{ padding-left:calc(var(--u2) + 4px) }
 }
 
+
+/* ---------- uploads ---------- */
+#atts{ display:flex; flex-wrap:wrap; gap:5px; margin-bottom:6px }
+.att{ display:inline-flex; align-items:center; gap:6px; border:var(--hair) solid var(--line);
+  background:var(--panel2); border-radius:var(--r1); padding:4px 8px; font-size:11.5px; max-width:100% }
+.att svg{ width:13px; height:13px; flex:none; color:var(--accent) }
+.att b{ font-weight:600; max-width:190px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.att i{ font-style:normal; font-family:var(--f-mono); font-size:9.5px; color:var(--faint) }
+.att .x{ color:var(--faint); font-weight:700; padding:0 2px; min-width:18px; min-height:18px; line-height:1 }
+.att .x:hover{ color:#b3261e }
+.att.bad{ border-color:#e9c9cf; background:#fdf4f5; color:#8f2130 }
+
+#dropzone{ position:absolute; inset:0; z-index:30; display:grid; place-items:center;
+  background:rgba(15,111,214,.07); backdrop-filter:blur(2px);
+  border:2px dashed var(--accent-lo); border-radius:var(--r2); margin:var(--u);
+  animation:dzIn .16s var(--ease-soft) both }
+@keyframes dzIn{ from{ opacity:0 } to{ opacity:1 } }
+.dz-inner{ display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center;
+  padding:var(--u3) var(--u4); border-radius:var(--r2); background:rgba(255,255,255,.92);
+  box-shadow:var(--shadow-2) }
+.dz-inner svg{ width:30px; height:30px; color:var(--accent) }
+.dz-inner b{ font-size:var(--t2); font-weight:650 }
+.dz-inner span{ font-size:12px; color:var(--dim) }
+
+/* uploaded documents in the index */
+.doc.mine .id{ color:var(--ok) }
+.badge.mine{ background:rgba(15,122,82,.12); color:var(--ok) }
+
 /* ---------- v2: facets ---------- */
 #facetbar{ display:flex; gap:2px; padding:6px var(--u2); background:var(--panel2);
   border-bottom:var(--hair) solid var(--line); flex:none }
@@ -527,6 +556,13 @@ body.has-detail #app{ grid-template-columns:var(--rail-w,64px) var(--side-w,320p
   </aside>
 
   <section id="chat" aria-label="Assistant">
+    <div id="dropzone" hidden aria-hidden="true">
+      <div class="dz-inner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4M12 4 7.5 8.5M12 4l4.5 4.5"/><path d="M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15"/></svg>
+        <b>Drop documents to analyze</b>
+        <span>PDF · images · text — plans, specs, permits, correspondence</span>
+      </div>
+    </div>
     <div id="feed"><div class="col" id="msg-col"></div></div>
     <div id="asks" role="group" aria-label="Common questions">
       <button class="ask" data-ask="0"><b>Summarize</b><i>what it requires</i></button>
@@ -535,7 +571,13 @@ body.has-detail #app{ grid-template-columns:var(--rail-w,64px) var(--side-w,320p
       <button class="ask" data-ask="3"><b>Related</b><i>cross-references</i></button>
     </div>
     <div id="composer">
+      <div id="atts" hidden></div>
       <div class="row">
+        <button class="ibtn" id="att-btn" aria-label="Attach documents" title="Attach documents">
+          <svg width="17" height="17" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14.5 8.5l-5.3 5.3a3 3 0 0 1-4.2-4.2l6.4-6.4a2 2 0 0 1 2.8 2.8l-6.3 6.3a1 1 0 0 1-1.4-1.4l5.2-5.2"/></svg>
+        </button>
+        <input type="file" id="file-in" multiple hidden
+          accept=".pdf,.txt,.md,.csv,.tsv,.json,.xml,.html,.log,image/png,image/jpeg,image/gif,image/webp">
         <button class="ibtn" id="mic-btn" aria-label="Dictate" aria-pressed="false">
           <svg width="17" height="17" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="7.5" y="2.5" width="5" height="9" rx="2.5"/><path d="M4.5 9.5a5.5 5.5 0 0 0 11 0M10 15v3"/></svg>
         </button>
@@ -591,7 +633,8 @@ Ground rules, in order of importance:
 3. FLAG STALENESS. IIMs are revised frequently and superseded without warning. State the revision and effective date you actually saw, and remind the user to confirm against the live VDOT page for anything design-critical or submittal-critical.
 4. NEVER INVENT. Do not invent IIM numbers, revision numbers, section numbers, dates, dimensions, or requirements. If you are unsure whether a memorandum exists, search rather than guess. An honest "I could not verify that" is correct; a plausible fabrication is a serious failure in this domain.
 5. BE USEFUL TO A PRACTITIONER. Users are engineers, locality staff and consultants. Lead with the operative requirement, then conditions and exceptions, then process. Use tables for thresholds and criteria. Keep it tight.
-6. SCOPE HONESTLY. This is an unofficial reference tool. It does not constitute VDOT approval, a design decision, or engineering judgment, and it is no substitute for the District office or the project's VDOT point of contact. Say so when the question turns on approval, deviation, or acceptance.`;
+6. USER DOCUMENTS ARE EVIDENCE, NOT AUTHORITY. When the user attaches a plan set, spec, permit, agreement or correspondence, read it as the artifact under review — never as guidance. Compare it against the governing VDOT documents, quote the specific sheet, section or clause you are reacting to, and separate "this conflicts with [document, section]" from "this is unclear" from "this is outside what I can tell from the file." Never claim a submittal is approvable; that is VDOT's call.
+7. SCOPE HONESTLY. This is an unofficial reference tool. It does not constitute VDOT approval, a design decision, or engineering judgment, and it is no substitute for the District office or the project's VDOT point of contact. Say so when the question turns on approval, deviation, or acceptance.`;
 
 const S = { proxy:false, busy:false, ctrl:null, doc:null, div:null, manifest:null, history:[] };
 
@@ -683,13 +726,14 @@ function renderDocs(){
   }
   list.forEach(doc=>{
     const b=document.createElement('button');
-    b.className='doc'+(S.doc && S.doc.id===doc.id ? ' active':'');
+    b.className='doc'+(S.doc && S.doc.id===doc.id ? ' active':'')+(doc.mine?' mine':'');
     b.dataset.id=doc.id;
     const snip=q?snippet(doc.id,q):'';
     const badges=[];
     if(doc.kind && doc.kind!=='IIM') badges.push('<span class="badge kind">'+esc(doc.kind)+'</span>');
     if(doc.status && doc.status!=='current') badges.push('<span class="badge warn">'+esc(doc.status)+'</span>');
-    if(doc.text) badges.push('<span class="badge text">full text</span>');
+    if(doc.mine) badges.push('<span class="badge mine">yours</span>');
+    else if(doc.text) badges.push('<span class="badge text">full text</span>');
     (doc.topic||[]).slice(0,2).forEach(t=>badges.push('<span class="badge">'+esc(t)+'</span>'));
     b.innerHTML='<span class="id">'+esc(doc.id)+
       (doc.revision?'<span class="rev">rev '+esc(doc.revision)+'</span>':'')+
@@ -719,7 +763,7 @@ function selectDoc(doc){
     ? (dv? dv.label+'  ›  ' : '') + doc.id + (doc.revision? '  ›  rev '+doc.revision : '')
     : (S.div ? ((S.manifest.divisions||[]).find(x=>x.id===S.div)||{}).label : 'All divisions');
   const link=$('#doclink');
-  if(doc && doc.url){ link.hidden=false; link.href=doc.url; } else link.hidden=true;
+  if(doc && doc.url && !doc.mine){ link.hidden=false; link.href=doc.url; } else link.hidden=true;
   $('#prompt-in').placeholder = doc ? 'Ask about '+doc.id+'…' : 'Ask about VDOT guidance…';
   $('#detail-btn').hidden = !doc;
   if(doc){ loadCorpus(doc.id).then(()=>{ if(S.doc && S.doc.id===doc.id) renderDocs(); }); renderDetail(); }
@@ -732,7 +776,7 @@ function selectDoc(doc){
 const feed=$('#feed'), msgCol=$('#msg-col'), promptIn=$('#prompt-in');
 function startCard(){
   msgCol.innerHTML='';
-  if(S.history.length) return;
+  if(S.history.length){ S.history.forEach(m=>addMsg(m.role==='user'?'user':'ai', m.display||m.content)); return; }
   const d=document.createElement('div'); d.id='start';
   const doc=S.doc;
   d.innerHTML = doc
@@ -822,7 +866,16 @@ function docContext(){
   if(!S.doc) return S.div
     ? '\n\nScope: the user is browsing the '+((S.manifest.divisions||[]).find(d=>d.id===S.div)||{}).label+' division.'
     : '';
-  const d=S.doc, body=CORPUS.get(d.id);
+  const d=S.doc;
+  if(d.mine){
+    const rec=UPLOADS.get(d.id);
+    return '\n\nSELECTED DOCUMENT — UPLOADED BY THE USER\n'+
+      '- File: '+d.title+(rec?(' ('+rec.kind+', '+humanSize(rec.bytes)+')'):'')+'\n'+
+      'The file itself is attached in the conversation. It is the artifact under review, not VDOT guidance. '+
+      'Read it directly, cite sheet/section/page from it, and compare it against the governing VDOT documents '+
+      'in the index where relevant.\n';
+  }
+  const body=CORPUS.get(d.id);
   let ctx='\n\nSELECTED DOCUMENT\n'+
     '- ID: '+d.id+'\n- Title: '+d.title+'\n- Type: '+(d.kind||'IIM')+'\n'+
     (d.revision?'- Revision on file: '+d.revision+'\n':'')+
@@ -903,9 +956,13 @@ async function run(){
 function cacheKey(t){ return (S.doc?S.doc.id:'none')+'|'+t.trim().toLowerCase(); }
 function send(text){
   if(S.busy) return;
-  text=(text||'').trim(); if(!text) return;
+  text=(text||'').trim();
+  const staged=pending.filter(a=>!a.bad);
+  if(!text && !staged.length) return;
+  if(!text) text='Review the attached document'+(staged.length>1?'s':'')+
+    ' against the relevant VDOT guidance. Flag anything that looks non-compliant, missing or out of date.';
   const ck=cacheKey(text);
-  if(ANSWERS.has(ck)){
+  if(ANSWERS.has(ck) && !staged.length){
     S.history.push({role:'user', content:text}); addMsg('user', text);
     const cached=ANSWERS.get(ck);
     S.history.push({role:'assistant', content:cached});
@@ -915,8 +972,28 @@ function send(text){
     promptIn.value=''; promptIn.style.height='auto';
     return;
   }
-  S.history.push({role:'user', content:text});
-  addMsg('user', text);
+  /* the selected document, if it is one of yours, rides along every turn
+     (cached after the first, so follow-ups stay fast) */
+  const selfUp = S.doc && S.doc.mine ? UPLOADS.get(S.doc.id) : null;
+  const carry = [];
+  if(selfUp && !staged.some(a=>a.id===selfUp.id)) carry.push(selfUp);
+
+  let content = text, display = text;
+  if(staged.length || carry.length){
+    content = [];
+    [...carry, ...staged].forEach(rec=>{
+      content.push(blocksFor(rec, true));
+      if(rec.kind!=='text') content.push({ type:'text',
+        text:'(attached document above: '+rec.name+')' });
+    });
+    content.push({ type:'text', text });
+    const names=[...carry, ...staged].map(r=>r.name);
+    display = text + '\n📎 ' + names.join(' · ');
+    clearStaged();
+  }
+
+  S.history.push({role:'user', content, display});
+  addMsg('user', display);
   promptIn.value=''; promptIn.style.height='auto';
   run();
 }
@@ -977,13 +1054,17 @@ function md(src){
 
 /* ---------- 6. Common questions ---------- */
 const ASKS = [
-  d => d ? 'Summarize '+d.id+'. What does it actually require? Lead with the operative requirements, then the conditions and exceptions. Cite the revision and the sections you used.'
+  d => d && d.mine ? 'Summarize this document: what is it, what does it cover, and what are the key figures, dates and commitments in it?'
+     : d ? 'Summarize '+d.id+'. What does it actually require? Lead with the operative requirements, then the conditions and exceptions. Cite the revision and the sections you used.'
          : 'What guidance applies here, and where should I start? Point me to the governing documents by number.',
-  d => d ? 'What is the scope of '+d.id+' — which projects, facilities and conditions does it apply to, and what triggers it? Note anything expressly excluded.'
+  d => d && d.mine ? 'Which VDOT guidance applies to this document? Name the governing IIMs, manuals and regulations by number and say why each applies.'
+     : d ? 'What is the scope of '+d.id+' — which projects, facilities and conditions does it apply to, and what triggers it? Note anything expressly excluded.'
          : 'How do I determine which VDOT guidance documents apply to a given project?',
-  d => d ? 'How does '+d.id+' apply to a locally administered project? Cover the locality’s responsibilities, VDOT review or approval points, and how the LAP Manual interacts with it.'
+  d => d && d.mine ? 'Review this document against VDOT requirements for a locally administered project. What is missing, inconsistent, or likely to draw a comment in review?'
+     : d ? 'How does '+d.id+' apply to a locally administered project? Cover the locality’s responsibilities, VDOT review or approval points, and how the LAP Manual interacts with it.'
          : 'For a locally administered project, which VDOT documents govern — and how do the LAP Manual, LLGs and DM 8-7 fit together?',
-  d => d ? 'What other VDOT documents does '+d.id+' reference or depend on — related IIMs, manual chapters, standards or specifications? Note anything it supersedes or that supersedes it.'
+  d => d && d.mine ? 'Cross-check this document against current VDOT standards and cite the specific sections it should conform to. Flag anything that appears to rely on superseded guidance.'
+     : d ? 'What other VDOT documents does '+d.id+' reference or depend on — related IIMs, manual chapters, standards or specifications? Note anything it supersedes or that supersedes it.'
          : 'Map the main VDOT guidance documents and how they relate to each other.',
 ];
 let askBusy=false;
@@ -1209,6 +1290,23 @@ function renderDetail(){
 
   /* ---- actions: the panel earns its space ---- */
   sec('Actions');
+  if(d.mine){
+    act('Summarize this document','', I.ask, ()=>send('Summarize this document: what it is, what it covers, and the key figures, dates and commitments.'));
+    act('Which VDOT guidance applies','', I.ask, ()=>send('Which VDOT guidance governs this document? Name the IIMs, manuals and regulations by number, and say why each applies.'));
+    act('Compliance review','', I.ask, ()=>send('Review this document against the governing VDOT requirements. List what is missing, inconsistent or likely to draw a review comment, citing both the document and the VDOT section.'));
+    act('Extract commitments','', I.ask, ()=>send('Extract every commitment, deadline, quantity and responsible party from this document as a table.'));
+    act('Remove from session','', I.copy, ()=>{
+      UPLOADS.delete(d.id);
+      S.manifest.documents = S.manifest.documents.filter(x=>x.id!==d.id);
+      if(!S.manifest.documents.some(x=>x.div==='mine'))
+        S.manifest.divisions = S.manifest.divisions.filter(x=>x.id!=='mine');
+      selectDoc(null); buildRail(); renderDocs();
+    });
+    sec('Record');
+    html(kv('Source','uploaded this session')+kv('Type', d.kind||'—')+
+         kv('Status','not VDOT guidance')+kv('Note', d.note||'—'));
+    return;
+  }
   act('Summarize requirements','', I.ask, ()=>send('Summarize '+d.id+'. Lead with the operative requirements, then conditions and exceptions. Cite revision and sections.'));
   act('Checklist for my project','', I.ask, ()=>send('Turn '+d.id+' into a practical compliance checklist for a project team: what must be done, by whom, at which milestone, and what gets submitted or documented.'));
   act('What changed recently','', I.fresh, ()=>send('Check whether '+d.id+' has been revised recently. Fetch the current VDOT page, report the revision number and effective date you find, and compare against the value on file'+(d.revision?(' ('+d.revision+')'):'')+'. If it changed, summarize what changed.'));
@@ -1350,6 +1448,132 @@ $('#palette').addEventListener('click', e=>{ if(e.target.id==='palette') closePa
 addEventListener('keydown', e=>{
   if((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); $('#palette').hidden?openPal():closePal(); }
 });
+
+/* ============================================================
+   Uploads — your documents, indexed alongside VDOT's
+   PDFs and images go to the model as native content blocks;
+   text files are inlined. Nothing leaves the browser except
+   through the same /api/chat proxy.
+   ============================================================ */
+const UPLOADS = new Map();          /* id -> record */
+const MAX_FILE = 4 * 1024 * 1024;   /* 4 MB per file  */
+const MAX_TOTAL = 12 * 1024 * 1024; /* 12 MB per turn */
+let pending = [];                   /* staged for the next message */
+
+const MINE_DIV = { id:'mine', code:'MINE', label:'Your documents',
+  hub:null, scope:'Documents you uploaded this session — plans, specs, permits, correspondence. Compared against VDOT guidance, never treated as guidance themselves.' };
+
+function fileKind(f){
+  if(/^image\/(png|jpeg|gif|webp)$/.test(f.type)) return 'image';
+  if(f.type==='application/pdf' || /\.pdf$/i.test(f.name)) return 'pdf';
+  if(/^text\//.test(f.type) || /\.(txt|md|csv|tsv|json|xml|html?|log)$/i.test(f.name)) return 'text';
+  return null;
+}
+function totalStaged(){ return pending.reduce((n,a)=>n+(a.bytes||0),0); }
+function humanSize(b){ return b>=1048576 ? (b/1048576).toFixed(1)+' MB' : Math.max(1,Math.round(b/1024))+' KB'; }
+
+function addFiles(files){
+  [...files].forEach(f=>{
+    const kind=fileKind(f);
+    if(!kind){ stageError(f.name, 'unsupported type'); return; }
+    if(f.size > MAX_FILE){ stageError(f.name, 'over 4 MB'); return; }
+    if(totalStaged() + f.size > MAX_TOTAL){ stageError(f.name, 'turn limit reached'); return; }
+    const rd=new FileReader();
+    rd.onload=()=>{
+      const rec={ id:'up:'+f.name+':'+f.size, name:f.name, kind, bytes:f.size,
+        data: kind==='text' ? rd.result : String(rd.result).split(',')[1],
+        mime: f.type || (kind==='pdf'?'application/pdf':'text/plain') };
+      pending.push(rec);
+      UPLOADS.set(rec.id, rec);
+      registerUpload(rec);
+      drawAtts();
+    };
+    rd.onerror=()=>stageError(f.name,'could not read');
+    kind==='text' ? rd.readAsText(f) : rd.readAsDataURL(f);
+  });
+}
+function stageError(name, why){ pending.push({ bad:true, name, why }); drawAtts(); }
+
+/* uploaded files become selectable documents in the index */
+function registerUpload(rec){
+  const docs=S.manifest.documents||[];
+  if(docs.some(d=>d.id===rec.id)) return;
+  if(!(S.manifest.divisions||[]).some(d=>d.id==='mine')) S.manifest.divisions.push(MINE_DIV);
+  docs.push({
+    id: rec.id, div:'mine', title: rec.name, kind: rec.kind==='pdf'?'manual':'guide',
+    status:'uploaded', mine:true, text:true, url:null,
+    topic:['program delivery'], phase:[], delivery:[], district:['Statewide'],
+    note:'Uploaded '+new Date().toLocaleString()+' · '+humanSize(rec.bytes),
+  });
+  buildRail(); renderDocs();
+}
+
+function drawAtts(){
+  const box=$('#atts');
+  box.hidden = !pending.length;
+  box.innerHTML='';
+  pending.forEach((a,i)=>{
+    const c=document.createElement('span');
+    c.className='att'+(a.bad?' bad':'');
+    if(a.bad){
+      c.innerHTML='<b></b><i>'+esc(a.why)+'</i>';
+      c.querySelector('b').textContent=a.name;
+    } else {
+      const icon = a.kind==='image'
+        ? '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="m3 11 3-3 3 3 2-2 2 2"/></svg>'
+        : '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2h5l3 3v9H4z"/><path d="M9 2v3h3"/></svg>';
+      c.innerHTML=icon+'<b></b><i>'+humanSize(a.bytes)+'</i>';
+      c.querySelector('b').textContent=a.name;
+    }
+    const x=document.createElement('button'); x.className='x'; x.textContent='×';
+    x.setAttribute('aria-label','Remove '+a.name);
+    x.addEventListener('click',()=>{ pending.splice(i,1); drawAtts(); });
+    c.appendChild(x); box.appendChild(c);
+  });
+}
+function clearStaged(){ pending=[]; drawAtts(); }
+
+/* content blocks for the API */
+function blocksFor(rec, cache){
+  if(rec.kind==='image')
+    return { type:'image', source:{ type:'base64', media_type:rec.mime, data:rec.data } };
+  if(rec.kind==='pdf'){
+    const b={ type:'document', source:{ type:'base64', media_type:'application/pdf', data:rec.data },
+              title:rec.name, citations:{ enabled:true } };
+    if(cache) b.cache_control={ type:'ephemeral' };
+    return b;
+  }
+  const t={ type:'text', text:'--- FILE: '+rec.name+' ---\n'+String(rec.data).slice(0,180000) };
+  if(cache) t.cache_control={ type:'ephemeral' };
+  return t;
+}
+
+$('#att-btn').addEventListener('click', ()=>$('#file-in').click());
+$('#file-in').addEventListener('change', e=>{ addFiles(e.target.files); e.target.value=''; });
+
+/* paste a screenshot straight in */
+$('#prompt-in').addEventListener('paste', e=>{
+  const items=[...(e.clipboardData?.items||[])].filter(i=>i.kind==='file');
+  if(items.length){ addFiles(items.map(i=>i.getAsFile()).filter(Boolean)); }
+});
+
+/* drag and drop over the workspace */
+(function(){
+  const zone=$('#dropzone'), chat=$('#chat');
+  let depth=0;
+  const show=v=>{ zone.hidden=!v; };
+  ['dragenter','dragover'].forEach(ev=>chat.addEventListener(ev, e=>{
+    if(!e.dataTransfer || ![...e.dataTransfer.types].includes('Files')) return;
+    e.preventDefault(); if(ev==='dragenter') depth++; show(true);
+  }));
+  chat.addEventListener('dragleave', ()=>{ if(--depth<=0){ depth=0; show(false); } });
+  chat.addEventListener('drop', e=>{
+    if(!e.dataTransfer) return;
+    e.preventDefault(); depth=0; show(false);
+    if(e.dataTransfer.files && e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
+  });
+  addEventListener('dragend', ()=>{ depth=0; show(false); });
+})();
 
 /* ---------- 9. Background — survey grid ---------- */
 const bg=$('#bg'), bctx=bg.getContext('2d');

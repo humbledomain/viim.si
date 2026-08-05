@@ -143,6 +143,19 @@ Facet vocabularies live in `manifest.facets` — **topic** (14 values), **phase*
 
 ---
 
+## Uploading your own documents
+
+Attach with the paperclip, **drag anything onto the workspace**, or paste a screenshot straight into the composer.
+
+- **PDFs and images go to the model natively** — Claude reads the actual pages, so plan sheets, stamped details and scanned permits work without OCR on your side. Text files are inlined.
+- **Uploads become real index entries** under a **Your documents** division in the rail: selectable, searchable, and carried into every follow-up question in that thread (cached after the first turn, so follow-ups stay fast).
+- **Upload-aware actions** replace the standard ones in the detail panel: summarize · which VDOT guidance applies · compliance review · extract commitments · remove from session.
+- Limits: 4 MB per file, 12 MB per turn. Unsupported types are rejected in the chip list rather than silently dropped.
+
+The system prompt treats your files as **evidence, never authority** — the assistant compares them against the governing VDOT documents, cites both sides, and will not tell you a submittal is approvable, because that is VDOT's call.
+
+Nothing is stored server-side. Files live in browser memory for the session and travel only through your own `/api/chat` proxy.
+
 ## The detail panel
 
 Docked as a real column on wide screens (it never covers the conversation) and slides over as a sheet below 1200px. Toggle it with the ▤ button in the command bar; `esc` closes it.
