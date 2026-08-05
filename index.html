@@ -86,7 +86,7 @@ button{ font:inherit; color:inherit; background:none; border:none; cursor:pointe
 #bg{ position:fixed; inset:0; z-index:0; pointer-events:none }
 
 /* rail */
-#rail{ position:relative; z-index:20; display:flex; flex-direction:column; align-items:center; gap:5px;
+#rail{ position:relative; z-index:20; display:flex; flex-direction:column; align-items:center; gap:5px; min-height:0;
   padding:calc(var(--u) + var(--safe-t)) 0 calc(var(--u) + var(--safe-b));
   background:linear-gradient(180deg,var(--rail2),var(--rail)); color:var(--rail-ink) }
 #rail::after{ content:""; position:absolute; top:0; bottom:0; right:0; width:1px;
@@ -97,7 +97,9 @@ button{ font:inherit; color:inherit; background:none; border:none; cursor:pointe
 #logo .l-core{ animation:pulse 3s ease-in-out infinite; transform-box:fill-box; transform-origin:center }
 @keyframes beam{ 0%,100%{ opacity:.45 } 50%{ opacity:1 } }
 @keyframes pulse{ 0%,100%{ transform:scale(1); opacity:.85 } 50%{ transform:scale(1.3); opacity:1 } }
-#divs{ display:flex; flex-direction:column; gap:3px; width:100%; align-items:center }
+#divs{ display:flex; flex-direction:column; gap:3px; width:100%; align-items:center;
+  overflow-y:auto; overscroll-behavior:contain; scrollbar-width:none; min-height:0; flex:1 }
+#divs::-webkit-scrollbar{ display:none }
 .div-btn{ position:relative; width:54px; padding:8px 2px 6px; border-radius:var(--r2);
   display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--rail-ink);
   transition:color .2s, background .2s }
@@ -110,7 +112,7 @@ button{ font:inherit; color:inherit; background:none; border:none; cursor:pointe
 .div-btn.active::before{ content:""; position:absolute; left:-5px; top:50%; transform:translateY(-50%);
   width:3px; height:24px; border-radius:0 3px 3px 0;
   background:linear-gradient(180deg,var(--accent-lo),var(--amber-lo)); box-shadow:0 0 10px rgba(56,189,248,.9) }
-.rail-sp{ flex:1 }
+.rail-sp{ flex:none; height:var(--u) }
 #railmark{ font-family:var(--f-mono); font-size:8px; letter-spacing:.2em; color:#3d4a5e;
   writing-mode:vertical-rl; transform:rotate(180deg) }
 
@@ -507,6 +509,7 @@ body.has-detail #app{ grid-template-columns:var(--rail-w,64px) var(--side-w,320p
       <button class="facet-tab" data-facet="topic">Topic</button>
       <button class="facet-tab" data-facet="phase">Phase</button>
       <button class="facet-tab" data-facet="delivery">Delivery</button>
+      <button class="facet-tab" data-facet="district">District</button>
       <button class="facet-tab" data-facet="kind">Type</button>
     </div>
     <div id="facets" hidden></div>
@@ -617,7 +620,8 @@ function buildRail(){
     b.className='div-btn'; b.dataset.div=d.id; b.title=d.label;
     b.setAttribute('aria-label', d.label);
     const SHORT={ld:'design',sb:'bridge',te:'traffic',ed:'environ',tmpd:'planning',lad:'local',
-                 mat:'materials',con:'constr',rw:'row',mnt:'maint',prog:'program'};
+                 mat:'materials',con:'constr',rw:'row',mnt:'maint',prog:'program',amd:'assets',
+                 cr:'civil',sc:'contract',itd:'systems',bisd:'process',asd:'admin',ptd:'perform',gov:'policy'};
     b.innerHTML='<b>'+esc(d.code)+'</b><em>'+esc(SHORT[d.id]||d.label.split(/[ &]/)[0].slice(0,8))+'</em>';
     b.addEventListener('click', ()=>setDivision(d.id));
     divsNav.appendChild(b);
@@ -1014,7 +1018,7 @@ if(matchMedia('(hover: hover) and (pointer: fine)').matches && !RM){
 /* ============================================================
    v2 — facets, ranked search, corpus, palette, detail
    ============================================================ */
-const F = { topic:new Set(), phase:new Set(), delivery:new Set(), kind:new Set() };
+const F = { topic:new Set(), phase:new Set(), delivery:new Set(), district:new Set(), kind:new Set() };
 let FACET_TAB = 'all';
 let INDEX = null;          /* inverted index */
 const CORPUS = new Map();  /* id -> {text, sections, pages} */
@@ -1191,7 +1195,7 @@ function renderDetail(){
        kv('Full text', d.text?'cached in corpus':'live fetch at question time'));
 
   /* ---- classification: clickable filters ---- */
-  const facetFields=[['topic','Topics'],['phase','Project phase'],['delivery','Delivery'],];
+  const facetFields=[['topic','Topics'],['phase','Project phase'],['delivery','Delivery'],['district','District'],];
   if(facetFields.some(([f])=>(d[f]||[]).length)){
     sec('Classification');
     const w=html('');

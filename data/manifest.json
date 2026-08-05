@@ -1,7 +1,7 @@
 {
-  "generated": "seed-v3",
+  "generated": "seed-v4",
   "schema": 2,
-  "note": "Verified seed catalog. Run tools/build-manifest.py for the full VDOT index and tools/build-corpus.py to attach full text.",
+  "note": "Curated seed catalog. VDOT publishes several hundred guidance documents; run tools/build-manifest.py to crawl the full published library and merge it into this file, then tools/build-corpus.py to attach full text.",
   "source_indexes": [
     "https://www.vdot.virginia.gov/media/vdotvirginiagov/doing-business/technical-guidance-and-support/technical-guidance-documents/location-and-design/migrated/iim/IIM-INDEX_12_01_2025acc12012025.pdf",
     "https://www.vdot.virginia.gov/media/vdotvirginiagov/doing-business/technical-guidance-and-support/technical-guidance-documents/location-and-design/migrated/iim/New-and-Revised-IIM_12_08_2025acc12082025.pdf"
@@ -54,6 +54,18 @@
       "guide",
       "form / template",
       "index"
+    ],
+    "district": [
+      "Bristol",
+      "Salem",
+      "Lynchburg",
+      "Richmond",
+      "Hampton Roads",
+      "Fredericksburg",
+      "Culpeper",
+      "Staunton",
+      "Northern Virginia",
+      "Statewide"
     ]
   },
   "divisions": [
@@ -133,6 +145,62 @@
       "label": "Programming",
       "hub": "https://www.vdot.virginia.gov/projects/",
       "scope": "Six-Year Improvement Program, SMART SCALE, funding categories, project scoping and estimation."
+    },
+    {
+      "id": "amd",
+      "code": "AMD",
+      "label": "Asset Management",
+      "hub": "https://www.vdot.virginia.gov/about/divisions/",
+      "scope": "Maintenance & Operations Program budget and forecast, Special Structure Program, needs assessment and life-cycle cost analysis."
+    },
+    {
+      "id": "cr",
+      "code": "CR",
+      "label": "Civil Rights",
+      "hub": "https://www.vdot.virginia.gov/about/divisions/",
+      "scope": "DBE program, Title VI nondiscrimination, contractor compliance, labor and prevailing wage."
+    },
+    {
+      "id": "sc",
+      "code": "S&C",
+      "label": "Scheduling & Contract",
+      "hub": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/",
+      "scope": "Advertisement, bidding, award and contract administration for construction projects."
+    },
+    {
+      "id": "itd",
+      "code": "IT",
+      "label": "Information Technology",
+      "hub": "https://www.vdot.virginia.gov/about/divisions/",
+      "scope": "Enterprise systems of record \u2014 including the project and program systems referenced by delivery guidance."
+    },
+    {
+      "id": "bisd",
+      "code": "BISD",
+      "label": "Business Integrated Solutions",
+      "hub": "https://www.vdot.virginia.gov/about/divisions/",
+      "scope": "Business process improvement and reengineering, operational studies, data and trend analysis."
+    },
+    {
+      "id": "asd",
+      "code": "ASD",
+      "label": "Administrative Services",
+      "hub": "https://www.vdot.virginia.gov/about/divisions/",
+      "scope": "Procurement of goods and services, records management, document production."
+    },
+    {
+      "id": "ptd",
+      "code": "PTD",
+      "label": "Performance Transformation",
+      "hub": "https://www.vdot.virginia.gov/about/divisions/",
+      "scope": "Performance measures and reporting against VDOT objectives."
+    },
+    {
+      "id": "gov",
+      "code": "GOV",
+      "label": "Governance & Policy",
+      "hub": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/",
+      "scope": "Department Memoranda, VDOT governance documents, policy issuances and the policy manual."
     }
   ],
   "documents": [
@@ -154,6 +222,9 @@
       "delivery": [
         "VDOT-administered",
         "locally administered"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -178,6 +249,9 @@
       "authority": [
         "Code of Virginia \u00a762.1-44.15",
         "9VAC25-870 (VA Stormwater Management Program)"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -194,6 +268,9 @@
       "phase": [
         "scoping",
         "construction"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -218,6 +295,9 @@
       ],
       "authority": [
         "28 CFR 35.151 (ADA Title II)"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -240,7 +320,10 @@
         "VDOT-administered",
         "locally administered"
       ],
-      "note": "Primary roadway design resource for VDOT-owned or maintained projects."
+      "note": "Primary roadway design resource for VDOT-owned or maintained projects.",
+      "district": [
+        "Statewide"
+      ]
     },
     {
       "id": "Drainage Manual",
@@ -255,7 +338,10 @@
       "phase": [
         "preliminary engineering"
       ],
-      "url_hint": "https://www.vdot.virginia.gov/media/vdotvirginiagov/doing-business/technical-guidance-and-support/technical-guidance-documents/location-and-design/migrated/drainagemanual/"
+      "url_hint": "https://www.vdot.virginia.gov/media/vdotvirginiagov/doing-business/technical-guidance-and-support/technical-guidance-documents/location-and-design/migrated/drainagemanual/",
+      "district": [
+        "Statewide"
+      ]
     },
     {
       "id": "Road and Bridge Standards",
@@ -273,6 +359,9 @@
       "phase": [
         "preliminary engineering",
         "construction"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -289,6 +378,9 @@
       "phase": [
         "advertisement",
         "construction"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -310,6 +402,9 @@
       "delivery": [
         "VDOT-administered",
         "locally administered"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -329,6 +424,9 @@
       ],
       "authority": [
         "23 CFR 650 Subpart C (National Bridge Inspection Standards)"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -344,6 +442,9 @@
       ],
       "phase": [
         "maintenance"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -360,6 +461,9 @@
       "phase": [
         "preliminary engineering",
         "advertisement"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -376,6 +480,9 @@
       ],
       "phase": [
         "preliminary engineering"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -393,6 +500,9 @@
       "phase": [
         "preliminary engineering",
         "construction"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -409,6 +519,9 @@
       ],
       "phase": [
         "maintenance"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -428,7 +541,10 @@
       "supersedes": [
         "IIM-S&B-85"
       ],
-      "note": "Supersedes IIM-S&B-85.2"
+      "note": "Supersedes IIM-S&B-85.2",
+      "district": [
+        "Statewide"
+      ]
     },
     {
       "id": "Manual of the Structure and Bridge Division",
@@ -444,6 +560,9 @@
         "preliminary engineering",
         "construction",
         "maintenance"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -461,6 +580,9 @@
         "preliminary engineering",
         "construction",
         "maintenance"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -486,6 +608,9 @@
       ],
       "authority": [
         "28 CFR 35.151 (ADA Title II)"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -503,6 +628,9 @@
       "phase": [
         "scoping",
         "preliminary engineering"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -520,6 +648,9 @@
       "phase": [
         "construction",
         "maintenance"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -536,6 +667,9 @@
       "phase": [
         "preliminary engineering",
         "construction"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -552,6 +686,9 @@
       "phase": [
         "construction",
         "maintenance"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -575,6 +712,9 @@
       "authority": [
         "NEPA 42 U.S.C. \u00a74321",
         "23 CFR 771"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -597,6 +737,9 @@
       ],
       "authority": [
         "24VAC30-73 (Access Management)"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -620,7 +763,10 @@
       "authority": [
         "24VAC30-92 (Secondary Street Acceptance Requirements)"
       ],
-      "note": "Governs acceptance of new secondary streets into the state system."
+      "note": "Governs acceptance of new secondary streets into the state system.",
+      "district": [
+        "Statewide"
+      ]
     },
     {
       "id": "Subdivision Street Requirements",
@@ -641,7 +787,10 @@
       "superseded_by": [
         "SSAR"
       ],
-      "note": "Largely superseded by the SSAR for streets accepted after 2009."
+      "note": "Largely superseded by the SSAR for streets accepted after 2009.",
+      "district": [
+        "Statewide"
+      ]
     },
     {
       "id": "Land Use Permit Regulations",
@@ -663,6 +812,9 @@
       ],
       "authority": [
         "24VAC30-151 (Land Use Permit Regulations)"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -686,7 +838,10 @@
       "delivery": [
         "locally administered"
       ],
-      "note": "Governing document for locally administered projects."
+      "note": "Governing document for locally administered projects.",
+      "district": [
+        "Statewide"
+      ]
     },
     {
       "id": "LAP Manual Ch. 1",
@@ -704,7 +859,10 @@
       "delivery": [
         "locally administered"
       ],
-      "parent": "LAP Manual"
+      "parent": "LAP Manual",
+      "district": [
+        "Statewide"
+      ]
     },
     {
       "id": "LAP Manual Ch. 2",
@@ -722,7 +880,10 @@
       "delivery": [
         "locally administered"
       ],
-      "parent": "LAP Manual"
+      "parent": "LAP Manual",
+      "district": [
+        "Statewide"
+      ]
     },
     {
       "id": "LAP Manual Ch. 6",
@@ -740,7 +901,10 @@
       "delivery": [
         "locally administered"
       ],
-      "parent": "LAP Manual"
+      "parent": "LAP Manual",
+      "district": [
+        "Statewide"
+      ]
     },
     {
       "id": "LAP Manual Ch. 9",
@@ -758,7 +922,10 @@
       "delivery": [
         "locally administered"
       ],
-      "parent": "LAP Manual"
+      "parent": "LAP Manual",
+      "district": [
+        "Statewide"
+      ]
     },
     {
       "id": "DM 8-7",
@@ -776,6 +943,9 @@
       ],
       "delivery": [
         "locally administered"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -794,7 +964,10 @@
       "delivery": [
         "locally administered"
       ],
-      "note": "Local Assistance Division's direct policy notices to localities; issued in a numbered series."
+      "note": "Local Assistance Division's direct policy notices to localities; issued in a numbered series.",
+      "district": [
+        "Statewide"
+      ]
     },
     {
       "id": "Materials MOI",
@@ -814,7 +987,10 @@
         "VDOT-administered",
         "locally administered"
       ],
-      "note": "Practices for field sampling, inspection, testing and control of materials used in construction and maintenance."
+      "note": "Practices for field sampling, inspection, testing and control of materials used in construction and maintenance.",
+      "district": [
+        "Statewide"
+      ]
     },
     {
       "id": "Virginia Test Methods",
@@ -828,6 +1004,9 @@
       ],
       "phase": [
         "construction"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -842,6 +1021,9 @@
       ],
       "phase": [
         "construction"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -856,6 +1038,9 @@
       ],
       "phase": [
         "construction"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -871,6 +1056,9 @@
       ],
       "phase": [
         "construction"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -891,7 +1079,10 @@
         "VDOT-administered",
         "locally administered"
       ],
-      "note": "Guidance for construction inspection personnel and documentation of project activities."
+      "note": "Guidance for construction inspection personnel and documentation of project activities.",
+      "district": [
+        "Statewide"
+      ]
     },
     {
       "id": "Post-Construction Manual",
@@ -906,6 +1097,9 @@
       ],
       "phase": [
         "construction"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -922,6 +1116,9 @@
       "phase": [
         "advertisement",
         "construction"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -937,6 +1134,9 @@
       ],
       "phase": [
         "construction"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -957,7 +1157,10 @@
         "VDOT-administered",
         "locally administered"
       ],
-      "note": "Investigation, evaluation and design of geotechnical and pavement projects."
+      "note": "Investigation, evaluation and design of geotechnical and pavement projects.",
+      "district": [
+        "Statewide"
+      ]
     },
     {
       "id": "Pavement Design Guide",
@@ -975,6 +1178,9 @@
       ],
       "delivery": [
         "permit / private development"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -996,6 +1202,9 @@
       ],
       "authority": [
         "49 CFR 24 (Uniform Relocation Act)"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1015,6 +1224,9 @@
       ],
       "authority": [
         "23 CFR 645"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1030,6 +1242,9 @@
       "phase": [
         "right of way",
         "construction"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1047,6 +1262,9 @@
       ],
       "authority": [
         "49 CFR 24"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1062,6 +1280,9 @@
       ],
       "phase": [
         "maintenance"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1080,6 +1301,9 @@
       ],
       "authority": [
         "23 CFR 515"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1094,6 +1318,9 @@
       ],
       "phase": [
         "maintenance"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1116,6 +1343,9 @@
       ],
       "authority": [
         "24VAC30-151"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1137,6 +1367,9 @@
       ],
       "authority": [
         "24VAC30-155"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1159,6 +1392,9 @@
       ],
       "authority": [
         "24VAC30-73"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1180,6 +1416,9 @@
       "delivery": [
         "VDOT-administered",
         "locally administered"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1196,6 +1435,9 @@
       "phase": [
         "planning",
         "scoping"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1212,6 +1454,9 @@
       "phase": [
         "planning",
         "preliminary engineering"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1226,6 +1471,9 @@
       ],
       "phase": [
         "planning"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1241,6 +1489,9 @@
       ],
       "phase": [
         "planning"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1259,6 +1510,9 @@
       ],
       "authority": [
         "Code of Virginia \u00a733.2-214.1"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1280,6 +1534,9 @@
       ],
       "authority": [
         "Code of Virginia \u00a733.2-357"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1298,6 +1555,9 @@
       ],
       "delivery": [
         "locally administered"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1314,6 +1574,9 @@
       "phase": [
         "scoping",
         "preliminary engineering"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1333,6 +1596,9 @@
       "authority": [
         "NEPA 42 U.S.C. \u00a74321",
         "23 CFR 771"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1351,6 +1617,9 @@
       ],
       "authority": [
         "9VAC25-840"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1370,6 +1639,9 @@
       ],
       "authority": [
         "9VAC25-870"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1388,6 +1660,9 @@
       "authority": [
         "54 U.S.C. \u00a7306108 (Section 106)",
         "36 CFR 800"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1403,6 +1678,9 @@
       "phase": [
         "scoping",
         "right of way"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1422,6 +1700,9 @@
       ],
       "authority": [
         "49 CFR 26"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1441,6 +1722,9 @@
       "authority": [
         "42 U.S.C. \u00a72000d",
         "23 CFR 200"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1459,6 +1743,9 @@
       ],
       "authority": [
         "Davis-Bacon Act 40 U.S.C. \u00a73141"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1477,6 +1764,9 @@
       ],
       "delivery": [
         "locally administered"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1494,6 +1784,9 @@
       ],
       "delivery": [
         "locally administered"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1511,6 +1804,9 @@
       ],
       "delivery": [
         "locally administered"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1528,6 +1824,9 @@
       ],
       "delivery": [
         "locally administered"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1549,6 +1848,9 @@
       ],
       "authority": [
         "Code of Virginia \u00a733.2-319"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1563,6 +1865,9 @@
       ],
       "phase": [
         "preliminary engineering"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1578,6 +1883,9 @@
       "phase": [
         "scoping",
         "preliminary engineering"
+      ],
+      "district": [
+        "Statewide"
       ]
     },
     {
@@ -1593,7 +1901,10 @@
       "phase": [
         "planning"
       ],
-      "note": "Authoritative list of Location & Design IIMs with revision numbers."
+      "note": "Authoritative list of Location & Design IIMs with revision numbers.",
+      "district": [
+        "Statewide"
+      ]
     },
     {
       "id": "New and Revised IIM",
@@ -1608,7 +1919,10 @@
       "phase": [
         "planning"
       ],
-      "note": "Running log of new, revised and voided IIMs. Primary change-detection source."
+      "note": "Running log of new, revised and voided IIMs. Primary change-detection source.",
+      "district": [
+        "Statewide"
+      ]
     },
     {
       "id": "Guardrail Standards",
@@ -1624,6 +1938,272 @@
       "phase": [
         "preliminary engineering",
         "construction"
+      ],
+      "district": [
+        "Statewide"
+      ]
+    },
+    {
+      "id": "VDOT Policy Manual",
+      "div": "gov",
+      "title": "VDOT Policy Manual and Governance Documents",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/",
+      "kind": "manual",
+      "status": "current",
+      "district": [
+        "Statewide"
+      ],
+      "topic": [
+        "program delivery"
+      ],
+      "phase": [
+        "planning"
+      ]
+    },
+    {
+      "id": "Department Memoranda",
+      "div": "gov",
+      "title": "Department Memoranda (DM) series",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/",
+      "kind": "index",
+      "status": "current",
+      "district": [
+        "Statewide"
+      ],
+      "topic": [
+        "program delivery"
+      ],
+      "phase": [
+        "planning"
+      ],
+      "note": "Numbered policy issuances from the Commissioner's office; DM 8-7 governs locally administered delivery."
+    },
+    {
+      "id": "Governance Documents",
+      "div": "gov",
+      "title": "VDOT Governance Document Library",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/",
+      "kind": "index",
+      "status": "current",
+      "district": [
+        "Statewide"
+      ],
+      "topic": [
+        "program delivery"
+      ],
+      "phase": [
+        "planning"
+      ]
+    },
+    {
+      "id": "Advertisement Schedule",
+      "div": "sc",
+      "title": "Construction Advertisement Schedule",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/",
+      "kind": "guide",
+      "status": "current",
+      "district": [
+        "Statewide"
+      ],
+      "topic": [
+        "program delivery",
+        "construction & inspection"
+      ],
+      "phase": [
+        "advertisement"
+      ]
+    },
+    {
+      "id": "Bidding & Award",
+      "div": "sc",
+      "title": "Bidding, Award and Execution Procedures",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/",
+      "kind": "guide",
+      "status": "current",
+      "district": [
+        "Statewide"
+      ],
+      "topic": [
+        "program delivery"
+      ],
+      "phase": [
+        "advertisement"
+      ]
+    },
+    {
+      "id": "Special Provisions",
+      "div": "sc",
+      "title": "Special Provisions and Special Provision Copied Notes",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/",
+      "kind": "specification",
+      "status": "current",
+      "district": [
+        "Statewide"
+      ],
+      "topic": [
+        "construction & inspection",
+        "materials & testing"
+      ],
+      "phase": [
+        "advertisement",
+        "construction"
+      ]
+    },
+    {
+      "id": "Contract Modifications",
+      "div": "sc",
+      "title": "Contract Modification and Change Order Guidance",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/",
+      "kind": "guide",
+      "status": "current",
+      "district": [
+        "Statewide"
+      ],
+      "topic": [
+        "construction & inspection",
+        "program delivery"
+      ],
+      "phase": [
+        "construction"
+      ]
+    },
+    {
+      "id": "Civil Rights Program",
+      "div": "cr",
+      "title": "Civil Rights Division Programs and Requirements",
+      "url": "https://www.vdot.virginia.gov/about/divisions/",
+      "kind": "guide",
+      "status": "current",
+      "district": [
+        "Statewide"
+      ],
+      "topic": [
+        "civil rights & DBE"
+      ],
+      "phase": [
+        "advertisement",
+        "construction"
+      ],
+      "authority": [
+        "49 CFR 26",
+        "23 CFR 200"
+      ]
+    },
+    {
+      "id": "On-the-Job Training",
+      "div": "cr",
+      "title": "On-the-Job Training (OJT) Program",
+      "url": "https://www.vdot.virginia.gov/about/divisions/",
+      "kind": "guide",
+      "status": "current",
+      "district": [
+        "Statewide"
+      ],
+      "topic": [
+        "civil rights & DBE"
+      ],
+      "phase": [
+        "construction"
+      ],
+      "authority": [
+        "23 CFR 230"
+      ]
+    },
+    {
+      "id": "Maintenance & Operations Program",
+      "div": "amd",
+      "title": "Maintenance and Operations Program Guidance",
+      "url": "https://www.vdot.virginia.gov/about/divisions/",
+      "kind": "guide",
+      "status": "current",
+      "district": [
+        "Statewide"
+      ],
+      "topic": [
+        "maintenance",
+        "funding & programming"
+      ],
+      "phase": [
+        "maintenance"
+      ]
+    },
+    {
+      "id": "Special Structure Program",
+      "div": "amd",
+      "title": "Special Structure Program",
+      "url": "https://www.vdot.virginia.gov/about/divisions/",
+      "kind": "guide",
+      "status": "current",
+      "district": [
+        "Statewide"
+      ],
+      "topic": [
+        "structures & bridges",
+        "maintenance"
+      ],
+      "phase": [
+        "maintenance"
+      ]
+    },
+    {
+      "id": "Needs Assessment",
+      "div": "amd",
+      "title": "Needs Assessment and Life-Cycle Cost Analysis",
+      "url": "https://www.vdot.virginia.gov/about/divisions/",
+      "kind": "guide",
+      "status": "current",
+      "district": [
+        "Statewide"
+      ],
+      "topic": [
+        "maintenance",
+        "funding & programming"
+      ],
+      "phase": [
+        "planning",
+        "maintenance"
+      ]
+    },
+    {
+      "id": "District Offices",
+      "div": "gov",
+      "title": "VDOT District Offices \u2014 contacts and jurisdiction",
+      "url": "https://www.vdot.virginia.gov/about/districts/",
+      "kind": "index",
+      "status": "current",
+      "district": [
+        "Statewide"
+      ],
+      "topic": [
+        "program delivery",
+        "permits"
+      ],
+      "phase": [
+        "planning",
+        "scoping",
+        "construction"
+      ],
+      "note": "Nine construction districts. District review and approval authority is referenced throughout the IIMs and the LAP Manual."
+    },
+    {
+      "id": "District Land Use Permits",
+      "div": "mnt",
+      "title": "District Land Use Permit Offices",
+      "url": "https://www.vdot.virginia.gov/about/districts/",
+      "kind": "index",
+      "status": "current",
+      "district": [
+        "Statewide"
+      ],
+      "topic": [
+        "permits",
+        "utilities"
+      ],
+      "phase": [
+        "construction"
+      ],
+      "delivery": [
+        "permit / private development"
       ]
     }
   ]

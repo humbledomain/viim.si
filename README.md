@@ -23,6 +23,24 @@ Netlify works identically; `netlify.toml` is included.
 
 ---
 
+## Getting the *complete* library
+
+`data/manifest.json` ships as a **curated seed — 97 documents across 19 divisions**, every entry hand-checked against VDOT. VDOT publishes several hundred more.
+
+The full set is one command away, but note *why* it needs to run on your machine rather than being baked in: VDOT's guidance listing renders client-side, so a plain HTTP fetch returns an empty shell. `tools/build-manifest.py` therefore tries three public paths in order:
+
+1. **Sitemap XML** — static, immune to client rendering, and usually complete. This is the path that normally wins.
+2. **CMS search API** — some builds expose the listing as JSON.
+3. **Paginated HTML** — `?page=1…N`, for builds that server-render.
+
+If all three come up short it tells you so and suggests rendering the listing with Playwright. It never silently produces a thin catalog, and it **preserves every curated facet** already in the manifest when it merges.
+
+```bash
+pip install requests pymupdf
+python3 tools/build-manifest.py      # merge the full published library
+python3 tools/build-corpus.py        # attach full text, sections, cross-references
+```
+
 ## Build the corpus (this is what makes it fast)
 
 ```bash

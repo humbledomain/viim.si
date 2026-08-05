@@ -28,7 +28,23 @@ PAUSE = 1.0  # seconds between requests
 # the highest-yield source: titles and canonical URLs come straight out of the
 # HTML, no PDF parsing and no slug guessing required.
 LISTING = "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/"
-LISTING_MAX_PAGES = 40
+LISTING_MAX_PAGES = 60
+
+# The listing renders client-side, so plain HTML may come back as a shell. Three
+# strategies are tried in order; whichever yields documents wins. All of them hit
+# only public, unauthenticated endpoints.
+SITEMAPS = [
+    "https://www.vdot.virginia.gov/sitemap.xml",
+    "https://www.vdot.virginia.gov/sitemap_index.xml",
+    "https://www.vdot.virginia.gov/sitemap-0.xml",
+]
+# Common CMS search endpoints. Harmless if they 404 — we just move on.
+SEARCH_APIS = [
+    "https://www.vdot.virginia.gov/api/search?query=&contentType=document&page={page}&pageSize=100",
+    "https://www.vdot.virginia.gov/api/sitecore/search/results?f=technical-guidance&page={page}",
+    "https://www.vdot.virginia.gov/_api/web/lists/getbytitle('Documents')/items?$top=1000",
+]
+GUIDANCE_HINT = "/technical-guidance-and-support/"
 
 INDEX_PDFS = {
     "index": "https://www.vdot.virginia.gov/media/vdotvirginiagov/doing-business/technical-guidance-and-support/"
@@ -59,6 +75,82 @@ LINK_RE = re.compile(
     r'<a[^>]+href="(/doing-business/technical-guidance-and-support/technical-guidance-documents/[^"#?]+)"[^>]*>(.*?)</a>',
     re.I | re.S)
 TAG_RE = re.compile(r"<[^>]+>")
+
+
+def from_sitemap() -> dict:
+    """Most reliable path: sitemaps are static XML, immune to client rendering."""
+    found = {}
+    seen_maps = set()
+    queue = list(SITEMAPS)
+    while queue:
+        sm = queue.pop(0)
+        if sm in seen_maps:
+            continue
+        seen_maps.add(sm)
+        try:
+            xml = get(sm).text
+        except requests.RequestException:
+            continue
+        # nested sitemap index?
+        for child in re.findall(r"<loc>\s*([^<]+sitemap[^<]*\.xml)\s*</loc>", xml, re.I):
+            if child not in seen_maps and len(seen_maps) < 40:
+                queue.append(child.strip())
+        for loc in re.findall(r"<loc>\s*([^<]+)\s*</loc>", xml):
+            loc = loc.strip()
+            if GUIDANCE_HINT not in loc or loc.endswith(".xml"):
+                continue
+            title = re.sub(r"[-_]+", " ", loc.rstrip("/").rsplit("/", 1)[-1]).strip()
+            title = re.sub(r"\s+", " ", title).title()
+            m = ID_RE.search(title.replace(" ", "-"))
+            if m:
+                div = m.group(1).upper().replace("SB", "S&B")
+                doc_id = f"IIM-{div}-{m.group(2)}"
+                rev = f"{m.group(2)}.{m.group(3)}" if m.group(3) else None
+            else:
+                doc_id, rev, div = title, None, None
+            found.setdefault(doc_id, {
+                "id": doc_id,
+                "div": (div or "").lower().replace("&", "") or None,
+                "title": title,
+                "revision": rev,
+                "url": loc,
+                "kind": "IIM" if m else "guide",
+            })
+        print(f"  sitemap {sm.rsplit('/',1)[-1]}: running total {len(found)}")
+    return found
+
+
+def from_search_api() -> dict:
+    """Some CMS builds expose the same listing as JSON. Try, don't insist."""
+    found = {}
+    for tmpl in SEARCH_APIS:
+        for page in range(1, 12):
+            url = tmpl.format(page=page)
+            try:
+                r = get(url)
+                data = r.json()
+            except Exception:
+                break
+            items = None
+            for key in ("results", "items", "value", "documents", "d"):
+                if isinstance(data, dict) and isinstance(data.get(key), list):
+                    items = data[key]
+                    break
+            if not items:
+                break
+            for it in items:
+                title = (it.get("title") or it.get("Title") or "").strip()
+                href = (it.get("url") or it.get("Url") or it.get("link") or "").strip()
+                if not title or not href:
+                    continue
+                if href.startswith("/"):
+                    href = "https://www.vdot.virginia.gov" + href
+                found.setdefault(title, {"id": title, "div": None, "title": title,
+                                         "revision": None, "url": href, "kind": "guide"})
+            print(f"  search api page {page}: total {len(found)}")
+        if found:
+            break
+    return found
 
 
 def crawl_listing(max_pages: int = LISTING_MAX_PAGES) -> dict:
@@ -172,8 +264,24 @@ def fingerprint(url: str) -> dict:
 def build():
     CACHE.mkdir(exist_ok=True)
 
-    print("crawling the VDOT guidance listing …")
-    docs = crawl_listing()
+    print("1/3  sitemap …")
+    docs = from_sitemap()
+
+    if len(docs) < 40:
+        print("\n2/3  CMS search API …")
+        docs.update({k: v for k, v in from_search_api().items() if k not in docs})
+
+    if len(docs) < 40:
+        print("\n3/3  paginated HTML listing …")
+        docs.update({k: v for k, v in crawl_listing().items() if k not in docs})
+
+    if len(docs) < 40:
+        print("\n!! Only %d documents found. The listing is client-rendered, so if the sitemap\n"
+              "   and API paths are unavailable you will need a JS-capable fetch. Easiest options:\n"
+              "     pip install playwright && playwright install chromium\n"
+              "     then render %s?page=N and feed the HTML to crawl_listing().\n"
+              "   The curated seed catalog in data/manifest.json is preserved either way."
+              % (len(docs), LISTING))
 
     print("\nparsing the IIM index PDFs for revisions and dates …")
     for name, url in INDEX_PDFS.items():
@@ -229,7 +337,7 @@ def check():
     """Re-parse the indexes and report anything whose revision moved."""
     man = json.loads((DATA / "manifest.json").read_text())
     known = {d["id"]: d for d in man["documents"]}
-    fresh = crawl_listing()
+    fresh = from_sitemap() or crawl_listing()
     for name, url in INDEX_PDFS.items():
         try:
             for k, v in parse_index(pdf_text(get(url).content)).items():
